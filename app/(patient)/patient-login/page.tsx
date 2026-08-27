@@ -26,46 +26,11 @@ import {
 import { signIn } from '@/lib/auth';
 import { useToast } from '@/hooks/use-toast';
 
-interface DemoPatientProfile {
-  name: string;
-  nhsNumber: string;
-  dob: string;
-  postcode: string;
-  stage: string;
-}
-
-const PRESET_PATIENTS: DemoPatientProfile[] = [
-  {
-    name: 'Brian Williams',
-    nhsNumber: '467 569 1871',
-    dob: '1960-03-12',
-    postcode: 'OX3 9DU',
-    stage: 'pT2a (Organ-Confined Trifecta)',
-  },
-  {
-    name: 'Anthony Wilson',
-    nhsNumber: '468 576 1884',
-    dob: '1958-11-24',
-    postcode: 'OX2 6HE',
-    stage: 'pT3a (High-Risk BCR)',
-  },
-  {
-    name: 'Andrew Roberts',
-    nhsNumber: '469 583 1897',
-    dob: '1962-07-09',
-    postcode: 'OX4 2ET',
-    stage: 'pT2c (Continence Recovery)',
-  },
-];
-
 export default function PatientLoginPage() {
   const router = useRouter();
   const { toast } = useToast();
 
   const [authMode, setAuthMode] = useState<'nhs_number' | 'sms_token'>('nhs_number');
-  const [nhsNumber, setNhsNumber] = useState('467 569 1871');
-  const [dob, setDob] = useState('1960-03-12');
-  const [postcode, setPostcode] = useState('OX3 9DU');
   const [smsOtp, setSmsOtp] = useState('');
   const [otpSent, setOtpSent] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
@@ -100,18 +65,6 @@ export default function PatientLoginPage() {
         err instanceof Error ? err.message : 'Sign-in failed. Please check your details.'
       );
     }
-  };
-
-  const handleAutofillPatient = (demo: DemoPatientProfile) => {
-    setNhsNumber(demo.nhsNumber);
-    setDob(demo.dob);
-    setPostcode(demo.postcode);
-    setError('');
-    toast({
-      title: 'Patient Details Autofilled',
-      description: `Loaded record for ${demo.name} (${demo.stage}).`,
-      variant: 'default',
-    });
   };
 
   const handleSendOtp = () => {
@@ -283,65 +236,34 @@ export default function PatientLoginPage() {
               {authMode === 'nhs_number' && (
                 <form onSubmit={(e) => void handleSignIn(e)} className="space-y-4">
                   <FormField>
-                    <FormLabel className="text-xs font-semibold text-slate-300">10-Digit NHS Number</FormLabel>
+                    <FormLabel className="text-xs font-semibold text-slate-300">Email Address</FormLabel>
                     <div className="relative">
                       <CreditCard className="absolute left-3.5 top-3 h-4 w-4 text-slate-500" />
                       <Input
-                        value={nhsNumber}
-                        onChange={(e) => setNhsNumber(e.target.value)}
-                        placeholder="e.g. 467 569 1871"
-                        className="pl-10 font-mono text-xs bg-slate-950 border-slate-800 text-white h-11 rounded-xl focus:border-purple-500"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="the address your clinical team registered"
+                        className="pl-10 text-xs bg-slate-950 border-slate-800 text-white h-11 rounded-xl focus:border-purple-500"
                         required
                       />
                     </div>
                   </FormField>
 
-                  <div className="grid grid-cols-2 gap-3">
-                    <FormField>
-                      <FormLabel className="text-xs font-semibold text-slate-300">Date of Birth</FormLabel>
-                      <div className="relative">
-                        <Calendar className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
-                        <Input
-                          type="date"
-                          value={dob}
-                          onChange={(e) => setDob(e.target.value)}
-                          className="pl-9 text-xs bg-slate-950 border-slate-800 text-white h-11 rounded-xl focus:border-purple-500"
-                          required
-                        />
-                      </div>
-                    </FormField>
-
-                    <FormField>
-                      <FormLabel className="text-xs font-semibold text-slate-300">Home Postcode</FormLabel>
+                  <FormField>
+                    <FormLabel className="text-xs font-semibold text-slate-300">Password</FormLabel>
+                    <div className="relative">
+                      <Calendar className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
                       <Input
-                        value={postcode}
-                        onChange={(e) => setPostcode(e.target.value)}
-                        placeholder="e.g. OX3 9DU"
-                        className="text-xs font-mono uppercase bg-slate-950 border-slate-800 text-white h-11 rounded-xl focus:border-purple-500"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••"
+                        className="pl-9 text-xs bg-slate-950 border-slate-800 text-white h-11 rounded-xl focus:border-purple-500"
                         required
                       />
-                    </FormField>
-                  </div>
-
-                  {/* Discrete Quick Autofill for Demo */}
-                  <div className="pt-1">
-                    <div className="text-[11px] text-slate-500 mb-1.5 flex items-center gap-1">
-                      <UserCheck className="h-3 w-3 text-purple-400" />
-                      <span>Autofill Patient Profile:</span>
                     </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {PRESET_PATIENTS.map((p) => (
-                        <button
-                          key={p.nhsNumber}
-                          type="button"
-                          onClick={() => handleAutofillPatient(p)}
-                          className="px-2.5 py-1 text-[10px] font-semibold rounded-lg bg-slate-800/80 hover:bg-purple-950 hover:border-purple-500/50 border border-slate-700 text-slate-300 transition-colors"
-                        >
-                          {p.name}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+                  </FormField>
 
                   <Button
                     type="submit"

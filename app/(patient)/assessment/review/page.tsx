@@ -82,11 +82,17 @@ export default function AssessmentReviewPage() {
           <CardContent className="p-4 pt-1 text-xs text-slate-600 space-y-1">
             <div className="flex justify-between">
               <span>Overall Score:</span>
-              <Badge variant="success">Mild Symptoms (Score 7/35)</Badge>
+              <Badge variant="success">
+                {draft.ipssScore
+                  ? `${draft.ipssScore.severity} (Score ${draft.ipssScore.totalScore}/35)`
+                  : 'Not answered'}
+              </Badge>
             </div>
             <div className="flex justify-between">
               <span>Quality of Life / Bother:</span>
-              <strong>Mostly Satisfied (Score 2/6)</strong>
+              <strong>
+                {draft.ipssScore ? `${draft.ipssScore.qualityOfLife} / 6` : '—'}
+              </strong>
             </div>
           </CardContent>
         </Card>
@@ -101,11 +107,11 @@ export default function AssessmentReviewPage() {
           <CardContent className="p-4 pt-1 text-xs text-slate-600 space-y-1">
             <div className="flex justify-between">
               <span>Overall Score:</span>
-              <Badge variant="purple">Mild to Moderate (Score 14/25)</Badge>
-            </div>
-            <div className="flex justify-between">
-              <span>Nerve-sparing recovery status:</span>
-              <strong>Improving on rehabilitation protocol</strong>
+              <Badge variant="purple">
+                {draft.shimScore
+                  ? `${draft.shimScore.severity} (Score ${draft.shimScore.totalScore}/25)`
+                  : 'Not answered'}
+              </Badge>
             </div>
           </CardContent>
         </Card>
@@ -119,12 +125,14 @@ export default function AssessmentReviewPage() {
           </CardHeader>
           <CardContent className="p-4 pt-1 text-xs text-slate-600 space-y-1">
             <div className="flex justify-between">
-              <span>Daytime Pad Count:</span>
-              <strong>1 security liner/day</strong>
+              <span>Daytime:</span>
+              <strong>{draft.continence?.dayStatus ?? 'Not answered'}</strong>
             </div>
             <div className="flex justify-between">
-              <span>Nighttime Status:</span>
-              <strong className="text-emerald-700">0 pads (Dry overnight)</strong>
+              <span>Nighttime:</span>
+              <strong className="text-emerald-700">
+                {draft.continence ? `${draft.continence.nightPads} pad(s) at night` : '—'}
+              </strong>
             </div>
           </CardContent>
         </Card>

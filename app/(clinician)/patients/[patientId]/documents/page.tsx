@@ -15,12 +15,12 @@ export default function PatientDocumentsPage({
 }) {
   const resolvedParams = React.use(params);
   const { patient, isLoading } = usePatient(resolvedParams.patientId);
+  const { documents: patientDocs } = useDocuments(resolvedParams.patientId);
 
   if (isLoading || !patient) {
     return <div className="p-8 text-center text-sm text-slate-500">Loading documents...</div>;
   }
 
-  const { documents: patientDocs } = useDocuments(patient?.id ?? '');
 
   return (
     <div className="space-y-6">

@@ -22,12 +22,12 @@ export default function PatientOverviewPage({
 }) {
   const resolvedParams = React.use(params);
   const { patient, isLoading, refresh } = usePatient(resolvedParams.patientId);
+  const { documents: patientDocs } = useDocuments(resolvedParams.patientId);
 
   if (isLoading || !patient) {
     return <div className="p-8 text-center text-sm text-slate-500">Loading patient record...</div>;
   }
 
-  const { documents: patientDocs } = useDocuments(patient?.id ?? '');
 
   return (
     <div className="space-y-6">
