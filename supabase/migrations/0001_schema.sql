@@ -62,9 +62,6 @@ create table patients (
   created_by         uuid references profiles(id),
   created_at         timestamptz not null default now(),
   updated_at         timestamptz not null default now(),
-  age                integer generated always as (
-    extract(year from age(current_date, date_of_birth))::integer
-  ) stored,
   search_text        text generated always as (
     first_name || ' ' || surname || ' ' || nhs_number || ' ' || hospital_number
   ) stored
@@ -84,12 +81,8 @@ create table baseline_cancer (
   psa                          numeric(6,2) not null check (psa >= 0),
   psa_date                     date,
   gleason_grade                gleason_grade not null,
-  -- ISUP grade group is a pure function of the Gleason score: derived, never entered
-  grade_group                  smallint generated always as (
-    case gleason_grade
-      when '3+3' then 1 when '3+4' then 2 when '4+3' then 3 when '4+4' then 4 else 5
-    end
-  ) stored,
+  -- ISUP grade group is a pure function of the Gleason score; set by trigger in 0002
+  grade_group                  smallint,
   percent_positive_cores_worst smallint check (percent_positive_cores_worst between 1 and 100),
   percent_positive_cores_best  smallint check (percent_positive_cores_best between 1 and 100),
   ukb_score                    smallint check (ukb_score between 1 and 100),
@@ -146,11 +139,7 @@ create table histology (
   pathologist               text,
   specimen_weight_grams     numeric(6,1),
   gleason_grade             gleason_grade not null,
-  grade_group               smallint generated always as (
-    case gleason_grade
-      when '3+3' then 1 when '3+4' then 2 when '4+3' then 3 when '4+4' then 4 else 5
-    end
-  ) stored,
+  grade_group               smallint,
   tertiary_pattern          text,
   pathological_stage        cancer_stage not null,
   surgical_margins          margin_status not null,

@@ -17,6 +17,16 @@ type Row = Record<string, any>;
 export const formatNhs = (n: string) => n.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3');
 export const stripNhs = (n: string) => n.replace(/\D/g, '');
 
+/** Whole years between date of birth and today. */
+function ageFrom(dob: string): number {
+  const birth = new Date(dob);
+  const now = new Date();
+  let age = now.getFullYear() - birth.getFullYear();
+  const monthDiff = now.getMonth() - birth.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && now.getDate() < birth.getDate())) age -= 1;
+  return age;
+}
+
 export function ipssSeverity(total: number): IPSSSeverity {
   return total >= 20 ? 'Severe' : total >= 8 ? 'Moderate' : 'Mild';
 }
@@ -314,7 +324,7 @@ export function toPatient(r: Row): PatientFullRecord {
     firstName: r.first_name,
     surname: r.surname,
     dateOfBirth: r.date_of_birth,
-    age: r.age,
+    age: ageFrom(r.date_of_birth),
     nhsNumber: formatNhs(r.nhs_number),
     hospitalNumber: r.hospital_number,
     phone: r.phone ?? undefined,

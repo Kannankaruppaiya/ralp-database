@@ -38,6 +38,25 @@ create trigger t_operations_touch      before update on operations      for each
 create trigger t_histology_touch       before update on histology       for each row execute function touch_updated_at();
 create trigger t_follow_ups_touch      before update on follow_ups      for each row execute function touch_updated_at();
 
+-- ---------------------------------------------------------------- derived grade group
+-- ISUP grade group follows from the Gleason score. Set here so it is identical
+-- for every writer and cannot be entered inconsistently.
+
+create or replace function set_grade_group()
+returns trigger language plpgsql as $$
+begin
+  new.grade_group := case new.gleason_grade
+    when '3+3' then 1 when '3+4' then 2 when '4+3' then 3 when '4+4' then 4 else 5
+  end;
+  return new;
+end;
+$$;
+
+create trigger t_baseline_grade_group  before insert or update of gleason_grade on baseline_cancer
+  for each row execute function set_grade_group();
+create trigger t_histology_grade_group before insert or update of gleason_grade on histology
+  for each row execute function set_grade_group();
+
 -- ---------------------------------------------------------------- follow-up scheduling
 -- The 7 client-specified milestones. Recording (or amending) an operation date
 -- re-anchors the whole schedule; already-captured results are preserved.
@@ -115,7 +134,7 @@ create trigger t_prom_sync
 -- ---------------------------------------------------------------- completeness
 -- Same weighting the app used client-side, now single-sourced in the database.
 
-create or replace view patient_completeness as
+create or replace view patient_completeness with (security_invoker = true) as
 select
   p.id as patient_id,
   (b.patient_id is not null) as baseline_complete,
