@@ -22,6 +22,7 @@ import { AuditLogEntry } from '@/types/audit';
 import { IngestionJob } from '@/types/ingestion';
 import { ClinicalDocument } from '@/types/document';
 import { SurgeonCode } from '@/types/common';
+import { RecoveryPoint, SurgeonBenchmark, RegistrySummary } from '@/types/outcomes';
 
 const FULL_PATIENT =
   '*, baseline_cancer(*), operations(*), histology(*), follow_ups(*), prom_submissions(*)';
@@ -200,6 +201,57 @@ export const db = {
   async addPromSubmission(_patientId: string, prom: PromSubmission): Promise<void> {
     const { error } = await supabase().from('prom_submissions').insert(fromProm(prom));
     if (error) throw new Error(error.message);
+  },
+
+  // ------------------------------------------------------------- outcomes
+  // Computed by the database (supabase/migrations/0006_outcome_views.sql) so a
+  // chart can never disagree with the records underneath it.
+
+  async getRecoveryCurve(): Promise<RecoveryPoint[]> {
+    const rows = unwrap<Record<string, any>[]>(
+      await supabase().from('outcome_recovery_curve').select('*').order('target_months')
+    );
+    return (rows ?? []).map((r) => ({
+      milestone: r.milestone,
+      months: r.target_months,
+      continenceN: r.continence_n,
+      potencyN: r.potency_n,
+      continentPct: r.continent_pct === null ? null : Number(r.continent_pct),
+      potentPct: r.potent_pct === null ? null : Number(r.potent_pct),
+      meanPsa: r.mean_psa === null ? null : Number(r.mean_psa),
+      bcrCount: r.bcr_count,
+    }));
+  },
+
+  async getSurgeonBenchmark(): Promise<SurgeonBenchmark[]> {
+    const rows = unwrap<Record<string, any>[]>(
+      await supabase().from('surgeon_benchmark').select('*')
+    );
+    return (rows ?? []).map((r) => ({
+      surgeon: r.surgeon,
+      caseload: r.caseload,
+      continenceN: r.continence_n,
+      continenceRate: r.continence_rate === null ? null : Number(r.continence_rate),
+      potencyN: r.potency_n,
+      potencyRate: r.potency_rate === null ? null : Number(r.potency_rate),
+      histologyN: r.histology_n,
+      marginPositiveRate: r.margin_positive_rate === null ? null : Number(r.margin_positive_rate),
+    }));
+  },
+
+  async getRegistrySummary(): Promise<RegistrySummary | null> {
+    const { data, error } = await supabase().from('registry_summary').select('*').maybeSingle();
+    if (error) throw new Error(error.message);
+    if (!data) return null;
+    const r = data as Record<string, any>;
+    return {
+      patients: r.patients,
+      operations: r.operations,
+      completedFollowUps: r.completed_follow_ups,
+      overdueFollowUps: r.overdue_follow_ups,
+      bcrEvents: r.bcr_events,
+      marginPositiveRate: r.margin_positive_rate === null ? null : Number(r.margin_positive_rate),
+    };
   },
 
   // ------------------------------------------------------------- documents

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageHeader } from '@/components/layout/page-header';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogHeader, DialogTitle, DialogContent, DialogFooter } from '@/components/ui/dialog';
 import { Users, Plus, Mail, CheckCircle2, Search } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/lib/supabase/client';
 
 interface UserRecord {
   id: string;
@@ -17,26 +18,49 @@ interface UserRecord {
   role: string;
   surgeonCode: string;
   gmcNumber?: string;
-  twoFactor: boolean;
-  status: 'Active' | 'Pending' | 'Suspended';
+  hospital: string;
+  createdAt: string;
 }
-
-const INITIAL_STAFF: UserRecord[] = [
-  { id: '1', name: 'Mr. V. Kannan', email: 'v.kannan@nhs.net', role: 'Consultant Surgeon', surgeonCode: 'VK', gmcNumber: '6123456', twoFactor: true, status: 'Active' },
-  { id: '2', name: 'Mr. R. D. Miller', email: 'r.miller@nhs.net', role: 'Consultant Surgeon', surgeonCode: 'RDM', gmcNumber: '4891023', twoFactor: true, status: 'Active' },
-  { id: '3', name: 'Mr. C. Ibrahim', email: 'c.ibrahim@nhs.net', role: 'Consultant Surgeon', surgeonCode: 'CI', gmcNumber: '5782910', twoFactor: true, status: 'Active' },
-  { id: '4', name: 'Mr. O. A. Khan', email: 'o.khan@nhs.net', role: 'Consultant Surgeon', surgeonCode: 'OAK', gmcNumber: '6901234', twoFactor: true, status: 'Active' },
-  { id: '5', name: 'Sister Sarah Jenkins', email: 's.jenkins@nhs.net', role: 'Clinical Nurse Specialist', surgeonCode: '—', twoFactor: true, status: 'Active' },
-  { id: '6', name: 'David Evans', email: 'd.evans@nhs.net', role: 'Caldicott Guardian / Data Manager', surgeonCode: '—', twoFactor: true, status: 'Active' },
-  { id: '7', name: 'Dr. Emily Thornton', email: 'e.thornton@nhs.net', role: 'MDT Coordinator', surgeonCode: '—', twoFactor: false, status: 'Pending' },
-];
 
 export default function AdminUsersPage() {
   const { toast } = useToast();
-  const [staff, setStaff] = useState<UserRecord[]>(INITIAL_STAFF);
+  const [staff, setStaff] = useState<UserRecord[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [isInviteOpen, setIsInviteOpen] = useState(false);
   const [newUser, setNewUser] = useState({ name: '', email: '', role: 'Consultant Surgeon', surgeonCode: '' });
+
+  // Row level security restricts this to Data Managers, so a non-admin sees an
+  // error rather than a silently empty table.
+  useEffect(() => {
+    let active = true;
+    supabase()
+      .from('profiles')
+      .select('*')
+      .order('full_name')
+      .then(({ data, error }: { data: Record<string, any>[] | null; error: { message: string } | null }) => {
+        if (!active) return;
+        if (error) {
+          setLoadError(error.message);
+        } else {
+          setStaff(
+            (data ?? []).map((r: Record<string, any>) => ({
+              id: r.id,
+              name: r.full_name,
+              email: r.email,
+              role: r.role,
+              surgeonCode: r.surgeon_code ?? '—',
+              gmcNumber: r.gmc_number ?? undefined,
+              hospital: r.hospital,
+              createdAt: r.created_at,
+            }))
+          );
+        }
+        setIsLoading(false);
+      });
+    return () => { active = false; };
+  }, []);
 
   const filteredStaff = staff.filter((u) => {
     const q = search.toLowerCase();
@@ -45,26 +69,14 @@ export default function AdminUsersPage() {
 
   const handleInviteUser = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newUser.name || !newUser.email) return;
-
-    const created: UserRecord = {
-      id: `usr-${Date.now()}`,
-      name: newUser.name,
-      email: newUser.email,
-      role: newUser.role,
-      surgeonCode: newUser.surgeonCode || '—',
-      twoFactor: false,
-      status: 'Pending',
-    };
-
-    setStaff((prev) => [created, ...prev]);
+    // Creating a login requires the service role key, which must never reach the
+    // browser. Until a server-side invite route exists, accounts are provisioned
+    // from the Supabase dashboard.
     setIsInviteOpen(false);
-    setNewUser({ name: '', email: '', role: 'Consultant Surgeon', surgeonCode: '' });
-
     toast({
-      title: 'NHS Smartcard / NHSmail Invite Dispatched',
-      description: `Sent registry access activation link to ${created.email}`,
-      variant: 'default',
+      title: 'Invites are not wired up yet',
+      description: 'Create the account in the Supabase dashboard; the profile row is created automatically.',
+      variant: 'destructive',
     });
   };
 
@@ -111,8 +123,8 @@ export default function AdminUsersPage() {
               <TableHead>NHSmail</TableHead>
               <TableHead>Assigned Role</TableHead>
               <TableHead>Surgeon Code</TableHead>
-              <TableHead>2FA Status</TableHead>
-              <TableHead>Account Status</TableHead>
+              <TableHead>GMC Number</TableHead>
+              <TableHead>Provisioned</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -133,25 +145,11 @@ export default function AdminUsersPage() {
                 <TableCell className="text-xs font-mono font-bold text-teal-700 dark:text-teal-400">
                   {u.surgeonCode}
                 </TableCell>
-                <TableCell>
-                  {u.twoFactor ? (
-                    <Badge variant="success" className="text-[10px] gap-1">
-                      <CheckCircle2 className="h-3 w-3" />
-                      <span>Enforced</span>
-                    </Badge>
-                  ) : (
-                    <Badge variant="warning" className="text-[10px]">
-                      Pending Setup
-                    </Badge>
-                  )}
+                <TableCell className="text-xs font-mono text-slate-500">
+                  {u.gmcNumber ?? '—'}
                 </TableCell>
-                <TableCell>
-                  <Badge
-                    variant={u.status === 'Active' ? 'success' : 'warning'}
-                    className="text-[10px]"
-                  >
-                    {u.status}
-                  </Badge>
+                <TableCell className="text-xs text-slate-500">
+                  {new Date(u.createdAt).toLocaleDateString('en-GB')}
                 </TableCell>
               </TableRow>
             ))}

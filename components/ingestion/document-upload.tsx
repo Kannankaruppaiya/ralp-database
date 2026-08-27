@@ -1,184 +1,269 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { IngestionJob, ExtractedField } from '@/types/ingestion';
-import { FileUp, FileText, CheckCircle2, AlertTriangle, ArrowRight, RefreshCw, UploadCloud } from 'lucide-react';
+import { FileText, AlertTriangle, RefreshCw, UploadCloud, CheckCircle2 } from 'lucide-react';
+import { supabase } from '@/lib/supabase/client';
 import { db } from '@/lib/api-client';
-import { useRouter } from 'next/navigation';
+import { parseClinicalDocument, extractIdentifiers } from '@/features/ingestion/extraction';
+import { ExtractedField } from '@/types/ingestion';
+import { stripNhs } from '@/lib/supabase/mappers';
+import { useToast } from '@/hooks/use-toast';
+
+type SourceType = 'theatre_note' | 'clinic_letter' | 'google_form_csv';
+
+const ACCEPT = '.docx,.txt,.csv,.md';
+const MAX_BYTES = 10 * 1024 * 1024;
+
+/**
+ * Reads the document's text.
+ *
+ * .docx is a zip and needs mammoth; it is imported lazily so the parser is not
+ * in the bundle for anyone who never uploads one. Plain text formats are read
+ * directly. .doc (the pre-2007 binary format) and scanned PDFs are not
+ * supported — both need conversion or OCR first, and silently returning empty
+ * text would look like a document with nothing in it.
+ */
+async function readDocumentText(file: File): Promise<string> {
+  if (file.name.toLowerCase().endsWith('.docx')) {
+    const mammoth = await import('mammoth');
+    const buffer = await file.arrayBuffer();
+    const { value } = await mammoth.extractRawText({ arrayBuffer: buffer });
+    return value;
+  }
+  if (/\.(txt|csv|md)$/i.test(file.name)) return file.text();
+  throw new Error(
+    `${file.name}: unsupported format. Upload .docx, .txt, .csv or .md — a .doc or scanned PDF must be converted first.`
+  );
+}
 
 export function DocumentUpload() {
   const router = useRouter();
-  const [isUploading, setIsUploading] = useState(false);
+  const { toast } = useToast();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [dragActive, setDragActive] = useState(false);
-  const [selectedDocType, setSelectedDocType] = useState<'theatre_note' | 'clinic_letter' | 'google_form_csv'>('theatre_note');
+  const [docType, setDocType] = useState<SourceType>('theatre_note');
+  const [error, setError] = useState<string | null>(null);
+  const [preview, setPreview] = useState<{ name: string; fields: ExtractedField[]; matched: string | null; nameMismatch: boolean } | null>(null);
 
-  const handleSimulatedUpload = (sampleName: string) => {
-    setIsUploading(true);
-    setTimeout(() => {
-      const newJob: IngestionJob = {
-        id: `job-${Date.now()}`,
-        documentId: `doc-${Date.now()}`,
-        documentTitle: sampleName,
-        sourceType: selectedDocType === 'theatre_note' ? 'theatre_note' : selectedDocType === 'clinic_letter' ? 'clinic_letter' : 'google_form_csv',
-        status: 'review_required',
-        conflictCount: 1,
-        uploadedAt: new Date().toISOString(),
-        matchedPatient: {
-          patientId: 'pat-001',
-          fullName: 'Arthur Pendleton',
-          nhsNumber: '482 910 3341',
-          hospitalNumber: 'RALP-78201',
-          dob: '1961-04-14',
-          matchScore: 98,
-          matchReasons: ['Matched NHS Number: 482 910 3341', 'Surname: Pendleton'],
-        },
-        candidateMatches: [],
-        extractedFields: [
-          {
-            id: `f-${Date.now()}-1`,
-            fieldKey: 'primarySurgeon',
-            fieldLabel: 'Primary Surgeon',
-            category: 'Operation',
-            rawValue: 'Surgeon: VK',
-            normalizedValue: 'VK',
-            confidence: 99,
-            status: 'exact',
-            hasConflict: false,
-          },
-          {
-            id: `f-${Date.now()}-2`,
-            fieldKey: 'bladderNeck',
-            fieldLabel: 'Bladder Neck',
-            category: 'Operation',
-            rawValue: 'Bladder neck: Sparing technique',
-            normalizedValue: 'sparing',
-            confidence: 96,
-            status: 'exact',
-            hasConflict: false,
-          },
-          {
-            id: `f-${Date.now()}-3`,
-            fieldKey: 'nerveSparing',
-            fieldLabel: 'Nerve Sparing',
-            category: 'Operation',
-            rawValue: 'Nerve sparing: Bilateral (L: 5/5, R: 4/5)',
-            normalizedValue: 'Bilateral',
-            confidence: 97,
-            status: 'exact',
-            hasConflict: false,
-          },
-          {
-            id: `f-${Date.now()}-4`,
-            fieldKey: 'bloodLossMl',
-            fieldLabel: 'Estimated Blood Loss',
-            category: 'Operation',
-            rawValue: 'EBL: 250ml',
-            normalizedValue: 250,
-            confidence: 92,
-            status: 'exact',
-            hasConflict: false,
-          },
-        ],
-      };
+  async function handleFile(file: File) {
+    setError(null);
+    setPreview(null);
 
-      db.saveIngestionJob(newJob);
-      setIsUploading(false);
-      router.push('/data-ingestion/extraction-review');
-    }, 1200);
-  };
+    if (file.size > MAX_BYTES) {
+      setError(`${file.name} is ${(file.size / 1024 / 1024).toFixed(1)} MB; the limit is 10 MB.`);
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      const rawText = await readDocumentText(file);
+      const fields = parseClinicalDocument(rawText);
+
+      if (fields.length === 0) {
+        setError(
+          `Nothing recognisable was found in ${file.name}. Check it is a theatre note or clinic letter in the unit's template.`
+        );
+        return;
+      }
+
+      // Deterministic matching on identifiers only. A document whose identifiers
+      // match nothing is still stored — it lands in the queue unmatched rather
+      // than being attached to a guess.
+      const { nhsNumber, hospitalNumber, surname } = extractIdentifiers(fields);
+      let matchedPatientId: string | null = null;
+      let matchedName: string | null = null;
+      let nameMismatch = false;
+      const reasons: string[] = [];
+
+      if (nhsNumber || hospitalNumber) {
+        const filters = [
+          nhsNumber ? `nhs_number.eq.${stripNhs(nhsNumber)}` : null,
+          hospitalNumber ? `hospital_number.eq.${hospitalNumber}` : null,
+        ].filter(Boolean) as string[];
+
+        const { data: candidates } = await supabase()
+          .from('patients')
+          .select('id, first_name, surname, nhs_number, hospital_number')
+          .or(filters.join(','))
+          .limit(2);
+
+        if (candidates?.length === 1) {
+          const c = candidates[0] as Record<string, string>;
+          matchedPatientId = c.id;
+          matchedName = `${c.first_name} ${c.surname}`;
+          if (nhsNumber && stripNhs(nhsNumber) === c.nhs_number) reasons.push(`NHS number ${c.nhs_number}`);
+          if (hospitalNumber && hospitalNumber === c.hospital_number) reasons.push(`MRN ${c.hospital_number}`);
+
+          // A mistyped identifier matches a real but wrong record, and nothing
+          // else in the pipeline would catch it. The surname in the document is
+          // never used to match, only to contradict a match.
+          if (surname && surname.toLowerCase() !== String(c.surname).toLowerCase()) {
+            nameMismatch = true;
+            reasons.push(
+              `NAME MISMATCH: document says "${surname}", record says "${c.surname}" — verify before committing`
+            );
+          }
+        } else if ((candidates?.length ?? 0) > 1) {
+          reasons.push('Identifiers matched more than one record — needs manual review');
+        }
+      }
+
+      // The document text is stored so a reviewer can check any field against
+      // its source rather than trusting the extraction.
+      const { data: doc, error: docError } = await supabase()
+        .from('documents')
+        .insert({
+          patient_id: matchedPatientId,
+          title: file.name,
+          source_type: docType,
+          raw_text: rawText.slice(0, 200_000),
+        })
+        .select('id')
+        .single();
+      if (docError) throw new Error(docError.message);
+
+      const { error: jobError } = await supabase().from('ingestion_jobs').insert({
+        document_id: (doc as { id: string }).id,
+        matched_patient: matchedPatientId,
+        match_score: matchedPatientId ? (nameMismatch ? 50 : 100) : null,
+        match_reasons: reasons.length ? reasons : null,
+        // A contradicted match must not sit in the ordinary review queue.
+        status: nameMismatch ? 'conflicted' : 'review_required',
+        conflict_count: nameMismatch ? 1 : 0,
+        extracted_fields: fields,
+      });
+      if (jobError) throw new Error(jobError.message);
+
+      await db.audit(
+        'DOCUMENT_INGESTED',
+        matchedPatientId ?? undefined,
+        `Parsed "${file.name}" — ${fields.length} fields extracted, ${matchedPatientId ? 'matched' : 'unmatched'}`
+      );
+
+      setPreview({ name: file.name, fields, matched: matchedName, nameMismatch });
+      toast({
+        title: nameMismatch ? 'Identity conflict' : `${fields.length} fields extracted`,
+        description: nameMismatch
+          ? `Identifiers matched ${matchedName}, but the document names "${surname}". Verify before committing.`
+          : matchedName
+            ? `Matched to ${matchedName}. Review before committing.`
+            : 'No patient matched — queued for manual identity matching.',
+        variant: nameMismatch ? 'destructive' : 'success',
+      });
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not read that document.');
+    } finally {
+      setIsProcessing(false);
+      if (inputRef.current) inputRef.current.value = '';
+    }
+  }
 
   return (
     <div className="space-y-6">
-      {/* Upload Box */}
       <div
-        className="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50/70 p-8 text-center transition-colors hover:border-teal-500 hover:bg-teal-50/20 dark:border-slate-800 dark:bg-slate-900/50"
-        onDragOver={(e) => {
-          e.preventDefault();
-          setDragActive(true);
-        }}
+        className={`rounded-2xl border-2 border-dashed p-8 text-center transition-colors ${
+          dragActive
+            ? 'border-teal-500 bg-teal-50/40'
+            : 'border-slate-300 bg-slate-50/70 hover:border-teal-500 hover:bg-teal-50/20 dark:border-slate-800 dark:bg-slate-900/50'
+        }`}
+        onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
         onDragLeave={() => setDragActive(false)}
         onDrop={(e) => {
           e.preventDefault();
           setDragActive(false);
-          handleSimulatedUpload('Uploaded_RALP_Theatre_Note.docx');
+          const file = e.dataTransfer.files?.[0];
+          if (file) void handleFile(file);
         }}
       >
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-100 text-teal-700 dark:bg-teal-950 dark:text-teal-300 shadow-sm mb-4">
-          <UploadCloud className="h-7 w-7" />
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-100 text-teal-700 shadow-sm dark:bg-teal-950 dark:text-teal-300">
+          {isProcessing ? <RefreshCw className="h-7 w-7 animate-spin" /> : <UploadCloud className="h-7 w-7" />}
         </div>
         <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
-          Upload Clinical Documents for AI & Regex Parsing
+          {isProcessing ? 'Reading document…' : 'Drop a theatre note or clinic letter'}
         </h3>
-        <p className="text-xs text-slate-500 max-w-md mx-auto mt-1 mb-6">
-          Supports Theatre Operation Notes (.docx, Word), Clinic Follow-up Letters (.pdf / .docx), and Google Form exports (.csv / .xlsx).
+        <p className="mx-auto mb-5 mt-1 max-w-md text-xs text-slate-500">
+          Word (.docx), plain text or Google Form CSV export. Scanned PDFs and legacy .doc files
+          must be converted first — nothing is read by OCR.
         </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <Button
-            disabled={isUploading}
-            onClick={() => handleSimulatedUpload('RALP_Theatre_OpNote_Sample.docx')}
-            className="gap-2"
-          >
-            {isUploading ? <RefreshCw className="h-4 w-4 animate-spin" /> : <FileUp className="h-4 w-4" />}
-            <span>Upload Theatre Note (.docx)</span>
-          </Button>
-
-          <Button
-            variant="outline"
-            disabled={isUploading}
-            onClick={() => handleSimulatedUpload('Histology_Clinic_Letter_Sample.docx')}
-            className="gap-2"
-          >
-            <FileText className="h-4 w-4 text-purple-600" />
-            <span>Upload Clinic Follow-up Letter</span>
-          </Button>
-
-          <Button
-            variant="outline"
-            disabled={isUploading}
-            onClick={() => handleSimulatedUpload('Google_Forms_Patient_Responses.csv')}
-            className="gap-2"
-          >
-            <FileText className="h-4 w-4 text-cyan-600" />
-            <span>Import Google Forms CSV</span>
-          </Button>
+        <div className="mb-4 flex flex-wrap items-center justify-center gap-2">
+          {([
+            ['theatre_note', 'Theatre note'],
+            ['clinic_letter', 'Clinic letter'],
+            ['google_form_csv', 'Google Form export'],
+          ] as [SourceType, string][]).map(([value, label]) => (
+            <button
+              key={value}
+              type="button"
+              onClick={() => setDocType(value)}
+              className={`rounded-lg border px-3 py-1.5 text-[11px] font-semibold transition-colors ${
+                docType === value
+                  ? 'border-teal-500 bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-200'
+                  : 'border-slate-300 text-slate-600 hover:border-teal-400 dark:border-slate-700 dark:text-slate-400'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
+
+        <input
+          ref={inputRef}
+          type="file"
+          accept={ACCEPT}
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) void handleFile(file);
+          }}
+        />
+        <Button size="sm" disabled={isProcessing} onClick={() => inputRef.current?.click()} className="gap-1.5">
+          <FileText className="h-4 w-4" />
+          <span>Choose file</span>
+        </Button>
       </div>
 
-      {/* Preset Documents Quick Test */}
-      <Card className="shadow-sm">
-        <CardHeader className="p-4 pb-2">
-          <CardTitle className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-            Automated Ingestion Protocol Information
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-4 pt-2 text-xs text-slate-600 space-y-2 leading-relaxed">
-          <p>
-            • <strong>Theatre Operation Notes</strong> automatically parse: Primary Surgeon (VK, RDM, CI, OAK), Bladder Neck preservation status, Nerve Sparing grades (2/5 to 5/5), Sphincter quality, Anterior reconstruction, and Blood loss.
-          </p>
-          <p>
-            • <strong>Follow-up Clinic Letters</strong> automatically parse: Post-op PSA levels, Histology Gleason score and Grade Group, Margin status (R0/R1), and Pathological stage (pT2A - pT4).
-          </p>
-          <p>
-            • <strong>Conflict Prevention</strong>: Any discrepancy between extracted and database values triggers a side-by-side verification modal before committing to the registry.
-          </p>
-        </CardContent>
-      </Card>
+      {error && (
+        <div className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-800">
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
+
+      {preview && (
+        <Card className="shadow-sm">
+          <CardHeader className="p-5 pb-2">
+            <CardTitle className="flex items-center gap-2 text-sm font-bold">
+              <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+              <span>{preview.name}</span>
+            </CardTitle>
+            <p className={`text-xs ${preview.nameMismatch ? 'font-semibold text-rose-600' : 'text-slate-500'}`}>
+              {preview.nameMismatch
+                ? `Identifiers matched ${preview.matched}, but the document names someone else — do not commit without verifying`
+                : preview.matched
+                  ? `Matched to ${preview.matched}`
+                  : 'No patient matched — queued for identity matching'}
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-2 p-5 pt-2">
+            <div className="flex flex-wrap gap-1.5">
+              {preview.fields.map((f) => (
+                <Badge key={f.id} variant="outline" className="text-[10px]">
+                  {f.fieldLabel}: {String(f.normalizedValue)}
+                </Badge>
+              ))}
+            </div>
+            <Button size="sm" className="mt-2" onClick={() => router.push('/data-ingestion/extraction-review')}>
+              Review &amp; commit
+            </Button>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
-}
-
-export function DataSourceCard() {
-  return null;
-}
-
-export function DocumentCard() {
-  return null;
-}
-
-export function ProcessingStatus() {
-  return null;
 }

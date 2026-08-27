@@ -26,6 +26,26 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
 
   const path = request.nextUrl.pathname;
+
+  // Governance console. Authentication alone is not enough: row level security
+  // already hides the audit trail from non-admins, but without this a
+  // consultant or registrar could still open /admin and run a full registry
+  // export, which RLS permits them to read.
+  if (user && path.startsWith('/admin')) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .maybeSingle();
+
+    if (profile?.role !== 'Data Manager') {
+      const denied = request.nextUrl.clone();
+      denied.pathname = '/dashboard';
+      denied.searchParams.set('denied', 'admin');
+      return NextResponse.redirect(denied);
+    }
+  }
+
   if (!user && !PUBLIC_PATHS.includes(path)) {
     const login = request.nextUrl.clone();
     login.pathname = path.startsWith('/admin')

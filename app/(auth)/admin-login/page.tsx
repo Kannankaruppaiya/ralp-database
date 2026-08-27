@@ -33,7 +33,6 @@ export default function AdminLoginPage() {
 
   const [adminEmail, setAdminEmail] = useState('admin.ralp@nhs.net');
   const [password, setPassword] = useState('');
-  const [securityToken, setSecurityToken] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
@@ -213,20 +212,6 @@ export default function AdminLoginPage() {
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
-                  </div>
-                </FormField>
-
-                <FormField>
-                  <FormLabel className="text-xs font-semibold text-slate-300">2FA Security Token / FIDO2 Key</FormLabel>
-                  <div className="relative">
-                    <KeyRound className="absolute left-3.5 top-3 h-4 w-4 text-slate-500" />
-                    <Input
-                      value={securityToken}
-                      onChange={(e) => setSecurityToken(e.target.value)}
-                      placeholder="e.g. 849-204"
-                      className="pl-10 font-mono bg-slate-950 border-slate-800 text-xs text-white h-11 rounded-xl focus:border-indigo-500"
-                      required
-                    />
                   </div>
                 </FormField>
 
