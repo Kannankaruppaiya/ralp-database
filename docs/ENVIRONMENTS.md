@@ -7,7 +7,7 @@ reach a tier someone might reset.
 | Tier | Supabase project | Branch | Data | Who uses it |
 | :--- | :--- | :--- | :--- | :--- |
 | development | local stack (`npx supabase start`) | `dev` | Synthetic, resettable | Engineers |
-| staging | `ralp-staging` — `vrdbghwpeztjuffglzha`, eu-west-2 | `staging` | Synthetic, mirrors prod schema | Client demos, UAT |
+| staging | `ralp-staging` — `vrdbghwpeztjuffglzha`, eu-west-2 | `staging` | **Real entered data only — no synthetic records** | Client demos, UAT |
 | production | **not yet created** — see below | `main` | Real patient records | Clinical users |
 
 ### Current state
@@ -90,13 +90,12 @@ it cannot be triggered by tab-completing the wrong command.
 node scripts/seed-cohort.mjs development 200
 ```
 
-```bash
-node scripts/seed-cohort.mjs staging 1000
-```
+Needs `SUPABASE_SERVICE_ROLE_KEY` in `.env.development`.
 
-Both need `SUPABASE_SERVICE_ROLE_KEY` set in that tier's env file.
-
-The script refuses to run against production.
+**Development only.** The script refuses every other tier. Staging is kept free
+of synthetic patients: it is what the client sees, and an invented record is
+indistinguishable from a real one the moment someone screenshots it. Anything
+in staging should have been entered through the application by a person.
 
 Seeding inserts patients, baseline, operation and histology rows. The follow-up
 schedule is **not** seeded — the database generates all 7 milestones from the

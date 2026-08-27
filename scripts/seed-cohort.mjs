@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 /**
- * Fills a non-production environment with synthetic RALP patients.
+ * Fills the local development database with synthetic RALP patients.
  *
  *   node scripts/seed-cohort.mjs development 200
- *   node scripts/seed-cohort.mjs staging 1000
  *
- * Refuses to run against production: a clinical registry's live data must come
- * from clinicians, never from a generator.
+ * Development only. Staging is a client-facing environment and is kept clean:
+ * a demo that shows invented patients tells the client nothing about their own
+ * data, and synthetic records are indistinguishable from real ones once someone
+ * screenshots them. Production is obviously off limits — a clinical registry's
+ * data comes from clinicians, never from a generator.
  *
  * Uses the service role key, so it bypasses row level security by design —
  * this is a local operator tool, never shipped to the browser.
@@ -17,8 +19,8 @@ import { createClient } from '@supabase/supabase-js';
 const tier = process.argv[2] ?? 'development';
 const count = Number(process.argv[3] ?? 200);
 
-if (tier === 'production') {
-  console.error('Refusing to seed synthetic patients into production.');
+if (tier !== 'development') {
+  console.error(`Refusing to seed synthetic patients into ${tier}. Development only.`);
   process.exit(1);
 }
 
