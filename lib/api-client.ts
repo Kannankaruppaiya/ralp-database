@@ -55,9 +55,15 @@ export const db = {
       .order('surname');
 
     if (q.search && q.search.trim().length >= 2) {
-      const term = q.search.trim();
+      // PostgREST's or() grammar is delimited by , ( ) " and \ — strip them so a
+      // search term cannot break out of the filter it is embedded in. Names and
+      // both identifier formats survive this untouched.
+      const term = q.search.trim().replace(/[,()"\\*%]/g, '');
+      const digits = stripNhs(term);
       // search_text is a generated column holding name + both identifiers
-      query = query.or(`search_text.ilike.%${term}%,search_text.ilike.%${stripNhs(term)}%`);
+      const clauses = [`search_text.ilike.%${term}%`];
+      if (digits.length >= 3) clauses.push(`search_text.ilike.%${digits}%`);
+      query = query.or(clauses.join(','));
     }
     if (q.surgeon && q.surgeon !== 'ALL') query = query.eq('primary_surgeon', q.surgeon);
     if (q.status && q.status !== 'ALL') query = query.eq('status', q.status);

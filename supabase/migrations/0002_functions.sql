@@ -156,20 +156,6 @@ left join lateral (
   where patient_id = p.id and status = 'completed'
 ) f on true;
 
--- ---------------------------------------------------------------- search
--- Backs the "search patients" requirement: name, NHS number or hospital number,
--- trigram-matched so partial and mistyped input still finds the record.
-
-create or replace function search_patients(q text, lim int default 25)
-returns setof patients language sql stable security definer set search_path = public as $$
-  select * from patients
-  where is_clinician()
-    and (q is null or q = '' or search_text ilike '%' || replace(q, ' ', '') || '%'
-         or search_text ilike '%' || q || '%')
-  order by similarity(search_text, q) desc nulls last, surname
-  limit lim;
-$$;
-
 -- ---------------------------------------------------------------- audit
 -- Every clinical mutation writes one immutable row. Actor identity comes from the
 -- session, not the caller's payload, so it cannot be spoofed by the client.
