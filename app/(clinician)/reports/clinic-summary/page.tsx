@@ -5,15 +5,20 @@ import { useSearchParams } from 'next/navigation';
 import { PageHeader } from '@/components/layout/page-header';
 import { ClinicSummary } from '@/components/reports/clinic-summary';
 import { usePatients } from '@/hooks/use-patients';
+import { usePatient } from '@/hooks/use-patient';
 import { Select } from '@/components/ui/select';
 
 function ClinicSummaryContent() {
   const searchParams = useSearchParams();
   const initialPatientId = searchParams.get('patientId');
-  const { allPatients, isLoading } = usePatients();
-  const [selectedId, setSelectedId] = useState<string>(initialPatientId || allPatients[0]?.id || 'pat-001');
+  // The picker shows a page of patients; the summary itself is fetched by id,
+  // so a patient linked to directly still resolves even when they are not on
+  // the first page.
+  const { patients: pickerPatients, isLoading } = usePatients({ pageSize: 100 });
+  const [selectedId, setSelectedId] = useState<string>(initialPatientId ?? '');
 
-  const selectedPatient = allPatients.find((p) => p.id === selectedId) || allPatients[0];
+  const effectiveId = selectedId || pickerPatients[0]?.id || '';
+  const { patient: selectedPatient } = usePatient(effectiveId);
 
   return (
     <div className="space-y-6">
@@ -29,11 +34,11 @@ function ClinicSummaryContent() {
             <div className="flex items-center gap-3">
               <span className="text-xs font-semibold text-slate-500">Select Patient:</span>
               <Select
-                value={selectedId}
+                value={effectiveId}
                 onChange={(e) => setSelectedId(e.target.value)}
                 className="w-64 text-xs"
               >
-                {allPatients.map((p) => (
+                {pickerPatients.map((p) => (
                   <option key={p.id} value={p.id}>
                     {p.firstName} {p.surname} ({p.hospitalNumber})
                   </option>
