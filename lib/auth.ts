@@ -37,9 +37,32 @@ export async function signIn(email: string, password: string): Promise<UserSessi
 export async function signOut(): Promise<void> {
   await db.audit('LOGOUT');
   await supabase().auth.signOut();
+  profileCache.clear();
 }
 
+/**
+ * In-flight and resolved profile lookups, keyed by user id.
+ *
+ * useSession is mounted by the sidebar, topbar, page body and any component
+ * asking about permissions, and each mount would otherwise issue its own
+ * identical profiles request on every page load. Sharing the promise collapses
+ * them into one. Cleared on sign-out so a second login cannot read the first
+ * user's profile.
+ */
+const profileCache = new Map<string, Promise<UserSession | null>>();
+
 async function loadProfile(userId: string): Promise<UserSession | null> {
+  const cached = profileCache.get(userId);
+  if (cached) return cached;
+
+  const pending = fetchProfile(userId);
+  profileCache.set(userId, pending);
+  // A failed lookup must not be cached, or the session stays broken until reload
+  pending.then((p) => { if (!p) profileCache.delete(userId); }).catch(() => profileCache.delete(userId));
+  return pending;
+}
+
+async function fetchProfile(userId: string): Promise<UserSession | null> {
   const { data, error } = await supabase()
     .from('profiles')
     .select('*')

@@ -385,7 +385,7 @@ export default function PatientLoginPage() {
                           <span>Security Code Dispatched!</span>
                         </div>
                         <p className="text-[11px] text-purple-300/80 mt-1">
-                          Enter code sent to mobile (Demo Code: <strong className="font-mono text-white">849204</strong>).
+                          SMS verification is not enabled for this deployment.
                         </p>
                       </div>
 
@@ -394,7 +394,7 @@ export default function PatientLoginPage() {
                         <Input
                           value={smsOtp}
                           onChange={(e) => setSmsOtp(e.target.value)}
-                          placeholder="849204"
+                          placeholder="------"
                           className="font-mono text-center tracking-widest text-xl font-bold bg-slate-950 border-slate-800 text-white h-12 rounded-xl focus:border-purple-500"
                           maxLength={6}
                           required

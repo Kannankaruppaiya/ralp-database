@@ -79,8 +79,8 @@ export default function ClinicianLoginPage() {
   const searchParams = useSearchParams();
 
   const [authTab, setAuthTab] = useState<'credentials' | 'smartcard'>('credentials');
-  const [email, setEmail] = useState('v.kannan@nhs.net');
-  const [password, setPassword] = useState('Hospital@2026!');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [smartcardStatus, setSmartcardStatus] = useState<'idle' | 'reading' | 'verified'>('idle');
@@ -121,10 +121,9 @@ export default function ClinicianLoginPage() {
 
   const handleAutofill = (acc: DemoUser) => {
     setEmail(acc.email);
-    setPassword('Hospital@2026!');
     toast({
-      title: 'Credentials Autofilled',
-      description: `Loaded account details for ${acc.name} (${acc.role}).`,
+      title: 'Email filled',
+      description: `Enter the password for ${acc.name}.`,
       variant: 'default',
     });
   };
@@ -193,8 +192,8 @@ export default function ClinicianLoginPage() {
           <div className="grid grid-cols-3 gap-3.5 pt-4">
             <div className="p-1 rounded-2xl bg-white/5 border border-white/10 shadow-lg backdrop-blur-md">
               <div className="p-3.5 rounded-xl bg-slate-900/80 border border-white/5 space-y-1">
-                <div className="text-2xl font-black text-white font-mono">10,000</div>
-                <div className="text-[11px] text-slate-400 font-medium">Active Cohort Records</div>
+                <div className="text-2xl font-black text-white font-mono">NHS</div>
+                <div className="text-[11px] text-slate-400 font-medium">Secure Cloud Registry</div>
               </div>
             </div>
 

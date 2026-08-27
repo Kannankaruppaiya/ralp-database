@@ -32,8 +32,8 @@ export default function AdminLoginPage() {
   const { toast } = useToast();
 
   const [adminEmail, setAdminEmail] = useState('admin.ralp@nhs.net');
-  const [password, setPassword] = useState('Admin@Master2026!');
-  const [securityToken, setSecurityToken] = useState('849-204');
+  const [password, setPassword] = useState('');
+  const [securityToken, setSecurityToken] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
@@ -67,15 +67,7 @@ export default function AdminLoginPage() {
   };
 
   const handleAutofillAdmin = (type: 'admin' | 'caldicott') => {
-    if (type === 'admin') {
-      setAdminEmail('admin.ralp@nhs.net');
-      setPassword('Admin@Master2026!');
-      setSecurityToken('849-204');
-    } else {
-      setAdminEmail('m.roberts@nhs.net');
-      setPassword('Caldicott@2026!');
-      setSecurityToken('912-441');
-    }
+    setAdminEmail(type === 'admin' ? 'admin.ralp@nhs.net' : 'm.roberts@nhs.net');
   };
 
   return (

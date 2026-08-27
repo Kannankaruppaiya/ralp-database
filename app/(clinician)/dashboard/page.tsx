@@ -120,7 +120,7 @@ export default function ClinicianDashboardPage() {
                     : 'text-slate-500 hover:text-slate-900'
                 }`}
               >
-                Whole Trust (10,000)
+                Whole Trust ({allPatients.length.toLocaleString()})
               </button>
             </div>
           )}
