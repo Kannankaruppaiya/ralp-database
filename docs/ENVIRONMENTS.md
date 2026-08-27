@@ -6,9 +6,31 @@ reach a tier someone might reset.
 
 | Tier | Supabase project | Branch | Data | Who uses it |
 | :--- | :--- | :--- | :--- | :--- |
-| development | `ralp-dev` | `dev` | Synthetic, resettable | Engineers |
-| staging | `ralp-staging` | `staging` | Synthetic, mirrors prod schema | Client demos, UAT |
-| production | `ralp-prod` | `main` | Real patient records | Clinical users |
+| development | local stack (`npx supabase start`) | `dev` | Synthetic, resettable | Engineers |
+| staging | `ralp-staging` — `vrdbghwpeztjuffglzha`, eu-west-2 | `staging` | Synthetic, mirrors prod schema | Client demos, UAT |
+| production | **not yet created** — see below | `main` | Real patient records | Clinical users |
+
+### Current state
+
+Development runs against the local Supabase stack rather than a cloud project.
+That is the better default anyway: instant reset, no network round trip, no
+cost, and no chance of a test fixture reaching a shared database.
+
+```bash
+npx supabase start
+```
+
+Production has no project yet. The organisation is on the free plan, which
+allows two active projects, and both slots are in use (`ReachPilot`,
+`ralp-staging`). Creating `ralp-prod` needs one of:
+
+- an upgrade to Pro — also the only way to get daily backups and
+  point-in-time recovery, which a registry holding real patient records
+  should not launch without;
+- a free slot from pausing or removing another project.
+
+Until then the migration path is dev (local) -> staging (cloud), and
+`npm run db:push:prod` will fail because `.env.production` has no project ref.
 
 Non-production tiers render a coloured banner across the top of every page, so
 a test record can never be mistaken for a clinical one.
@@ -17,9 +39,10 @@ a test record can never be mistaken for a clinical one.
 
 ## One-time setup
 
-Create three projects in the **Supabase organisation that belongs to this
-account** (region `eu-west-2` — patient data stays in the UK), then for each
-tier:
+`ralp-staging` already exists in the account's own Supabase organisation
+(region `eu-west-2` — patient data stays in the UK), with migrations 0001-0005
+applied. `.env.staging` is filled in apart from the service role key. For a new
+tier, or to re-create one:
 
 ```bash
 cp .env.development.example .env.development
@@ -43,7 +66,7 @@ Migrations live in `supabase/migrations/` and run in filename order. Same files,
 every tier — that is what keeps the three schemas identical.
 
 ```bash
-npm run db:push:dev
+npx supabase db reset          # development — replays every migration locally
 ```
 
 ```bash
@@ -51,7 +74,7 @@ npm run db:push:staging
 ```
 
 ```bash
-npm run db:push:prod
+npm run db:push:prod           # once a production project exists
 ```
 
 Production requires an explicit `--yes` (already baked into the npm script), so
@@ -70,6 +93,8 @@ node scripts/seed-cohort.mjs development 200
 ```bash
 node scripts/seed-cohort.mjs staging 1000
 ```
+
+Both need `SUPABASE_SERVICE_ROLE_KEY` set in that tier's env file.
 
 The script refuses to run against production.
 
