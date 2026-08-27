@@ -37,39 +37,42 @@ The **UK RALP Surgical Outcomes Database v2** is a clinical registry, data inges
 ## 🚀 Available Commands
 
 ```bash
-# 1. Start development server with Turbopack
+# Development (uses .env.development)
 npm run dev
 
-# 2. Build production bundle
-npm run build
+# Staging (uses .env.staging)
+npm run dev:staging
 
-# 3. Start production server
-npm start
+# Production build (uses .env.production)
+npm run build && npm start
 
-# 4. Run automated 13-route performance benchmark
-npm run test:perf
+# Apply migrations to a tier
+npm run db:push:dev
+npm run db:push:staging
+npm run db:push:prod
 
-# 5. Run 1,000 concurrent virtual users stress test
-npm run test:load1000
+# Seed synthetic patients into a non-production tier
+node scripts/seed-cohort.mjs development 200
 
-# 6. Generate 1,000 synthetic patient clinical cohort (59ms)
-npm run test:cohort
-
-# 7. Generate 10,000 synthetic patient clinical cohort (605ms)
-npm run test:cohort10k
+# Typecheck
+npm run typecheck
 ```
+
+See [docs/ENVIRONMENTS.md](docs/ENVIRONMENTS.md) for environment setup, the
+three Supabase projects, and how the first administrator is provisioned.
 
 ---
 
-## 📊 Measured Performance Benchmarks
+## 🏗 Architecture
 
-| Metric | Measured Value | Standard |
-| :--- | :--- | :--- |
-| **Simulated Concurrent Users** | **1,000 Virtual Users** | Meets 100,000+ national registry scale |
-| **Request Error Rate** | **0.00% (Zero dropped requests)** | 99.99% Enterprise Uptime |
-| **Average Route Latency (p50)** | **387ms - 515ms** | < 800ms NHS Digital Standard |
-| **Synthetic Cohort Throughput** | **16,886 patient records / sec** | High-throughput in-memory caching |
-| **Typography & Fonts** | **Plus Jakarta Sans (300-800)** | Modern accessible design system |
+| Layer | Implementation |
+| :--- | :--- |
+| **Database** | Supabase Postgres, one project per tier (dev / staging / production) |
+| **Access control** | Row level security. Clinicians see the registry; a patient sees only the record their profile links to; the audit trail is readable by governance only |
+| **Derived clinical values** | Computed in Postgres — ISUP grade group, biochemical recurrence (`PSA >= 0.2`), the 7-milestone follow-up schedule, and record completeness |
+| **Audit trail** | Append-only `audit_log`. Actor identity is read from the session inside a security-definer function, so it cannot be supplied by the client. `UPDATE`/`DELETE` are revoked |
+| **Auth** | Supabase Auth. Roles come from the `profiles` table, never from the login form |
+| **Frontend** | Next.js 15 App Router, React 19, Tailwind, Recharts |
 
 ---
 
