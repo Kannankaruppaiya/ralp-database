@@ -7,7 +7,6 @@ export const metadata: Metadata = {
     'Advanced Robot-Assisted Laparoscopic Prostatectomy (RALP) outcomes database, automated data ingestion, longitudinal IPSS/SHIM scoring, and surgeon benchmarking platform.',
 };
 
-import { PerformanceHud } from '@/components/performance/performance-hud';
 import { EnvBanner } from '@/components/layout/env-banner';
 
 export default function RootLayout({
@@ -28,7 +27,6 @@ export default function RootLayout({
       <body className="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-teal-500 selection:text-white font-sans">
         <EnvBanner />
         {children}
-        <PerformanceHud />
       </body>
     </html>
   );
