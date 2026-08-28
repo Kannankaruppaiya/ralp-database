@@ -1,14 +1,17 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { PatientFullRecord } from '@/types/patient';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { formatNhsNumber, formatDate, getRiskCategory } from '@/lib/formatters';
-import { User, Calendar, Hash, Building2, Stethoscope, Printer, FileEdit } from 'lucide-react';
+import { User, Calendar, Hash, Building2, Stethoscope, Printer, FileEdit, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import { MDTSimulationModal } from '@/components/ai/mdt-simulation-modal';
 
 export function PatientHeader({ patient }: { patient: PatientFullRecord }) {
+  const [isMdtOpen, setIsMdtOpen] = useState(false);
+
   const risk = getRiskCategory(
     patient.baseline?.psa,
     patient.baseline?.gleasonGrade,
@@ -16,58 +19,77 @@ export function PatientHeader({ patient }: { patient: PatientFullRecord }) {
   );
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 mb-6">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        {/* Patient Identity */}
-        <div className="flex items-start gap-4">
-          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-teal-50 text-teal-700 font-bold text-xl border border-teal-200 dark:bg-teal-950 dark:text-teal-300 dark:border-teal-800">
-            {patient.firstName[0]}{patient.surname[0]}
-          </div>
-          <div>
-            <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-                {patient.firstName} {patient.surname}
-              </h1>
-              <Badge variant="outline" className={risk.color}>
-                {risk.category}
-              </Badge>
-              <Badge variant={patient.status === 'Active' ? 'success' : 'secondary'}>
-                {patient.status}
-              </Badge>
+    <>
+      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900 mb-6">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          {/* Patient Identity */}
+          <div className="flex items-start gap-4">
+            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-teal-50 text-teal-700 font-bold text-xl border border-teal-200 dark:bg-teal-950 dark:text-teal-300 dark:border-teal-800">
+              {patient.firstName[0]}{patient.surname[0]}
             </div>
-            
-            {/* Clinical identifiers */}
-            <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-xs text-slate-500">
-              <span className="flex items-center gap-1.5 font-mono">
-                <Hash className="h-3.5 w-3.5 text-slate-400" />
-                NHS: <strong className="text-slate-700 dark:text-slate-300">{formatNhsNumber(patient.nhsNumber)}</strong>
-              </span>
-              <span className="flex items-center gap-1.5 font-mono">
-                <Building2 className="h-3.5 w-3.5 text-slate-400" />
-                MRN: <strong className="text-slate-700 dark:text-slate-300">{patient.hospitalNumber}</strong>
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Calendar className="h-3.5 w-3.5 text-slate-400" />
-                DOB: {formatDate(patient.dateOfBirth)} ({patient.age || '—'} yrs)
-              </span>
-              <span className="flex items-center gap-1.5 text-teal-700 dark:text-teal-400 font-medium">
-                <Stethoscope className="h-3.5 w-3.5" />
-                Lead Surgeon: <strong>{patient.primarySurgeon}</strong>
-              </span>
+            <div>
+              <div className="flex items-center gap-3 flex-wrap">
+                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+                  {patient.firstName} {patient.surname}
+                </h1>
+                <Badge variant="outline" className={risk.color}>
+                  {risk.category}
+                </Badge>
+                <Badge variant={patient.status === 'Active' ? 'success' : 'secondary'}>
+                  {patient.status}
+                </Badge>
+              </div>
+              
+              {/* Clinical identifiers */}
+              <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-xs text-slate-500">
+                <span className="flex items-center gap-1.5 font-mono">
+                  <Hash className="h-3.5 w-3.5 text-slate-400" />
+                  NHS: <strong className="text-slate-700 dark:text-slate-300">{formatNhsNumber(patient.nhsNumber)}</strong>
+                </span>
+                <span className="flex items-center gap-1.5 font-mono">
+                  <Building2 className="h-3.5 w-3.5 text-slate-400" />
+                  MRN: <strong className="text-slate-700 dark:text-slate-300">{patient.hospitalNumber}</strong>
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <Calendar className="h-3.5 w-3.5 text-slate-400" />
+                  DOB: {formatDate(patient.dateOfBirth)} ({patient.age || '—'} yrs)
+                </span>
+                <span className="flex items-center gap-1.5 text-teal-700 dark:text-teal-400 font-medium">
+                  <Stethoscope className="h-3.5 w-3.5" />
+                  Lead Surgeon: <strong>{patient.primarySurgeon}</strong>
+                </span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Quick Patient Actions */}
-        <div className="flex items-center gap-2 self-start md:self-center">
-          <Link href={`/reports/clinic-summary?patientId=${patient.id}`}>
-            <Button variant="outline" size="sm" className="gap-1.5">
-              <Printer className="h-3.5 w-3.5" />
-              <span>Clinic Summary</span>
+          {/* Quick Patient Actions */}
+          <div className="flex items-center gap-2.5 self-start md:self-center flex-wrap">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setIsMdtOpen(true)}
+              className="gap-1.5 border-purple-500/40 text-purple-700 hover:bg-purple-50 dark:text-purple-300 dark:border-purple-800 dark:hover:bg-purple-950/30 font-semibold shadow-sm"
+            >
+              <Sparkles className="h-3.5 w-3.5 text-amber-500" />
+              <span>AI MDT Case Review</span>
             </Button>
-          </Link>
+
+            <Link href={`/reports/clinic-summary?patientId=${patient.id}`}>
+              <Button variant="outline" size="sm" className="gap-1.5">
+                <Printer className="h-3.5 w-3.5" />
+                <span>Clinic Summary</span>
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
+
+      <MDTSimulationModal
+        isOpen={isMdtOpen}
+        onClose={() => setIsMdtOpen(false)}
+        patient={patient}
+      />
+    </>
   );
 }
