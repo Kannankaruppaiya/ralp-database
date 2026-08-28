@@ -23,7 +23,7 @@ import {
   ArrowUpRight,
   CheckCircle2,
 } from 'lucide-react';
-import { signIn } from '@/lib/auth';
+import { signIn, signOut } from '@/lib/auth';
 import { useToast } from '@/hooks/use-toast';
 
 export default function PatientLoginPage() {
@@ -53,6 +53,12 @@ export default function PatientLoginPage() {
 
     try {
       const user = await signIn(email, password);
+
+      if (user.role !== 'Patient') {
+        await signOut();
+        throw new Error('This portal is reserved exclusively for registered patients.');
+      }
+
       toast({
         title: `Welcome back, ${user.name}`,
         description: 'Opening your recovery dashboard.',

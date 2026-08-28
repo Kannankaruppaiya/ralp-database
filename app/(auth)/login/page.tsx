@@ -25,7 +25,7 @@ import {
   Cpu,
   ArrowUpRight,
 } from 'lucide-react';
-import { signIn } from '@/lib/auth';
+import { signIn, signOut } from '@/lib/auth';
 import { useToast } from '@/hooks/use-toast';
 
 export default function ClinicianLoginPage() {
@@ -44,6 +44,17 @@ export default function ClinicianLoginPage() {
     setIsAuthenticating(true);
     try {
       const user = await signIn(email, password);
+
+      if (user.role === 'Data Manager') {
+        await signOut();
+        throw new Error('Administrator accounts must sign in via the dedicated Admin Gateway (/admin-login).');
+      }
+
+      if (user.role === 'Patient') {
+        await signOut();
+        throw new Error('Patient accounts must sign in via the Patient Portal (/patient-login).');
+      }
+
       toast({
         title: `Welcome, ${user.name}`,
         description: `Authenticated via ${methodTitle} as ${user.role}.`,
