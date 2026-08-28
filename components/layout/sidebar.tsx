@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
   Users,
@@ -14,10 +14,13 @@ import {
   ShieldCheck,
   HeartPulse,
   ChevronRight,
+  LogOut,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { CLINICIAN_NAVIGATION } from '@/config/navigation';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { useSession, signOut } from '@/lib/auth';
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   LayoutDashboard: <LayoutDashboard className="h-4 w-4" />,
@@ -32,6 +35,28 @@ const ICON_MAP: Record<string, React.ReactNode> = {
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user } = useSession();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      router.push('/login');
+      router.refresh();
+    } catch {
+      router.push('/login');
+    }
+  };
+
+  const initials = user?.name
+    ? user.name
+        .split(' ')
+        .filter(Boolean)
+        .map((n) => n[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase()
+    : 'NHS';
 
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950 md:flex">
@@ -85,8 +110,6 @@ export function Sidebar() {
           </nav>
         </div>
 
-      {/* Navigation Links */}
-
         {/* Dedicated Admin Portal Switcher */}
         <div className="rounded-xl border border-indigo-100 bg-indigo-50/40 p-3.5 dark:border-indigo-900/40 dark:bg-indigo-950/20">
           <div className="flex items-center justify-between">
@@ -110,25 +133,33 @@ export function Sidebar() {
         </div>
       </div>
 
-      {/* User Session Footer */}
+      {/* User Session Footer with Sign Out */}
       <div className="border-t border-slate-200 p-3.5 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-600 font-bold text-xs text-white shadow-sm">
-              VK
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2.5 overflow-hidden min-w-0">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-teal-600 font-bold text-xs text-white shadow-sm">
+              {initials}
             </div>
-            <div className="flex-1 overflow-hidden">
-              <p className="truncate text-xs font-bold text-slate-900 dark:text-slate-100">Mr. V. Kannan</p>
-              <p className="truncate text-[10px] text-slate-500 font-medium">Consultant Surgeon (VK)</p>
+            <div className="overflow-hidden min-w-0">
+              <p className="truncate text-xs font-bold text-slate-900 dark:text-slate-100">
+                {user?.name || 'Signed In'}
+              </p>
+              <p className="truncate text-[10px] text-slate-500 font-medium">
+                {user?.role ? `${user.role}${user.surgeonCode ? ` (${user.surgeonCode})` : ''}` : 'NHS Staff'}
+              </p>
             </div>
           </div>
-          <Link
-            href="/login"
-            className="text-[11px] font-semibold text-teal-600 hover:text-teal-800 dark:text-teal-400 p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-colors"
-            title="Switch User / Sign Out"
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => void handleSignOut()}
+            className="h-8 px-2 text-rose-600 hover:text-rose-700 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/30 gap-1 text-[11px] shrink-0"
+            title="Sign out of RALP Database"
           >
-            Switch
-          </Link>
+            <LogOut className="h-3.5 w-3.5" />
+            <span className="hidden xl:inline">Sign Out</span>
+          </Button>
         </div>
       </div>
     </aside>

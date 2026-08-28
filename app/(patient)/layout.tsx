@@ -1,17 +1,28 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { HeartPulse, Home, ClipboardList, Calendar, UserCheck } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { HeartPulse, Home, ClipboardList, Calendar, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { signOut } from '@/lib/auth';
 
 export default function PatientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
 
   if (pathname === '/patient-login') {
     return <>{children}</>;
   }
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      router.push('/patient-login');
+      router.refresh();
+    } catch {
+      router.push('/patient-login');
+    }
+  };
 
   const navItems = [
     { label: 'My Recovery Home', href: '/home', icon: Home },
@@ -57,13 +68,17 @@ export default function PatientLayout({ children }: { children: React.ReactNode 
             })}
           </nav>
 
-          {/* Clinician Portal Link */}
-          <Link
-            href="/dashboard"
-            className="text-xs text-slate-500 hover:text-teal-700 flex items-center gap-1 border rounded-lg px-2.5 py-1"
+          {/* Sign Out Button */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => void handleSignOut()}
+            className="text-rose-600 hover:text-rose-700 hover:bg-rose-50 border-rose-200 gap-1.5 text-xs h-8 px-3"
+            title="Sign out of Patient Portal"
           >
-            <span>Clinician Portal</span>
-          </Link>
+            <LogOut className="h-3.5 w-3.5" />
+            <span>Sign Out</span>
+          </Button>
         </div>
       </header>
 

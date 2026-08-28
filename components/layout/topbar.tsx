@@ -13,12 +13,14 @@ import {
   Moon,
   Sun,
   Menu,
+  LogOut,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { usePatients } from '@/hooks/use-patients';
 import { SURGEON_OPTIONS } from '@/config/clinical-options';
+import { signOut } from '@/lib/auth';
 
 interface TopbarProps {
   onMenuClick?: () => void;
@@ -34,6 +36,16 @@ export function Topbar({ onMenuClick }: TopbarProps) {
     setIsSearchOpen(false);
     setSearch('');
     router.push(`/patients/${patientId}`);
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      router.push('/login');
+      router.refresh();
+    } catch {
+      router.push('/login');
+    }
   };
 
   return (
@@ -130,6 +142,18 @@ export function Topbar({ onMenuClick }: TopbarProps) {
             <span className="hidden sm:inline">New Patient</span>
           </Button>
         </Link>
+
+        {/* Topbar Sign Out Button */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => void handleSignOut()}
+          className="text-rose-600 hover:text-rose-700 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/30 gap-1.5 text-xs"
+          title="Sign out of RALP Database"
+        >
+          <LogOut className="h-3.5 w-3.5" />
+          <span className="hidden md:inline">Sign Out</span>
+        </Button>
       </div>
     </header>
   );

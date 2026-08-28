@@ -1,8 +1,6 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   Users,
   ShieldCheck,
@@ -14,9 +12,12 @@ import {
   Server,
   Lock,
   HeartPulse,
+  LogOut,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { useSession, signOut } from '@/lib/auth';
 
 export const ADMIN_NAV_ITEMS = [
   {
@@ -65,6 +66,28 @@ export const ADMIN_NAV_ITEMS = [
 
 export function AdminSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user } = useSession();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      router.push('/admin-login');
+      router.refresh();
+    } catch {
+      router.push('/admin-login');
+    }
+  };
+
+  const initials = user?.name
+    ? user.name
+        .split(' ')
+        .filter(Boolean)
+        .map((n) => n[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase()
+    : 'AD';
 
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950 md:flex">
@@ -134,16 +157,33 @@ export function AdminSidebar() {
         </div>
       </div>
 
-      {/* Admin User Footer */}
-      <div className="border-t border-slate-200 p-4 dark:border-slate-800">
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-            DE
+      {/* Admin User Footer with Sign Out */}
+      <div className="border-t border-slate-200 p-3.5 dark:border-slate-800">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2.5 overflow-hidden min-w-0">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-indigo-600 font-bold text-xs text-white shadow-sm">
+              {initials}
+            </div>
+            <div className="overflow-hidden min-w-0">
+              <p className="truncate text-xs font-bold text-slate-900 dark:text-slate-100">
+                {user?.name || 'Administrator'}
+              </p>
+              <p className="truncate text-[10px] text-slate-500 font-medium">
+                {user?.role || 'Data Manager'}
+              </p>
+            </div>
           </div>
-          <div className="flex-1 overflow-hidden">
-            <p className="truncate text-xs font-semibold text-slate-900 dark:text-slate-100">David Evans</p>
-            <p className="truncate text-[11px] text-slate-500">Caldicott Guardian / Admin</p>
-          </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={() => void handleSignOut()}
+            className="h-8 px-2 text-rose-600 hover:text-rose-700 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/30 gap-1 text-[11px] shrink-0"
+            title="Sign out of Admin Console"
+          >
+            <LogOut className="h-3.5 w-3.5" />
+            <span className="hidden xl:inline">Sign Out</span>
+          </Button>
         </div>
       </div>
     </aside>
