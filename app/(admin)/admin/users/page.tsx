@@ -20,6 +20,7 @@ interface UserRecord {
   gmcNumber?: string;
   hospital: string;
   createdAt: string;
+  deactivatedAt?: string | null;
 }
 
 export default function AdminUsersPage() {
@@ -29,7 +30,15 @@ export default function AdminUsersPage() {
   const [loadError, setLoadError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [isInviteOpen, setIsInviteOpen] = useState(false);
-  const [newUser, setNewUser] = useState({ name: '', email: '', role: 'Consultant Surgeon', surgeonCode: '' });
+  const [newUser, setNewUser] = useState({
+    name: '',
+    email: '',
+    role: 'Consultant Surgeon',
+    surgeonCode: '',
+    gmcNumber: '',
+    tempPassword: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Row level security restricts this to Data Managers, so a non-admin sees an
   // error rather than a silently empty table.
@@ -54,6 +63,7 @@ export default function AdminUsersPage() {
               gmcNumber: r.gmc_number ?? undefined,
               hospital: r.hospital,
               createdAt: r.created_at,
+              deactivatedAt: r.deactivated_at ?? null,
             }))
           );
         }
@@ -67,17 +77,53 @@ export default function AdminUsersPage() {
     return u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q) || u.role.toLowerCase().includes(q) || u.surgeonCode.toLowerCase().includes(q);
   });
 
-  const handleInviteUser = (e: React.FormEvent) => {
+  const handleInviteUser = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Creating a login requires the service role key, which must never reach the
-    // browser. Until a server-side invite route exists, accounts are provisioned
-    // from the Supabase dashboard.
-    setIsInviteOpen(false);
-    toast({
-      title: 'Invites are not wired up yet',
-      description: 'Create the account in the Supabase dashboard; the profile row is created automatically.',
-      variant: 'destructive',
-    });
+    setIsSubmitting(true);
+    try {
+      const res = await fetch('/api/admin/staff', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: newUser.name,
+          email: newUser.email,
+          role: newUser.role,
+          surgeonCode: newUser.surgeonCode || undefined,
+          gmcNumber: newUser.gmcNumber || undefined,
+          tempPassword: newUser.tempPassword,
+        }),
+      });
+      const payload = await res.json();
+
+      if (!res.ok) {
+        toast({ title: 'Could not create the account', description: payload.error, variant: 'destructive' });
+        return;
+      }
+
+      setStaff((prev) => [
+        ...prev,
+        {
+          id: payload.id,
+          name: payload.fullName,
+          email: payload.email,
+          role: payload.role,
+          surgeonCode: newUser.surgeonCode || '—',
+          gmcNumber: newUser.gmcNumber || undefined,
+          hospital: 'Oxford University Hospitals NHS FT',
+          createdAt: new Date().toISOString(),
+          deactivatedAt: null,
+        },
+      ]);
+      setIsInviteOpen(false);
+      setNewUser({ name: '', email: '', role: 'Consultant Surgeon', surgeonCode: '', gmcNumber: '', tempPassword: '' });
+      toast({
+        title: 'Account created',
+        description: `${payload.fullName} must change the temporary password at first sign-in.`,
+        variant: 'success',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -218,11 +264,38 @@ export default function AdminUsersPage() {
               </div>
             </div>
 
+            <div>
+              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">GMC Number</label>
+              <Input
+                placeholder="e.g. 7412589"
+                value={newUser.gmcNumber}
+                onChange={(e) => setNewUser({ ...newUser, gmcNumber: e.target.value })}
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                Temporary Password
+              </label>
+              <Input
+                type="text"
+                placeholder="At least 12 characters"
+                value={newUser.tempPassword}
+                onChange={(e) => setNewUser({ ...newUser, tempPassword: e.target.value })}
+                minLength={12}
+                required
+                className="mt-1"
+              />
+              <p className="mt-1 text-[11px] text-slate-500">
+                Give this to the clinician directly. They must change it at first sign-in.
+              </p>
+            </div>
+
             <DialogFooter className="pt-4 border-t">
               <Button type="button" variant="outline" size="sm" onClick={() => setIsInviteOpen(false)} className="text-xs">
                 Cancel
               </Button>
-              <Button type="submit" size="sm" className="text-xs">
+              <Button type="submit" size="sm" className="text-xs" disabled={isSubmitting}>
                 Dispatch Invitation
               </Button>
             </DialogFooter>
