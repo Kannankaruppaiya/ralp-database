@@ -12,10 +12,8 @@ import {
   FileText,
   BarChart3,
   ShieldCheck,
-  Activity,
   HeartPulse,
   ChevronRight,
-  ExternalLink,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { CLINICIAN_NAVIGATION } from '@/config/navigation';
@@ -87,32 +85,7 @@ export function Sidebar() {
           </nav>
         </div>
 
-        {/* Patient Portal Switcher Link */}
-        <div className="rounded-xl border border-teal-100 bg-teal-50/50 p-3.5 dark:border-teal-900/50 dark:bg-teal-950/20">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs font-semibold text-teal-900 dark:text-teal-300">
-              <Activity className="h-4 w-4 text-teal-600" />
-              <span>Patient Portal View</span>
-            </div>
-            <Link
-              href="/home"
-              target="_blank"
-              className="text-teal-700 hover:text-teal-900 dark:text-teal-400"
-              title="Open Patient Portal in new tab"
-            >
-              <ExternalLink className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-          <p className="mt-1 text-[11px] text-teal-800/80 dark:text-teal-400/80">
-            Preview patient digital PROMs questionnaire experience.
-          </p>
-          <Link
-            href="/home"
-            className="mt-2.5 inline-flex w-full items-center justify-center rounded-md bg-teal-600 py-1.5 text-xs font-medium text-white hover:bg-teal-700 transition-colors"
-          >
-            Launch Patient App
-          </Link>
-        </div>
+      {/* Navigation Links */}
 
         {/* Dedicated Admin Portal Switcher */}
         <div className="rounded-xl border border-indigo-100 bg-indigo-50/40 p-3.5 dark:border-indigo-900/40 dark:bg-indigo-950/20">
