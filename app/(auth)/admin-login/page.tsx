@@ -155,7 +155,7 @@ export default function AdminLoginPage() {
       </div>
 
       {/* RIGHT COLUMN: Dedicated Admin Login Form */}
-      <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-10 lg:p-12 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 my-auto">
+      <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-10 lg:p-12 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 min-h-screen lg:min-h-full">
         <div className="max-w-md w-full mx-auto my-auto space-y-6">
           <div className="space-y-2">
             <div className="flex items-center justify-between">

@@ -176,7 +176,7 @@ export default function ClinicianLoginPage() {
       </div>
 
       {/* RIGHT COLUMN: Dedicated Doctor Sign-In Form */}
-      <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-10 lg:p-12 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 my-auto">
+      <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-10 lg:p-12 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 min-h-screen lg:min-h-full">
         {/* Mobile Top Header */}
         <div className="lg:hidden flex items-center justify-between pb-6 border-b border-slate-800">
           <Link href="/" className="flex items-center gap-2.5">
