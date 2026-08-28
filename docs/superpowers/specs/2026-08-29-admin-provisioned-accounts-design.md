@@ -25,6 +25,7 @@ that only they know.
 3. An administrator creates a clinician account from the admin console, setting a
    temporary password that is communicated out of band.
 4. A clinician must change that password before reaching any other page.
+5. An administrator can deactivate an account, reactivate it, or delete it.
 
 ## Design
 
@@ -75,6 +76,39 @@ ever changing the password. Keeping both writes in one server route leaves the
 existing policies — `own profile readable`, `admin reads profiles`,
 `admin writes profiles` — untouched.
 
+### Deactivating and deleting accounts
+
+Two operations, because they answer different questions. A clinician who leaves
+the department should stop being able to sign in while everything they recorded
+stays attributable. An account created by mistake should disappear.
+
+**Deactivate** — `POST app/api/admin/staff/[id]/deactivate/route.ts`, and the
+matching reactivate. The route bans the auth user so sign-in fails, and stamps
+`profiles.deactivated_at`. Reactivating lifts the ban and clears the stamp.
+
+A migration adds `deactivated_at timestamptz` to `profiles`. The admin list reads
+it through the policies it already uses, so showing who is active costs no extra
+call. `middleware.ts` treats a stamped profile as signed out and redirects to the
+login page — without that, a clinician deactivated mid-shift keeps working until
+their access token expires.
+
+**Delete** — `DELETE app/api/admin/staff/[id]/route.ts`. Removes the auth user and
+the `profiles` row.
+
+Deleting does not damage the audit trail. `audit_log` stores `actor_name`,
+`actor_role`, and `gmc_number` as non-null snapshots taken when each entry is
+written, and `actor_id` is nullable. The history still reads "Mr R. D. MacDonagh,
+Consultant Surgeon" after the account is gone; only the link back to a live row is
+lost. Delete nulls `actor_id` and leaves every other column untouched.
+
+Both routes carry the same session and `Data Manager` checks as provisioning, and
+both refuse when the target is the caller: an administrator who deactivates or
+deletes their own account locks everyone out of the console, and no other door
+grants admin.
+
+The admin console asks for confirmation before either, and names deletion as
+permanent. Deactivate is offered first.
+
 ### Entry surface
 
 The landing page drops the clinician and patient sign-in calls to action and keeps
@@ -93,6 +127,8 @@ the names of real accounts.
 | Caller is not a Data Manager | 403 |
 | Email already registered | 409 |
 | Body fails validation | 422 |
+| Target of a deactivate or delete is the caller | 409 |
+| Target account does not exist | 404 |
 
 The admin console surfaces the response message through the toast it already uses.
 
@@ -102,12 +138,19 @@ A test file covering the provisioning route's authorisation: a request with no
 session is rejected, a request from a non-admin session is rejected, and a request
 from a Data Manager creates the account and sets the flag.
 
+The same authorisation cases cover the deactivate, reactivate, and delete routes,
+plus the self-target refusal: an administrator cannot deactivate or delete their
+own account.
+
 Manually: provision a clinician, sign in as them, confirm the redirect to
 `/change-password`, change the password, and confirm the next sign-in goes
-straight through.
+straight through. Then deactivate that clinician while their session is live and
+confirm the next page they open sends them to the login page, reactivate and
+confirm they get back in, and finally delete them and confirm their name still
+reads correctly in the audit log.
 
 ## Out of scope
 
 Email invitations, which would need SMTP that the project does not yet have.
-Deactivating or deleting accounts. Password complexity rules beyond a length
-floor.
+Password complexity rules beyond a length floor. Bulk import of an existing staff
+list.
