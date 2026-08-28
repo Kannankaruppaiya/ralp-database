@@ -24,54 +24,9 @@ import {
   EyeOff,
   Cpu,
   ArrowUpRight,
-  UserCheck,
 } from 'lucide-react';
 import { signIn } from '@/lib/auth';
-import { Role } from '@/config/permissions';
-import { SurgeonCode } from '@/types/common';
 import { useToast } from '@/hooks/use-toast';
-
-interface DemoUser {
-  name: string;
-  role: Role;
-  surgeonCode?: SurgeonCode;
-  email: string;
-  department: string;
-  initials: string;
-}
-
-const PRESET_ACCOUNTS: DemoUser[] = [
-  {
-    name: 'Mr. V. Kannan',
-    role: 'Consultant Surgeon',
-    surgeonCode: 'VK',
-    email: 'v.kannan@nhs.net',
-    department: 'Robotic Pelvic Oncology Lead',
-    initials: 'VK',
-  },
-  {
-    name: 'Mr. R. D. MacDonagh',
-    role: 'Consultant Surgeon',
-    surgeonCode: 'RDM',
-    email: 'r.macdonagh@nhs.net',
-    department: 'Consultant Urological Surgeon',
-    initials: 'RM',
-  },
-  {
-    name: 'Dr. Sarah Jenkins',
-    role: 'Surgical Registrar',
-    email: 's.jenkins@nhs.net',
-    department: 'Urology Specialist Registrar',
-    initials: 'SJ',
-  },
-  {
-    name: 'Sister Claire Evans',
-    role: 'Clinical Nurse Specialist',
-    email: 'c.evans@nhs.net',
-    department: 'Robotic Prostate Cancer Specialist Nurse',
-    initials: 'CE',
-  },
-];
 
 export default function ClinicianLoginPage() {
   const router = useRouter();
@@ -116,15 +71,6 @@ export default function ClinicianLoginPage() {
       title: 'Smartcard sign-in unavailable',
       description: 'NHS CIS2 federation is not enabled. Use your NHS.net email and password.',
       variant: 'destructive',
-    });
-  };
-
-  const handleAutofill = (acc: DemoUser) => {
-    setEmail(acc.email);
-    toast({
-      title: 'Email filled',
-      description: `Enter the password for ${acc.name}.`,
-      variant: 'default',
     });
   };
 
@@ -343,26 +289,6 @@ export default function ClinicianLoginPage() {
                       </button>
                     </div>
                   </FormField>
-
-                  {/* Discrete Quick Preset Autofill for Testing */}
-                  <div className="pt-1">
-                    <div className="text-[11px] text-slate-500 mb-1.5 flex items-center gap-1">
-                      <UserCheck className="h-3 w-3 text-teal-500" />
-                      <span>Quick Autofill Test Account:</span>
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {PRESET_ACCOUNTS.map((acc) => (
-                        <button
-                          key={acc.email}
-                          type="button"
-                          onClick={() => handleAutofill(acc)}
-                          className="px-2.5 py-1 text-[10px] font-semibold rounded-lg bg-slate-800/80 hover:bg-teal-950 hover:border-teal-500/50 border border-slate-700 text-slate-300 transition-colors"
-                        >
-                          {acc.name} ({acc.surgeonCode || acc.initials})
-                        </button>
-                      ))}
-                    </div>
-                  </div>
 
                   <Button
                     type="submit"

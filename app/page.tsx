@@ -34,12 +34,6 @@ export default function RootHomePage() {
           </div>
 
           <div className="flex items-center gap-2.5">
-            <Link href="/login">
-              <Button variant="ghost" size="sm" className="text-xs">Clinician Login</Button>
-            </Link>
-            <Link href="/patient-login">
-              <Button variant="outline" size="sm" className="text-xs text-purple-700 border-purple-200 hover:bg-purple-50">Patient Login</Button>
-            </Link>
             <Link href="/dashboard">
               <Button size="sm" className="shadow-sm text-xs">Open Registry</Button>
             </Link>
@@ -96,13 +90,6 @@ export default function RootHomePage() {
                   <span>7-Milestone longitudinal follow-ups</span>
                 </div>
               </div>
-
-              <Link href="/login" className="block pt-2">
-                <Button className="w-full gap-2 shadow-sm text-xs">
-                  <span>Clinician Sign In & Access</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
             </CardContent>
           </Card>
 
@@ -139,13 +126,6 @@ export default function RootHomePage() {
                   <span>Longitudinal recovery timeline</span>
                 </div>
               </div>
-
-              <Link href="/patient-login" className="block pt-2">
-                <Button variant="secondary" className="w-full gap-2 bg-purple-600 text-white hover:bg-purple-700 shadow-sm text-xs">
-                  <span>Patient Sign In & Access</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
             </CardContent>
           </Card>
 
@@ -191,6 +171,9 @@ export default function RootHomePage() {
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
+              <p className="mt-3 text-center text-[11px] text-slate-500">
+                Clinician and patient accounts are provisioned by an administrator.
+              </p>
             </CardContent>
           </Card>
         </div>

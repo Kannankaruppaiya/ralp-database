@@ -20,7 +20,6 @@ import {
   Building2,
   HeartPulse,
   ArrowUpRight,
-  UserCheck,
   Terminal,
   ShieldAlert,
 } from 'lucide-react';
@@ -31,7 +30,7 @@ export default function AdminLoginPage() {
   const router = useRouter();
   const { toast } = useToast();
 
-  const [adminEmail, setAdminEmail] = useState('admin.ralp@nhs.net');
+  const [adminEmail, setAdminEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
@@ -63,10 +62,6 @@ export default function AdminLoginPage() {
         variant: 'destructive',
       });
     }
-  };
-
-  const handleAutofillAdmin = (type: 'admin' | 'caldicott') => {
-    setAdminEmail(type === 'admin' ? 'admin.ralp@nhs.net' : 'm.roberts@nhs.net');
   };
 
   return (
@@ -214,29 +209,6 @@ export default function AdminLoginPage() {
                     </button>
                   </div>
                 </FormField>
-
-                <div className="pt-1">
-                  <div className="text-[11px] text-slate-500 mb-1.5 flex items-center gap-1">
-                    <UserCheck className="h-3 w-3 text-indigo-400" />
-                    <span>Quick Fill Admin Credentials:</span>
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => handleAutofillAdmin('admin')}
-                      className="px-2.5 py-1 text-[10px] font-semibold rounded-lg bg-slate-800/80 hover:bg-indigo-950 hover:border-indigo-500/50 border border-slate-700 text-slate-300 transition-colors"
-                    >
-                      System Admin (Alex Ward)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleAutofillAdmin('caldicott')}
-                      className="px-2.5 py-1 text-[10px] font-semibold rounded-lg bg-slate-800/80 hover:bg-indigo-950 hover:border-indigo-500/50 border border-slate-700 text-slate-300 transition-colors"
-                    >
-                      Caldicott Lead (Dr. Roberts)
-                    </button>
-                  </div>
-                </div>
 
                 <Button
                   type="submit"
