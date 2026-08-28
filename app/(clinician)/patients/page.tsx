@@ -18,11 +18,15 @@ import { useSession } from '@/lib/auth';
 export default function PatientsRegistryPage() {
   const { user: currentUser } = useSession();
   const [search, setSearch] = useState('');
-  const [surgeonFilter, setSurgeonFilter] = useState<SurgeonCode | 'ALL'>(
-    (currentUser?.role === 'Consultant Surgeon' && currentUser.surgeonCode) ? currentUser.surgeonCode : 'ALL'
-  );
+  const [surgeonFilter, setSurgeonFilter] = useState<SurgeonCode | 'ALL'>('ALL');
   const [stageFilter, setStageFilter] = useState<string | 'ALL'>('ALL');
   const [pageSize, setPageSize] = useState(25);
+
+  React.useEffect(() => {
+    if (currentUser?.role === 'Consultant Surgeon' && currentUser.surgeonCode) {
+      setSurgeonFilter(currentUser.surgeonCode);
+    }
+  }, [currentUser?.role, currentUser?.surgeonCode]);
 
   const { patients, filteredCount, isLoading, page, totalPages, setPage } = usePatients({
     searchQuery: search,
