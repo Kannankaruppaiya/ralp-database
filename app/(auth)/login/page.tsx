@@ -185,11 +185,6 @@ export default function ClinicianLoginPage() {
             </div>
             <span className="font-bold text-white text-base">RALP Database</span>
           </Link>
-          <Link href="/admin-login">
-            <Button variant="outline" size="sm" className="text-xs border-indigo-500/30 text-indigo-300">
-              Admin Login →
-            </Button>
-          </Link>
         </div>
 
         {/* Center Dedicated Form Container */}
@@ -197,10 +192,6 @@ export default function ClinicianLoginPage() {
           <div className="space-y-2">
             <div className="hidden lg:flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-widest text-teal-400">Clinician Sign In</span>
-              <Link href="/admin-login" className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors flex items-center gap-1">
-                <span>Admin Login</span>
-                <ArrowUpRight className="h-3.5 w-3.5" />
-              </Link>
             </div>
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">Doctor & Staff Login</h2>
             <p className="text-xs text-slate-400">
