@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "dotenv -e .env.production -- next start",
     "lint": "next lint",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:perf": "node scripts/performance-test.mjs",
     "test:load1000": "node scripts/load-test-1000.mjs",
     "test:frameworks": "node scripts/verify-all-frameworks.mjs",
@@ -47,6 +49,8 @@
     "dotenv-cli": "^11.0.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^3.2.7"
   }
 }
