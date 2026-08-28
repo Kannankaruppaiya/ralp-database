@@ -90,6 +90,13 @@ export default function RootHomePage() {
                   <span>7-Milestone longitudinal follow-ups</span>
                 </div>
               </div>
+
+              <Link href="/login" className="block pt-2">
+                <Button className="w-full gap-2 bg-teal-600 hover:bg-teal-700 text-white shadow-sm text-xs">
+                  <span>Enter Clinician Portal</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
@@ -126,6 +133,13 @@ export default function RootHomePage() {
                   <span>Longitudinal recovery timeline</span>
                 </div>
               </div>
+
+              <Link href="/patient-login" className="block pt-2">
+                <Button className="w-full gap-2 bg-purple-600 hover:bg-purple-700 text-white shadow-sm text-xs">
+                  <span>Enter Patient Portal</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 
