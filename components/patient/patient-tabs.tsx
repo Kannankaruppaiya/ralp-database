@@ -34,8 +34,8 @@ export function PatientTabs({ patientId }: PatientTabsProps) {
   ];
 
   return (
-    <div className="border-b border-slate-200 dark:border-slate-800 mb-6 overflow-x-auto">
-      <nav className="flex space-x-2 min-w-max pb-px">
+    <div className="border-b border-slate-200 dark:border-slate-800 mb-6 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <nav className="flex space-x-1 min-w-max pb-px">
         {tabs.map((tab) => {
           const isActive = tab.exact ? pathname === tab.href : pathname.startsWith(tab.href);
           const Icon = tab.icon;
