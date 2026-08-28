@@ -15,6 +15,8 @@ export interface UsePatientsFilters {
   pageSize?: number;
   /** Aggregate views (dashboard tiles, registry export) that need every row. */
   fetchAll?: boolean;
+  /** Set to false while user session is loading to avoid flash of unfiltered data */
+  enabled?: boolean;
 }
 
 const DEFAULT_PAGE_SIZE = 25;
@@ -30,6 +32,8 @@ export function usePatients(filters?: UsePatientsFilters) {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(filters?.pageSize || DEFAULT_PAGE_SIZE);
 
+  const enabled = filters?.enabled ?? true;
+
   useEffect(() => {
     if (filters?.pageSize) setPageSize(filters.pageSize);
   }, [filters?.pageSize]);
@@ -39,6 +43,7 @@ export function usePatients(filters?: UsePatientsFilters) {
   const fetchAll = filters?.fetchAll ?? false;
 
   const refresh = useCallback(async () => {
+    if (!enabled) return;
     setIsLoading(true);
     setError(null);
     try {
@@ -62,8 +67,15 @@ export function usePatients(filters?: UsePatientsFilters) {
       setIsLoading(false);
     }
   }, [
-    debouncedSearch, filters?.surgeon, filters?.stage, filters?.status,
-    filters?.completenessMin, page, pageSize, fetchAll,
+    enabled,
+    debouncedSearch,
+    filters?.surgeon,
+    filters?.stage,
+    filters?.status,
+    filters?.completenessMin,
+    page,
+    pageSize,
+    fetchAll,
   ]);
 
   useEffect(() => {

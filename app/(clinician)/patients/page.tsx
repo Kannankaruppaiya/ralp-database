@@ -16,7 +16,7 @@ import { Plus, Search, ArrowRight, ChevronLeft, ChevronRight, ChevronsLeft, Chev
 import { useSession } from '@/lib/auth';
 
 export default function PatientsRegistryPage() {
-  const { user: currentUser } = useSession();
+  const { user: currentUser, isLoading: sessionLoading } = useSession();
   const [search, setSearch] = useState('');
   const [surgeonFilter, setSurgeonFilter] = useState<SurgeonCode | 'ALL' | null>(null);
   const [stageFilter, setStageFilter] = useState<string | 'ALL'>('ALL');
@@ -29,12 +29,15 @@ export default function PatientsRegistryPage() {
       ? currentUser.surgeonCode
       : 'ALL';
 
-  const { patients, filteredCount, isLoading, page, totalPages, setPage } = usePatients({
+  const { patients, filteredCount, isLoading: isPatientsLoading, page, totalPages, setPage } = usePatients({
     searchQuery: search,
     surgeon: effectiveSurgeonFilter,
     stage: stageFilter,
     pageSize,
+    enabled: !sessionLoading,
   });
+
+  const isLoading = sessionLoading || isPatientsLoading;
 
   return (
     <div className="space-y-4">
