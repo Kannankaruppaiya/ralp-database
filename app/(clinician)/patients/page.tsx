@@ -18,19 +18,20 @@ import { useSession } from '@/lib/auth';
 export default function PatientsRegistryPage() {
   const { user: currentUser } = useSession();
   const [search, setSearch] = useState('');
-  const [surgeonFilter, setSurgeonFilter] = useState<SurgeonCode | 'ALL'>('ALL');
+  const [surgeonFilter, setSurgeonFilter] = useState<SurgeonCode | 'ALL' | null>(null);
   const [stageFilter, setStageFilter] = useState<string | 'ALL'>('ALL');
   const [pageSize, setPageSize] = useState(25);
 
-  React.useEffect(() => {
-    if (currentUser?.role === 'Consultant Surgeon' && currentUser.surgeonCode) {
-      setSurgeonFilter(currentUser.surgeonCode);
-    }
-  }, [currentUser?.role, currentUser?.surgeonCode]);
+  const effectiveSurgeonFilter: SurgeonCode | 'ALL' =
+    surgeonFilter !== null
+      ? surgeonFilter
+      : currentUser?.role === 'Consultant Surgeon' && currentUser.surgeonCode
+      ? currentUser.surgeonCode
+      : 'ALL';
 
   const { patients, filteredCount, isLoading, page, totalPages, setPage } = usePatients({
     searchQuery: search,
-    surgeon: surgeonFilter,
+    surgeon: effectiveSurgeonFilter,
     stage: stageFilter,
     pageSize,
   });
@@ -70,7 +71,7 @@ export default function PatientsRegistryPage() {
           </div>
 
           <Select
-            value={surgeonFilter}
+            value={effectiveSurgeonFilter}
             onChange={(e) => setSurgeonFilter(e.target.value as any)}
             className="w-36 h-9 text-xs"
           >
