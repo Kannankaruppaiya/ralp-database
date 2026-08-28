@@ -40,6 +40,14 @@ async function readDocumentText(file: File): Promise<string> {
   );
 }
 
+/** Database columns are snake_case; extracted fields are keyed camelCase. */
+function toCamel(row: Record<string, unknown> | null): Record<string, unknown> {
+  if (!row) return {};
+  return Object.fromEntries(
+    Object.entries(row).map(([k, v]) => [k.replace(/_([a-z])/g, (_, c) => c.toUpperCase()), v])
+  );
+}
+
 export function DocumentUpload() {
   const router = useRouter();
   const { toast } = useToast();
@@ -48,7 +56,7 @@ export function DocumentUpload() {
   const [dragActive, setDragActive] = useState(false);
   const [docType, setDocType] = useState<SourceType>('theatre_note');
   const [error, setError] = useState<string | null>(null);
-  const [preview, setPreview] = useState<{ name: string; fields: ExtractedField[]; matched: string | null; nameMismatch: boolean } | null>(null);
+  const [preview, setPreview] = useState<{ name: string; fields: ExtractedField[]; matched: string | null; nameMismatch: boolean; fieldConflicts: number } | null>(null);
 
   async function handleFile(file: File) {
     setError(null);
@@ -113,6 +121,37 @@ export function DocumentUpload() {
         }
       }
 
+      // Field-level conflicts: an extracted value that disagrees with what the
+      // record already holds. Without this every field was reported as "no
+      // conflict" no matter what it contradicted, and the reconciliation screen
+      // had nothing real to show.
+      let fieldConflicts = 0;
+      if (matchedPatientId) {
+        const [{ data: op }, { data: base }, { data: hist }] = await Promise.all([
+          supabase().from('operations').select('*').eq('patient_id', matchedPatientId).maybeSingle(),
+          supabase().from('baseline_cancer').select('*').eq('patient_id', matchedPatientId).maybeSingle(),
+          supabase().from('histology').select('*').eq('patient_id', matchedPatientId).maybeSingle(),
+        ]);
+
+        const stored: Record<string, unknown> = {
+          ...toCamel(base as Record<string, unknown> | null),
+          ...toCamel(op as Record<string, unknown> | null),
+          ...toCamel(hist as Record<string, unknown> | null),
+        };
+
+        fields.forEach((f) => {
+          const current = stored[f.fieldKey];
+          if (current === undefined || current === null) return;
+          // Compare as text: the database returns numerics as strings.
+          if (String(current) !== String(f.normalizedValue)) {
+            f.hasConflict = true;
+            f.status = 'conflicted';
+            f.currentDbValue = current;
+            fieldConflicts += 1;
+          }
+        });
+      }
+
       // The document text is stored so a reviewer can check any field against
       // its source rather than trusting the extraction.
       const { data: doc, error: docError } = await supabase()
@@ -133,8 +172,8 @@ export function DocumentUpload() {
         match_score: matchedPatientId ? (nameMismatch ? 50 : 100) : null,
         match_reasons: reasons.length ? reasons : null,
         // A contradicted match must not sit in the ordinary review queue.
-        status: nameMismatch ? 'conflicted' : 'review_required',
-        conflict_count: nameMismatch ? 1 : 0,
+        status: nameMismatch || fieldConflicts > 0 ? 'conflicted' : 'review_required',
+        conflict_count: (nameMismatch ? 1 : 0) + fieldConflicts,
         extracted_fields: fields,
       });
       if (jobError) throw new Error(jobError.message);
@@ -145,7 +184,7 @@ export function DocumentUpload() {
         `Parsed "${file.name}" — ${fields.length} fields extracted, ${matchedPatientId ? 'matched' : 'unmatched'}`
       );
 
-      setPreview({ name: file.name, fields, matched: matchedName, nameMismatch });
+      setPreview({ name: file.name, fields, matched: matchedName, nameMismatch, fieldConflicts });
       toast({
         title: nameMismatch ? 'Identity conflict' : `${fields.length} fields extracted`,
         description: nameMismatch

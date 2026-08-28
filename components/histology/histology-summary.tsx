@@ -150,9 +150,17 @@ export function HistologySummary({
             <FormLabel>Specimen Weight (grams)</FormLabel>
             <Input
               type="number"
-              value={formData.specimenWeightGrams || ''}
-              onChange={(e) => setFormData({ ...formData, specimenWeightGrams: parseInt(e.target.value, 10) || 0 })}
-              placeholder="e.g. 48"
+              step="0.1"
+              value={formData.specimenWeightGrams ?? ''}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  // parseInt discarded the decimal a pathologist actually reported;
+                  // the column is numeric(6,1). Blank clears rather than storing 0.
+                  specimenWeightGrams: e.target.value === '' ? undefined : parseFloat(e.target.value),
+                })
+              }
+              placeholder="e.g. 48.5"
             />
           </FormField>
         </div>

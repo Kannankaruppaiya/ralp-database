@@ -26,10 +26,12 @@ export function FollowUpCard({
   onUpdate?: () => void;
 }) {
   const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [formData, setFormData] = useState<Partial<FollowUpRecord>>(followUp);
   const { isOverdue, label: dueLabel } = getDaysRemaining(followUp.dueDate);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const updated: FollowUpRecord = {
       ...followUp,
       ...formData,
@@ -37,9 +39,21 @@ export function FollowUpCard({
       completedDate: formData.completedDate || (formData.psa !== undefined ? new Date().toISOString().split('T')[0] : undefined),
     } as FollowUpRecord;
 
-    db.updateFollowUp(patientId, updated);
-    setIsEditing(false);
-    onUpdate?.();
+    setIsSaving(true);
+    setSaveError(null);
+    try {
+      // Await the write before refreshing: the parent re-reads from the
+      // database, so firing it early shows the row as it was before the save.
+      await db.updateFollowUp(patientId, updated);
+      setIsEditing(false);
+      onUpdate?.();
+    } catch (e) {
+      // A failed write used to be silent, leaving a clinician believing a PSA
+      // had been recorded when nothing was stored.
+      setSaveError(e instanceof Error ? e.message : 'Could not save this milestone.');
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const getStatusBadge = () => {
@@ -60,15 +74,20 @@ export function FollowUpCard({
             Edit {followUp.milestone.toUpperCase()} Follow-up ({followUp.targetMonths} Months)
           </CardTitle>
           <div className="flex items-center gap-1.5">
-            <Button variant="ghost" size="sm" onClick={() => setIsEditing(false)}>
+            <Button variant="ghost" size="sm" disabled={isSaving} onClick={() => setIsEditing(false)}>
               <X className="h-4 w-4 mr-1" /> Cancel
             </Button>
-            <Button variant="default" size="sm" onClick={handleSave}>
-              <Save className="h-4 w-4 mr-1" /> Save
+            <Button variant="default" size="sm" disabled={isSaving} onClick={() => void handleSave()}>
+              <Save className="h-4 w-4 mr-1" /> {isSaving ? 'Saving…' : 'Save'}
             </Button>
           </div>
         </CardHeader>
         <CardContent className="p-4 space-y-4 text-xs">
+          {saveError && (
+            <div className="rounded-lg border border-rose-200 bg-rose-50 p-2.5 text-[11px] text-rose-700">
+              {saveError}
+            </div>
+          )}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <FormField>
               <FormLabel>Serum PSA (ng/mL)</FormLabel>

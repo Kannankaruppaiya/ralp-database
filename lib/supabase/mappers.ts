@@ -10,6 +10,7 @@ import { HistologyData } from '@/types/histology';
 import { FollowUpRecord } from '@/types/follow-up';
 import { PromSubmission, IPSSSeverity, SHIMSeverity } from '@/types/prom';
 import { AuditLogEntry } from '@/types/audit';
+import { IngestionJob } from '@/types/ingestion';
 
 type Row = Record<string, any>;
 
@@ -278,6 +279,41 @@ export function fromProm(d: PromSubmission): Row {
     continence_day: d.continence?.dayStatus,
     continence_night: d.continence?.nightPads,
   });
+}
+
+/**
+ * Ingestion jobs arrive from PostgREST in database shape with the document and
+ * patient embedded. The screens consume the domain shape, so the two were
+ * previously bridged by an `as IngestionJob[]` cast that asserted a conversion
+ * nothing performed — every camelCase field read back undefined.
+ */
+export function toIngestionJob(r: Row): IngestionJob {
+  const doc = Array.isArray(r.documents) ? r.documents[0] : r.documents;
+  const pat = Array.isArray(r.patients) ? r.patients[0] : r.patients;
+
+  return {
+    id: r.id,
+    documentId: r.document_id ?? '',
+    documentTitle: doc?.title ?? 'Untitled document',
+    sourceType: doc?.source_type ?? 'theatre_note',
+    status: r.status,
+    matchedPatient: pat
+      ? {
+          patientId: pat.id,
+          fullName: `${pat.first_name} ${pat.surname}`,
+          nhsNumber: formatNhs(pat.nhs_number),
+          hospitalNumber: pat.hospital_number,
+          dob: pat.date_of_birth,
+          matchScore: r.match_score ?? 0,
+          matchReasons: r.match_reasons ?? [],
+        }
+      : undefined,
+    candidateMatches: [],
+    extractedFields: Array.isArray(r.extracted_fields) ? r.extracted_fields : [],
+    conflictCount: r.conflict_count ?? 0,
+    uploadedAt: doc?.uploaded_at ?? r.created_at,
+    reviewedAt: r.resolved_at ?? undefined,
+  };
 }
 
 export function toAudit(r: Row): AuditLogEntry {

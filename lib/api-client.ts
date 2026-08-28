@@ -9,7 +9,7 @@
  */
 import { supabase } from './supabase/client';
 import {
-  toPatient, toFollowUp, toAudit, stripNhs,
+  toPatient, toFollowUp, toAudit, toIngestionJob, stripNhs,
   fromBaseline, fromOperation, fromHistology, fromFollowUp, fromProm,
 } from './supabase/mappers';
 import { PatientFullRecord, PatientDemographics } from '@/types/patient';
@@ -41,6 +41,35 @@ export interface PatientQuery {
 function unwrap<T>(res: { data: unknown; error: { message: string } | null }): T {
   if (res.error) throw new Error(res.error.message);
   return res.data as T;
+}
+
+/**
+ * Updates a patient's one-row clinical section, inserting it only if there is
+ * not one yet.
+ *
+ * An upsert cannot do this. PostgREST compiles it to INSERT ... ON CONFLICT, so
+ * a partial patch is validated as a fresh row first and fails on every NOT NULL
+ * column it omits — `surgeon`, `operation_date`, `psa` — long before the
+ * conflict clause would have turned it into an update. Reconciling a single
+ * disputed field therefore failed outright.
+ */
+async function upsertSection(
+  table: 'baseline_cancer' | 'operations' | 'histology',
+  patientId: string,
+  row: Record<string, unknown>
+): Promise<void> {
+  const { data: updated, error: updateError } = await supabase()
+    .from(table)
+    .update(row)
+    .eq('patient_id', patientId)
+    .select('patient_id');
+  if (updateError) throw new Error(updateError.message);
+  if (updated && updated.length > 0) return;
+
+  const { error: insertError } = await supabase()
+    .from(table)
+    .insert({ ...row, patient_id: patientId });
+  if (insertError) throw new Error(insertError.message);
 }
 
 export const db = {
@@ -137,29 +166,18 @@ export const db = {
   },
 
   // ------------------------------------------------------------- clinical sections
-  // Upserts: one row per patient, so re-saving a section overwrites it.
-  // The audit row for each of these is written by a database trigger.
 
   async updateBaseline(patientId: string, d: Partial<BaselineCancerData>): Promise<void> {
-    const { error } = await supabase()
-      .from('baseline_cancer')
-      .upsert(fromBaseline(patientId, d), { onConflict: 'patient_id' });
-    if (error) throw new Error(error.message);
+    await upsertSection('baseline_cancer', patientId, fromBaseline(patientId, d));
   },
 
   /** Saving an operation date also (re)builds the 7-milestone follow-up schedule. */
   async updateOperation(patientId: string, d: Partial<OperationData>): Promise<void> {
-    const { error } = await supabase()
-      .from('operations')
-      .upsert(fromOperation(patientId, d), { onConflict: 'patient_id' });
-    if (error) throw new Error(error.message);
+    await upsertSection('operations', patientId, fromOperation(patientId, d));
   },
 
   async updateHistology(patientId: string, d: Partial<HistologyData>): Promise<void> {
-    const { error } = await supabase()
-      .from('histology')
-      .upsert(fromHistology(patientId, d), { onConflict: 'patient_id' });
-    if (error) throw new Error(error.message);
+    await upsertSection('histology', patientId, fromHistology(patientId, d));
   },
 
   // ------------------------------------------------------------- follow-ups
@@ -201,6 +219,36 @@ export const db = {
   async addPromSubmission(_patientId: string, prom: PromSubmission): Promise<void> {
     const { error } = await supabase().from('prom_submissions').insert(fromProm(prom));
     if (error) throw new Error(error.message);
+  },
+
+  // ------------------------------------------------------------- registry exports
+  // Two distinct products: one that carries no identifier, and one that does.
+  // Selecting between them is the caller's explicit decision, and each is
+  // audited under its own action.
+
+  async exportPseudonymised(): Promise<Record<string, unknown>[]> {
+    const rows = unwrap<Record<string, unknown>[]>(
+      await supabase().from('registry_export_pseudonymised').select('*').order('pseudonym')
+    );
+    await db.audit('EXPORT_PSEUDONYMISED', undefined, `${rows?.length ?? 0} records, no identifiers`);
+    return rows ?? [];
+  },
+
+  /**
+   * Carries NHS number, hospital number, name and date of birth. Only for a
+   * national submission under an agreed information-sharing basis — the
+   * resulting file is identifiable patient data wherever it is saved.
+   */
+  async exportIdentifiable(): Promise<Record<string, unknown>[]> {
+    const rows = unwrap<Record<string, unknown>[]>(
+      await supabase().from('registry_export_identifiable').select('*').order('surname')
+    );
+    await db.audit(
+      'EXPORT_IDENTIFIABLE',
+      undefined,
+      `${rows?.length ?? 0} records including NHS number, hospital number, name and date of birth`
+    );
+    return rows ?? [];
   },
 
   // ------------------------------------------------------------- outcomes
@@ -291,7 +339,7 @@ export const db = {
         .select('*, documents(*), patients(id, first_name, surname, nhs_number, hospital_number, date_of_birth)')
         .order('created_at', { ascending: false })
     );
-    return (rows ?? []) as unknown as IngestionJob[];
+    return (rows ?? []).map(toIngestionJob);
   },
 
   async saveIngestionJob(job: Partial<IngestionJob> & { id?: string }): Promise<void> {

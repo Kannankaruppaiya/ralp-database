@@ -1,202 +1,209 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { PageHeader } from '@/components/layout/page-header';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { db } from '@/lib/api-client';
 import { useIngestionJobs } from '@/hooks/use-ingestion-jobs';
-import { ShieldAlert, CheckCircle2, FileText, Database, ArrowRight, UserCheck, Save } from 'lucide-react';
-import Link from 'next/link';
+import { ExtractedField, IngestionJob } from '@/types/ingestion';
+import { ShieldAlert, CheckCircle2, FileText, ArrowRight, UserX } from 'lucide-react';
 
+type Choice = 'extracted' | 'database';
+
+/**
+ * Reconciles a document against the record it was matched to.
+ *
+ * Every conflict shown here is a real disagreement detected at upload — an
+ * extracted value that differs from what the patient's record already holds, or
+ * a document naming a different person from the one its identifiers resolved
+ * to. Nothing is written until a clinician chooses a side.
+ */
 export default function ConflictsPage() {
-  const { jobs, refresh } = useIngestionJobs();
-  const conflictedJobs = jobs.filter((j) => j.conflictCount > 0);
+  const { jobs, isLoading, error, refresh } = useIngestionJobs();
+  const [choices, setChoices] = useState<Record<string, Choice>>({});
+  const [busy, setBusy] = useState<string | null>(null);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
-  // Selected values for reconciliation
-  const [resolutions, setResolutions] = useState<Record<string, { choice: 'extracted' | 'database' | 'custom'; customVal?: string; rationale?: string }>>({
-    'job-002-field-ebl': { choice: 'extracted', rationale: 'Operation theatre note is the primary source of truth for intra-op blood loss.' },
-  });
+  const conflicted = jobs.filter((j) => j.conflictCount > 0 && j.status === 'conflicted');
 
-  const [resolvedJobs, setResolvedJobs] = useState<string[]>([]);
+  const choiceFor = (jobId: string, f: ExtractedField): Choice =>
+    choices[`${jobId}:${f.fieldKey}`] ?? 'extracted';
 
-  const handleResolveJob = async (jobId: string) => {
-    const job = jobs.find((j) => j.id === jobId);
-    if (!job) return;
+  async function resolve(job: IngestionJob) {
+    setBusy(job.id);
+    setSaveError(null);
+    try {
+      const patientId = job.matchedPatient?.patientId;
+      if (!patientId) throw new Error('This document is not matched to a patient.');
 
-    // Only the reconciled field is written; the rest of the operation record
-    // is left as it stands.
-    if (job.matchedPatient) {
-      await db.updateOperation(job.matchedPatient.patientId, { bloodLossMl: 250 });
+      // Only fields the reviewer left on the document's side are written; a
+      // field resolved in favour of the record is deliberately not touched.
+      const patch: Record<string, unknown> = {};
+      job.extractedFields
+        .filter((f) => f.hasConflict && f.category === 'Operation')
+        .forEach((f) => {
+          if (choiceFor(job.id, f) === 'extracted') patch[f.fieldKey] = f.normalizedValue;
+        });
+
+      if (Object.keys(patch).length > 0) {
+        await db.updateOperation(patientId, patch);
+      }
+
+      await db.saveIngestionJob({ ...job, status: 'approved', conflictCount: 0 });
+      await db.audit(
+        'CONFLICT_RESOLVED',
+        patientId,
+        `Reconciled ${job.conflictCount} discrepancy(ies) in "${job.documentTitle}"; ` +
+          `${Object.keys(patch).length} field(s) taken from the document.`
+      );
+      await refresh();
+    } catch (e) {
+      setSaveError(e instanceof Error ? e.message : 'Could not apply the resolution.');
+    } finally {
+      setBusy(null);
     }
-
-    await db.saveIngestionJob({ ...job, conflictCount: 0, status: 'approved' });
-    await db.audit(
-      'CONFLICT_RESOLVED',
-      job.matchedPatient?.patientId,
-      `Reconciled blood loss discrepancy in ${job.documentTitle}. Selected: Operation Note (250 ml). Reason: Primary intraoperative surgical record.`
-    );
-
-    setResolvedJobs((prev) => [...prev, jobId]);
-    await refresh();
-  };
+  }
 
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Extraction Conflict Resolution Hub"
-        description="Side-by-side clinical reconciliation when incoming documents disagree with existing registry data"
-        breadcrumbs={[
-          { label: 'Data Ingestion', href: '/data-ingestion' },
-          { label: 'Conflicts' },
-        ]}
+        title="Extraction Conflict Resolution"
+        description="Where an incoming document disagrees with the registry, side by side"
+        breadcrumbs={[{ label: 'Data Ingestion', href: '/data-ingestion' }, { label: 'Conflicts' }]}
       />
 
-      {conflictedJobs.length === 0 ? (
-        <Card className="p-8 text-center bg-white dark:bg-slate-900">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-emerald-600 mx-auto mb-3">
+      {(error || saveError) && (
+        <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-xs text-rose-700">
+          {error ?? saveError}
+        </div>
+      )}
+
+      {isLoading ? (
+        <Card className="p-12 text-center text-sm text-slate-500">Loading conflicts…</Card>
+      ) : conflicted.length === 0 ? (
+        <Card className="bg-white p-8 text-center dark:bg-slate-900">
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
             <CheckCircle2 className="h-6 w-6" />
           </div>
-          <h3 className="text-base font-bold text-slate-900 dark:text-white">All Discrepancies Reconciled</h3>
-          <p className="text-xs text-slate-500 max-w-md mx-auto mt-1">
-            No conflicting clinical data points currently exist between OCR extracted documents and the surgical database.
+          <h3 className="text-base font-bold text-slate-900 dark:text-white">
+            No outstanding discrepancies
+          </h3>
+          <p className="mt-1 text-xs text-slate-500">
+            Documents whose values agree with the record go straight to extraction review.
           </p>
-          <div className="mt-4">
-            <Link href="/data-ingestion">
-              <Button size="sm" variant="outline">Back to Data Ingestion</Button>
-            </Link>
-          </div>
         </Card>
       ) : (
-        <div className="space-y-6">
-          {conflictedJobs.map((job) => {
-            const conflictKey = 'job-002-field-ebl';
-            const currentResolution = resolutions[conflictKey] || { choice: 'extracted' };
+        conflicted.map((job) => {
+          const fieldConflicts = job.extractedFields.filter((f) => f.hasConflict);
+          const identityIssue = job.matchedPatient?.matchReasons.find((r) => r.startsWith('NAME MISMATCH'));
 
-            return (
-              <Card key={job.id} className="border-amber-200 bg-white shadow-md dark:border-amber-900/50 dark:bg-slate-900 overflow-hidden">
-                <CardHeader className="bg-amber-50/50 p-5 border-b border-amber-100 dark:bg-amber-950/20 dark:border-amber-900/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <ShieldAlert className="h-5 w-5 text-amber-600" />
-                      <CardTitle className="text-base font-bold text-slate-900 dark:text-slate-100">
-                        Discrepancy: Estimated Blood Loss (EBL)
-                      </CardTitle>
-                      <Badge variant="warning" className="text-[10px]">1 Conflict</Badge>
+          return (
+            <Card key={job.id} className="overflow-hidden border-rose-200 shadow-sm">
+              <CardHeader className="flex flex-col gap-2 border-b bg-rose-50/60 p-5 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <CardTitle className="flex items-center gap-2 text-sm font-bold">
+                    <ShieldAlert className="h-4 w-4 text-rose-600" />
+                    <span>{job.documentTitle}</span>
+                  </CardTitle>
+                  <p className="mt-0.5 text-xs text-slate-600">
+                    {job.matchedPatient
+                      ? `Matched to ${job.matchedPatient.fullName} (NHS ${job.matchedPatient.nhsNumber})`
+                      : 'No patient matched'}
+                  </p>
+                </div>
+                <Badge variant="destructive" className="text-[10px]">
+                  {job.conflictCount} conflict{job.conflictCount === 1 ? '' : 's'}
+                </Badge>
+              </CardHeader>
+
+              <CardContent className="space-y-4 p-5">
+                {identityIssue && (
+                  <div className="flex items-start gap-2 rounded-lg border border-rose-300 bg-rose-50 p-3 text-xs text-rose-800">
+                    <UserX className="mt-0.5 h-4 w-4 shrink-0" />
+                    <div>
+                      <div className="font-bold">Identity conflict</div>
+                      <p>{identityIssue}</p>
+                      <p className="mt-1">
+                        Resolve this before any field is committed — the identifiers may have been
+                        mistyped, in which case the document belongs to a different record entirely.
+                      </p>
                     </div>
-                    <p className="text-xs text-slate-500 mt-1">
-                      Document: <strong>{job.documentTitle}</strong> • Matched to Patient: <strong>{job.matchedPatient?.fullName}</strong> (NHS: {job.matchedPatient?.nhsNumber})
-                    </p>
                   </div>
+                )}
 
+                {fieldConflicts.length === 0 ? (
+                  <p className="text-xs text-slate-500">
+                    No field-level disagreements; the only issue is the identity match above.
+                  </p>
+                ) : (
+                  fieldConflicts.map((f) => {
+                    const chosen = choiceFor(job.id, f);
+                    return (
+                      <div key={f.fieldKey} className="rounded-xl border p-4">
+                        <div className="mb-3 flex items-center justify-between">
+                          <span className="text-xs font-bold text-slate-900 dark:text-slate-100">
+                            {f.fieldLabel}
+                          </span>
+                          <span className="text-[11px] text-slate-400">{f.category}</span>
+                        </div>
+                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                          {([
+                            ['extracted', 'From the document', f.normalizedValue, f.rawValue],
+                            ['database', 'Currently in the record', f.currentDbValue, undefined],
+                          ] as [Choice, string, unknown, string | undefined][]).map(
+                            ([key, title, value, raw]) => (
+                              <button
+                                key={key}
+                                type="button"
+                                onClick={() => setChoices((c) => ({ ...c, [`${job.id}:${f.fieldKey}`]: key }))}
+                                className={`rounded-lg border p-3 text-left transition-colors ${
+                                  chosen === key
+                                    ? 'border-teal-500 bg-teal-50 dark:bg-teal-950/40'
+                                    : 'border-slate-200 hover:border-slate-300 dark:border-slate-800'
+                                }`}
+                              >
+                                <div className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                  {key === 'extracted' && <FileText className="h-3 w-3" />}
+                                  <span>{title}</span>
+                                </div>
+                                <div className="font-mono text-sm font-bold text-slate-900 dark:text-slate-100">
+                                  {String(value ?? '—')}
+                                </div>
+                                {raw && (
+                                  <div className="mt-1 text-[11px] italic text-slate-400">“{raw}”</div>
+                                )}
+                              </button>
+                            )
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+
+                <div className="flex items-center justify-between gap-3 pt-1">
+                  <Link
+                    href={`/data-ingestion/extraction-review?jobId=${job.id}`}
+                    className="text-xs font-semibold text-teal-700 hover:underline"
+                  >
+                    View all extracted fields <ArrowRight className="inline h-3 w-3" />
+                  </Link>
                   <Button
                     size="sm"
-                    onClick={() => void handleResolveJob(job.id)}
-                    className="gap-1.5 bg-teal-600 hover:bg-teal-700 shadow-sm"
+                    disabled={busy !== null}
+                    onClick={() => void resolve(job)}
+                    className="text-xs"
                   >
-                    <Save className="h-4 w-4" />
-                    <span>Apply Resolution & Update Audit</span>
+                    {busy === job.id ? 'Applying…' : 'Apply resolution'}
                   </Button>
-                </CardHeader>
-
-                <CardContent className="p-6 space-y-6">
-                  {/* Side by side comparison cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Source A: Extracted Document */}
-                    <div
-                      onClick={() => setResolutions((prev) => ({ ...prev, [conflictKey]: { ...currentResolution, choice: 'extracted' } }))}
-                      className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                        currentResolution.choice === 'extracted'
-                          ? 'border-teal-600 bg-teal-50/30 dark:bg-teal-950/20 ring-2 ring-teal-600/20'
-                          : 'border-slate-200 hover:border-slate-300'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <FileText className="h-4 w-4 text-teal-600" />
-                          <span className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-                            Source 1: Extracted Theatre Note
-                          </span>
-                        </div>
-                        <input
-                          type="radio"
-                          name="choice"
-                          checked={currentResolution.choice === 'extracted'}
-                          onChange={() => {}}
-                          className="text-teal-600 focus:ring-teal-500"
-                        />
-                      </div>
-                      <div className="text-2xl font-bold text-teal-950 dark:text-teal-100 font-mono">
-                        250 mL
-                      </div>
-                      <p className="text-xs text-slate-500 mt-1 italic">
-                        Raw Text: &ldquo;Estimated blood loss was measured at approximately 250ml intra-operatively.&rdquo;
-                      </p>
-                      <Badge variant="success" className="mt-3 text-[10px]">
-                        Primary Surgical Record (98% Confidence)
-                      </Badge>
-                    </div>
-
-                    {/* Source B: Existing DB Record */}
-                    <div
-                      onClick={() => setResolutions((prev) => ({ ...prev, [conflictKey]: { ...currentResolution, choice: 'database' } }))}
-                      className={`p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                        currentResolution.choice === 'database'
-                          ? 'border-teal-600 bg-teal-50/30 dark:bg-teal-950/20 ring-2 ring-teal-600/20'
-                          : 'border-slate-200 hover:border-slate-300'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <Database className="h-4 w-4 text-slate-600" />
-                          <span className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-                            Source 2: Current Database Record
-                          </span>
-                        </div>
-                        <input
-                          type="radio"
-                          name="choice"
-                          checked={currentResolution.choice === 'database'}
-                          onChange={() => {}}
-                          className="text-teal-600 focus:ring-teal-500"
-                        />
-                      </div>
-                      <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 font-mono">
-                        300 mL
-                      </div>
-                      <p className="text-xs text-slate-500 mt-1 italic">
-                        Entered via: Clinic Follow-up Letter Summary (12 Aug 2026)
-                      </p>
-                      <Badge variant="outline" className="mt-3 text-[10px]">
-                        Secondary Clinical Summary
-                      </Badge>
-                    </div>
-                  </div>
-
-                  {/* Clinician Rationale Note */}
-                  <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 space-y-2">
-                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block">
-                      Clinical Audit Rationale (NHS Caldicott / Information Governance Mandatory Log):
-                    </label>
-                    <Input
-                      value={currentResolution.rationale || ''}
-                      onChange={(e) =>
-                        setResolutions((prev) => ({
-                          ...prev,
-                          [conflictKey]: { ...currentResolution, rationale: e.target.value },
-                        }))
-                      }
-                      placeholder="e.g. Theatre operative note represents direct surgeon observation; chosen over clinic letter recap."
-                      className="text-xs bg-white dark:bg-slate-900"
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
+                </div>
+              </CardContent>
+            </Card>
+          );
+        })
       )}
     </div>
   );

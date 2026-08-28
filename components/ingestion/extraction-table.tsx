@@ -93,11 +93,40 @@ export function ExtractionTable({ job }: { job: IngestionJob }) {
                 </div>
               </div>
             </div>
-            <Badge variant="success" className="px-3 py-1 text-xs">
-              100% Match Confidence
+            <Badge
+              variant={job.conflictCount > 0 ? 'destructive' : 'success'}
+              className="px-3 py-1 text-xs"
+            >
+              {job.matchedPatient.matchScore}% Match Confidence
             </Badge>
           </CardContent>
         </Card>
+      )}
+
+      {job.matchedPatient && job.matchedPatient.matchReasons.length > 0 && (
+        <div
+          className={`rounded-xl border p-4 text-xs ${
+            job.conflictCount > 0
+              ? 'border-rose-300 bg-rose-50 text-rose-800'
+              : 'border-slate-200 bg-slate-50 text-slate-600'
+          }`}
+        >
+          <div className="mb-1.5 flex items-center gap-1.5 font-bold">
+            {job.conflictCount > 0 && <AlertTriangle className="h-4 w-4" />}
+            <span>{job.conflictCount > 0 ? 'Identity conflict' : 'How this patient was matched'}</span>
+          </div>
+          <ul className="list-inside list-disc space-y-0.5">
+            {job.matchedPatient.matchReasons.map((r) => (
+              <li key={r}>{r}</li>
+            ))}
+          </ul>
+          {job.conflictCount > 0 && (
+            <p className="mt-2 font-semibold">
+              Committing would write this document to a record it may not belong to. Confirm the
+              patient&apos;s identity against the source document before approving.
+            </p>
+          )}
+        </div>
       )}
 
       {/* Extracted Fields Table */}
