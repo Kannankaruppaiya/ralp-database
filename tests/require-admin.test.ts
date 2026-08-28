@@ -67,4 +67,17 @@ describe('requireAdmin', () => {
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.response.status).toBe(403);
   });
+
+  it('reports a backend fault distinctly from an authorisation denial', async () => {
+    getUser.mockResolvedValue({ data: { user: { id: 'u1' } } });
+    maybeSingle.mockResolvedValue({ data: null, error: { message: 'connection timeout' } });
+
+    const result = await requireAdmin();
+
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.response.status).not.toBe(403);
+      expect(result.response.status).toBe(502);
+    }
+  });
 });

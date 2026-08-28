@@ -30,11 +30,13 @@ export async function requireAdmin(): Promise<AdminGate> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return deny(401, 'Sign in to continue.');
 
-  const { data: profile } = await supabase
+  const { data: profile, error } = await supabase
     .from('profiles')
     .select('id, full_name, role, gmc_number')
     .eq('id', user.id)
     .maybeSingle();
+
+  if (error) return deny(502, 'Could not verify administrator access.');
 
   if (!profile || profile.role !== 'Data Manager') {
     return deny(403, 'Administrator access is required.');
