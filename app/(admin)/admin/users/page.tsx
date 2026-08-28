@@ -126,6 +126,33 @@ export default function AdminUsersPage() {
     }
   };
 
+  const setActive = async (id: string, active: boolean) => {
+    const res = await fetch(`/api/admin/staff/${id}/status`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ active }),
+    });
+    const payload = await res.json();
+    if (!res.ok) {
+      toast({ title: 'Could not update the account', description: payload.error, variant: 'destructive' });
+      return;
+    }
+    setStaff((prev) => prev.map((s) => (s.id === id ? { ...s, deactivatedAt: payload.deactivatedAt } : s)));
+    toast({ title: active ? 'Account reactivated' : 'Account deactivated', variant: 'success' });
+  };
+
+  const remove = async (id: string, name: string) => {
+    if (!confirm(`Delete ${name}? This cannot be undone. Deactivating keeps their record instead.`)) return;
+    const res = await fetch(`/api/admin/staff/${id}`, { method: 'DELETE' });
+    const payload = await res.json();
+    if (!res.ok) {
+      toast({ title: 'Could not delete the account', description: payload.error, variant: 'destructive' });
+      return;
+    }
+    setStaff((prev) => prev.filter((s) => s.id !== id));
+    toast({ title: 'Account deleted', variant: 'success' });
+  };
+
   return (
     <div className="space-y-6">
       <PageHeader
@@ -169,8 +196,9 @@ export default function AdminUsersPage() {
               <TableHead>NHSmail</TableHead>
               <TableHead>Assigned Role</TableHead>
               <TableHead>Surgeon Code</TableHead>
-              <TableHead>GMC Number</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>Provisioned</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -191,11 +219,37 @@ export default function AdminUsersPage() {
                 <TableCell className="text-xs font-mono font-bold text-teal-700 dark:text-teal-400">
                   {u.surgeonCode}
                 </TableCell>
-                <TableCell className="text-xs font-mono text-slate-500">
-                  {u.gmcNumber ?? '—'}
+                <TableCell className="text-xs">
+                  {u.deactivatedAt ? (
+                    <Badge variant="secondary" className="bg-rose-500/10 text-rose-500 border-rose-500/20">
+                      Deactivated
+                    </Badge>
+                  ) : (
+                    <Badge variant="outline" className="text-emerald-600 border-emerald-500/30">
+                      Active
+                    </Badge>
+                  )}
                 </TableCell>
                 <TableCell className="text-xs text-slate-500">
                   {new Date(u.createdAt).toLocaleDateString('en-GB')}
+                </TableCell>
+                <TableCell className="text-xs text-right space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setActive(u.id, !!u.deactivatedAt)}
+                    className="text-xs h-7 px-2.5"
+                  >
+                    {u.deactivatedAt ? 'Reactivate' : 'Deactivate'}
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => remove(u.id, u.name)}
+                    className="text-xs h-7 px-2.5"
+                  >
+                    Delete
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
