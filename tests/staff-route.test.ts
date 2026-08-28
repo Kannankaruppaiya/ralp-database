@@ -1,0 +1,101 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+
+const requireAdmin = vi.fn();
+const createUser = vi.fn();
+const upsert = vi.fn();
+const insertAudit = vi.fn();
+
+vi.mock('@/lib/api/require-admin', () => ({ requireAdmin }));
+vi.mock('@/lib/supabase/admin', () => ({
+  supabaseAdmin: () => ({
+    auth: { admin: { createUser } },
+    from: (table: string) =>
+      table === 'profiles' ? { upsert } : { insert: insertAudit },
+  }),
+}));
+
+const { POST } = await import('@/app/api/admin/staff/route');
+
+const admitted = {
+  ok: true as const,
+  actor: { id: 'admin-1', name: 'Demo Administrator', role: 'Data Manager', gmcNumber: null },
+};
+
+const body = (over: Record<string, unknown> = {}) =>
+  new Request('http://test/api/admin/staff', {
+    method: 'POST',
+    body: JSON.stringify({
+      fullName: 'Mr R. D. MacDonagh',
+      email: 'rdm@nhs.net',
+      role: 'Consultant Surgeon',
+      surgeonCode: 'RDM',
+      tempPassword: 'ChangeMe-2026!',
+      ...over,
+    }),
+  });
+
+describe('POST /api/admin/staff', () => {
+  beforeEach(() => {
+    requireAdmin.mockReset();
+    createUser.mockReset();
+    upsert.mockReset().mockResolvedValue({ error: null });
+    insertAudit.mockReset().mockResolvedValue({ error: null });
+  });
+
+  it('passes the gate refusal straight through', async () => {
+    requireAdmin.mockResolvedValue({ ok: false, response: Response.json({ error: 'no' }, { status: 403 }) });
+
+    const res = await POST(body());
+
+    expect(res.status).toBe(403);
+    expect(createUser).not.toHaveBeenCalled();
+  });
+
+  it('rejects a temporary password under 12 characters', async () => {
+    requireAdmin.mockResolvedValue(admitted);
+
+    const res = await POST(body({ tempPassword: 'short' }));
+
+    expect(res.status).toBe(422);
+    expect(createUser).not.toHaveBeenCalled();
+  });
+
+  it('rejects a role outside the enum', async () => {
+    requireAdmin.mockResolvedValue(admitted);
+
+    const res = await POST(body({ role: 'Chief Wizard' }));
+
+    expect(res.status).toBe(422);
+    expect(createUser).not.toHaveBeenCalled();
+  });
+
+  it('reports an already-registered email as a conflict', async () => {
+    requireAdmin.mockResolvedValue(admitted);
+    createUser.mockResolvedValue({ data: null, error: { message: 'User already registered' } });
+
+    const res = await POST(body());
+
+    expect(res.status).toBe(409);
+  });
+
+  it('creates the account, flags it, and never echoes the password', async () => {
+    requireAdmin.mockResolvedValue(admitted);
+    createUser.mockResolvedValue({ data: { user: { id: 'new-1' } }, error: null });
+
+    const res = await POST(body());
+    const json = await res.json();
+
+    expect(res.status).toBe(201);
+    expect(createUser).toHaveBeenCalledWith({
+      email: 'rdm@nhs.net',
+      password: 'ChangeMe-2026!',
+      email_confirm: true,
+    });
+    expect(upsert).toHaveBeenCalledWith(
+      expect.objectContaining({ id: 'new-1', must_change_password: true, surgeon_code: 'RDM' }),
+      { onConflict: 'id' }
+    );
+    expect(insertAudit).toHaveBeenCalled();
+    expect(JSON.stringify(json)).not.toContain('ChangeMe-2026!');
+  });
+});
