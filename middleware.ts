@@ -2,7 +2,7 @@ import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 /** Routes reachable without a session. Everything else requires a login. */
-const PUBLIC_PATHS = ['/', '/login', '/admin-login', '/patient-login', '/forgot-password', '/verify'];
+const PUBLIC_PATHS = ['/', '/login', '/admin-login', '/patient-login', '/forgot-password', '/verify', '/change-password'];
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -27,18 +27,36 @@ export async function middleware(request: NextRequest) {
 
   const path = request.nextUrl.pathname;
 
-  // Governance console. Authentication alone is not enough: row level security
-  // already hides the audit trail from non-admins, but without this a
-  // consultant or registrar could still open /admin and run a full registry
-  // export, which RLS permits them to read.
-  if (user && path.startsWith('/admin')) {
+  if (user) {
     const { data: profile } = await supabase
       .from('profiles')
-      .select('role')
+      .select('role, must_change_password, deactivated_at')
       .eq('id', user.id)
       .maybeSingle();
 
-    if (profile?.role !== 'Data Manager') {
+    // A clinician deactivated mid-shift would otherwise keep working until
+    // their access token expired.
+    if (profile?.deactivated_at) {
+      await supabase.auth.signOut();
+      const login = request.nextUrl.clone();
+      login.pathname = '/login';
+      login.search = '';
+      login.searchParams.set('deactivated', '1');
+      return NextResponse.redirect(login);
+    }
+
+    if (profile?.must_change_password && path !== '/change-password') {
+      const change = request.nextUrl.clone();
+      change.pathname = '/change-password';
+      change.search = '';
+      return NextResponse.redirect(change);
+    }
+
+    // Governance console. Authentication alone is not enough: row level
+    // security already hides the audit trail from non-admins, but without this
+    // a consultant or registrar could still open /admin and run a full registry
+    // export, which RLS permits them to read.
+    if (path.startsWith('/admin') && profile?.role !== 'Data Manager') {
       const denied = request.nextUrl.clone();
       denied.pathname = '/dashboard';
       denied.searchParams.set('denied', 'admin');
