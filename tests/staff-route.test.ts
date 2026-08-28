@@ -2,13 +2,14 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 const requireAdmin = vi.fn();
 const createUser = vi.fn();
+const deleteUser = vi.fn();
 const upsert = vi.fn();
 const insertAudit = vi.fn();
 
 vi.mock('@/lib/api/require-admin', () => ({ requireAdmin }));
 vi.mock('@/lib/supabase/admin', () => ({
   supabaseAdmin: () => ({
-    auth: { admin: { createUser } },
+    auth: { admin: { createUser, deleteUser } },
     from: (table: string) =>
       table === 'profiles' ? { upsert } : { insert: insertAudit },
   }),
@@ -38,6 +39,7 @@ describe('POST /api/admin/staff', () => {
   beforeEach(() => {
     requireAdmin.mockReset();
     createUser.mockReset();
+    deleteUser.mockReset().mockResolvedValue({ error: null });
     upsert.mockReset().mockResolvedValue({ error: null });
     insertAudit.mockReset().mockResolvedValue({ error: null });
   });
@@ -97,5 +99,35 @@ describe('POST /api/admin/staff', () => {
     );
     expect(insertAudit).toHaveBeenCalled();
     expect(JSON.stringify(json)).not.toContain('ChangeMe-2026!');
+  });
+
+  it('records correct actor attribution and account details in the audit entry', async () => {
+    requireAdmin.mockResolvedValue(admitted);
+    createUser.mockResolvedValue({ data: { user: { id: 'new-1' } }, error: null });
+
+    await POST(body());
+
+    expect(insertAudit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        actor_id: 'admin-1',
+        actor_name: 'Demo Administrator',
+        actor_role: 'Data Manager',
+        gmc_number: null,
+        action: 'STAFF_PROVISIONED',
+        details: expect.stringContaining('rdm@nhs.net'),
+      })
+    );
+  });
+
+  it('deletes the just-created auth user when the profile write fails', async () => {
+    requireAdmin.mockResolvedValue(admitted);
+    createUser.mockResolvedValue({ data: { user: { id: 'new-1' } }, error: null });
+    upsert.mockResolvedValue({ error: { message: 'profiles insert failed' } });
+
+    const res = await POST(body());
+
+    expect(res.status).toBe(502);
+    expect(deleteUser).toHaveBeenCalledWith('new-1');
+    expect(insertAudit).not.toHaveBeenCalled();
   });
 });

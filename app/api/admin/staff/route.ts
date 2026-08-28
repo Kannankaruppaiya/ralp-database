@@ -73,10 +73,22 @@ export async function POST(request: Request) {
   );
 
   if (profileError) {
+    // Don't leave a confirmed, password-set auth user with no profile row —
+    // that's the exact state that makes sign-in fail with "No profile is
+    // provisioned for this account", after the temp password is already
+    // handed over. Best-effort: if the cleanup itself fails, don't swallow
+    // that — surface the leftover account rather than going silent on it.
+    const { error: cleanupError } = await admin.auth.admin.deleteUser(data.user.id);
+    if (cleanupError) {
+      console.error(
+        `Orphaned auth user ${data.user.id} after profile write failure and cleanup failure:`,
+        { profileError: profileError.message, cleanupError: cleanupError.message }
+      );
+    }
     return Response.json({ error: profileError.message }, { status: 502 });
   }
 
-  await admin.from('audit_log').insert({
+  const { error: auditError } = await admin.from('audit_log').insert({
     actor_id: gate.actor.id,
     actor_name: gate.actor.name,
     actor_role: gate.actor.role,
@@ -84,6 +96,13 @@ export async function POST(request: Request) {
     action: 'STAFF_PROVISIONED',
     details: `Created ${role} account for ${fullName.trim()} (${email})`,
   });
+  if (auditError) {
+    console.warn('audit write failed:', {
+      actorId: gate.actor.id,
+      createdUserId: data.user.id,
+      error: auditError.message,
+    });
+  }
 
   return Response.json(
     { id: data.user.id, fullName: fullName.trim(), email, role },
