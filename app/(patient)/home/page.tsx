@@ -22,6 +22,7 @@ import { db } from '@/lib/api-client';
 import { useCurrentPatient } from '@/lib/auth';
 import { PatientFullRecord } from '@/types/patient';
 import { formatNhsNumber, formatDate, formatPsa } from '@/lib/formatters';
+import { PatientRecoveryChatbot } from '@/components/ai/patient-recovery-chatbot';
 
 const SURGEON_NAME_MAP: Record<string, string> = {
   VK: 'Mr. V. Kannan',
@@ -233,6 +234,9 @@ export default function PatientHomePage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* 24/7 AI Patient Recovery Companion */}
+      <PatientRecoveryChatbot patient={patient} />
     </div>
   );
 }

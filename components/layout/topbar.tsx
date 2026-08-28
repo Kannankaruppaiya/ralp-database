@@ -14,6 +14,7 @@ import {
   Menu,
   LogOut,
   Sparkles,
+  Mic,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -21,6 +22,7 @@ import { Badge } from '@/components/ui/badge';
 import { usePatients } from '@/hooks/use-patients';
 import { signOut } from '@/lib/auth';
 import { ClinicalSearchModal } from '@/components/ai/clinical-search-modal';
+import { VoiceDictationModal } from '@/components/ai/voice-dictation-modal';
 
 interface TopbarProps {
   onMenuClick?: () => void;
@@ -31,6 +33,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
   const [search, setSearch] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAiSearchOpen, setIsAiSearchOpen] = useState(false);
+  const [isVoiceModalOpen, setIsVoiceModalOpen] = useState(false);
   const { patients } = usePatients({ searchQuery: search });
 
   // Global Cmd+K / Ctrl+K listener
@@ -162,6 +165,18 @@ export function Topbar({ onMenuClick }: TopbarProps) {
             <span>Oxford Urology Centre</span>
           </div>
 
+          {/* Voice Dictation Trigger Button */}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsVoiceModalOpen(true)}
+            className="gap-1.5 text-xs border-teal-500/30 text-teal-700 hover:bg-teal-50 dark:text-teal-300 dark:border-teal-800 dark:hover:bg-teal-950/30 shadow-sm"
+            title="Voice Dictation for Theatre Operation Notes"
+          >
+            <Mic className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
+            <span className="hidden xl:inline">Voice Dictate</span>
+          </Button>
+
           {/* AI Clinical Search Trigger Button */}
           <Button
             variant="outline"
@@ -199,6 +214,12 @@ export function Topbar({ onMenuClick }: TopbarProps) {
       <ClinicalSearchModal
         isOpen={isAiSearchOpen}
         onClose={() => setIsAiSearchOpen(false)}
+      />
+
+      {/* Global AI Voice Dictation Modal */}
+      <VoiceDictationModal
+        isOpen={isVoiceModalOpen}
+        onClose={() => setIsVoiceModalOpen(false)}
       />
     </>
   );
