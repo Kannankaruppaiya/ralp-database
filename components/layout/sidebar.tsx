@@ -21,6 +21,7 @@ import { CLINICIAN_NAVIGATION } from '@/config/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useSession, signOut } from '@/lib/auth';
+import { useToast } from '@/hooks/use-toast';
 import { ClinicalSearchModal } from '@/components/ai/clinical-search-modal';
 
 const ICON_MAP: Record<string, React.ReactNode> = {
@@ -37,7 +38,16 @@ export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { user } = useSession();
+  const { toast } = useToast();
   const [isAiSearchOpen, setIsAiSearchOpen] = useState(false);
+
+  const handleTriggerAiSearch = () => {
+    toast({
+      title: 'AI Clinical Search',
+      description: 'Coming Soon — This clinical semantic AI capability is currently under development.',
+      variant: 'default',
+    });
+  };
 
   const handleSignOut = async () => {
     try {
@@ -80,7 +90,7 @@ export function Sidebar() {
           {/* Quick AI Search Trigger Card */}
           <button
             type="button"
-            onClick={() => setIsAiSearchOpen(true)}
+            onClick={handleTriggerAiSearch}
             className="w-full flex items-center justify-between p-2.5 rounded-xl bg-gradient-to-r from-teal-500/10 via-emerald-500/10 to-transparent border border-teal-500/20 hover:border-teal-500/40 text-teal-900 dark:text-teal-200 transition-all text-xs font-semibold group shadow-sm"
           >
             <div className="flex items-center gap-2">

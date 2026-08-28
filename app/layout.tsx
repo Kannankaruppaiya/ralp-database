@@ -8,6 +8,7 @@ export const metadata: Metadata = {
 };
 
 import { EnvBanner } from '@/components/layout/env-banner';
+import { Toaster } from '@/components/ui/toaster';
 
 export default function RootLayout({
   children,
@@ -27,6 +28,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-teal-500 selection:text-white font-sans">
         <EnvBanner />
         {children}
+        <Toaster />
       </body>
     </html>
   );

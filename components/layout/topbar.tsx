@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { usePatients } from '@/hooks/use-patients';
 import { signOut } from '@/lib/auth';
+import { useToast } from '@/hooks/use-toast';
 import { ClinicalSearchModal } from '@/components/ai/clinical-search-modal';
 
 interface TopbarProps {
@@ -28,17 +29,26 @@ interface TopbarProps {
 
 export function Topbar({ onMenuClick }: TopbarProps) {
   const router = useRouter();
+  const { toast } = useToast();
   const [search, setSearch] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAiSearchOpen, setIsAiSearchOpen] = useState(false);
   const { patients } = usePatients({ searchQuery: search });
+
+  const handleTriggerAiSearch = () => {
+    toast({
+      title: 'AI Clinical Search',
+      description: 'Coming Soon — This clinical semantic AI capability is currently under development.',
+      variant: 'default',
+    });
+  };
 
   // Global Cmd+K / Ctrl+K listener
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
-        setIsAiSearchOpen((prev) => !prev);
+        handleTriggerAiSearch();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -92,9 +102,9 @@ export function Topbar({ onMenuClick }: TopbarProps) {
               />
               <button
                 type="button"
-                onClick={() => setIsAiSearchOpen(true)}
+                onClick={handleTriggerAiSearch}
                 className="absolute right-1.5 top-1.5 px-2 py-0.5 rounded-md bg-teal-500/10 hover:bg-teal-500/20 text-teal-700 dark:text-teal-300 border border-teal-500/20 flex items-center gap-1 text-[11px] font-medium transition-colors"
-                title="Open AI Semantic Search (Cmd+K)"
+                title="AI Clinical Search (Coming Soon)"
               >
                 <Sparkles className="h-3 w-3 text-amber-500" />
                 <span className="hidden sm:inline">AI Search</span>
@@ -111,7 +121,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
                     type="button"
                     onClick={() => {
                       setIsSearchOpen(false);
-                      setIsAiSearchOpen(true);
+                      handleTriggerAiSearch();
                     }}
                     className="text-teal-600 dark:text-teal-400 hover:underline flex items-center gap-1 text-[11px] normal-case"
                   >
@@ -166,7 +176,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
           <Button
             variant="outline"
             size="sm"
-            onClick={() => setIsAiSearchOpen(true)}
+            onClick={handleTriggerAiSearch}
             className="gap-1.5 text-xs border-teal-500/30 text-teal-700 hover:bg-teal-50 dark:text-teal-300 dark:border-teal-800 dark:hover:bg-teal-950/30 shadow-sm"
           >
             <Sparkles className="h-3.5 w-3.5 text-amber-500" />
