@@ -11,13 +11,14 @@ import {
 } from 'lucide-react';
 import { signIn, signOut } from '@/lib/auth';
 import { useToast } from '@/hooks/use-toast';
+import { APP_CONFIG } from '@/config/environment';
 import { AuthShell, AuthField, AuthSubmit } from '@/components/auth/auth-shell';
 
 export default function AdminLoginPage() {
   const router = useRouter();
   const { toast } = useToast();
 
-  const [adminEmail, setAdminEmail] = useState('admin.ralp@nhs.net');
+  const [adminEmail, setAdminEmail] = useState(APP_CONFIG.showDemoHelpers ? 'admin.ralp@nhs.net' : '');
   const [password, setPassword] = useState('');
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
@@ -85,28 +86,30 @@ export default function AdminLoginPage() {
           required
         />
 
-        <div className="pt-1">
-          <div className="mb-1.5 flex items-center gap-1 text-[11px] text-muted-foreground">
-            <UserCheck className="h-3 w-3 text-admin" aria-hidden="true" />
-            <span>Quick fill admin credentials</span>
+        {APP_CONFIG.showDemoHelpers && (
+          <div className="pt-1">
+            <div className="mb-1.5 flex items-center gap-1 text-[11px] text-muted-foreground">
+              <UserCheck className="h-3 w-3 text-admin" aria-hidden="true" />
+              <span>Demo autofill · non-production only</span>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              <button
+                type="button"
+                onClick={() => handleAutofillAdmin('admin')}
+                className="rounded-lg border border-border bg-muted px-2.5 py-1 text-[10px] font-semibold text-muted-foreground transition-colors hover:border-admin/40 hover:bg-admin/10 hover:text-admin focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                System Admin (Alex Ward)
+              </button>
+              <button
+                type="button"
+                onClick={() => handleAutofillAdmin('caldicott')}
+                className="rounded-lg border border-border bg-muted px-2.5 py-1 text-[10px] font-semibold text-muted-foreground transition-colors hover:border-admin/40 hover:bg-admin/10 hover:text-admin focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              >
+                Caldicott Lead (Dr. Roberts)
+              </button>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-1.5">
-            <button
-              type="button"
-              onClick={() => handleAutofillAdmin('admin')}
-              className="rounded-lg border border-border bg-muted px-2.5 py-1 text-[10px] font-semibold text-muted-foreground transition-colors hover:border-admin/40 hover:bg-admin/10 hover:text-admin focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              System Admin (Alex Ward)
-            </button>
-            <button
-              type="button"
-              onClick={() => handleAutofillAdmin('caldicott')}
-              className="rounded-lg border border-border bg-muted px-2.5 py-1 text-[10px] font-semibold text-muted-foreground transition-colors hover:border-admin/40 hover:bg-admin/10 hover:text-admin focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              Caldicott Lead (Dr. Roberts)
-            </button>
-          </div>
-        </div>
+        )}
 
         <AuthSubmit type="submit" icon={ShieldCheck} disabled={isAuthenticating}>
           {isAuthenticating ? 'Authorising console access…' : 'Unlock admin console'}

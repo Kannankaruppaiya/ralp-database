@@ -10,6 +10,12 @@ export const APP_CONFIG = {
   isProduction: tier === 'production',
   /** Non-production tiers carry synthetic data and show a banner saying so. */
   showEnvBanner: tier !== 'production',
+  /**
+   * Demo conveniences — prefilled test emails and one-tap autofill accounts on
+   * the sign-in screens. Only for non-production tiers; a production login must
+   * never advertise credentials.
+   */
+  showDemoHelpers: tier !== 'production',
   supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL ?? '',
 };
 

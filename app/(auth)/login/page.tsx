@@ -17,6 +17,7 @@ import { signIn } from '@/lib/auth';
 import { Role } from '@/config/permissions';
 import { SurgeonCode } from '@/types/common';
 import { useToast } from '@/hooks/use-toast';
+import { APP_CONFIG } from '@/config/environment';
 import { AuthShell, AuthTabs, AuthField, AuthSubmit, useAuthAccent } from '@/components/auth/auth-shell';
 
 interface DemoUser {
@@ -129,24 +130,26 @@ export default function ClinicianLoginPage() {
               }
             />
 
-            <div className="pt-1">
-              <div className="mb-1.5 flex items-center gap-1 text-[11px] text-muted-foreground">
-                <UserCheck className="h-3 w-3 text-primary" aria-hidden="true" />
-                <span>Quick autofill test account</span>
+            {APP_CONFIG.showDemoHelpers && (
+              <div className="pt-1">
+                <div className="mb-1.5 flex items-center gap-1 text-[11px] text-muted-foreground">
+                  <UserCheck className="h-3 w-3 text-primary" aria-hidden="true" />
+                  <span>Demo autofill · non-production only</span>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {PRESET_ACCOUNTS.map((acc) => (
+                    <button
+                      key={acc.email}
+                      type="button"
+                      onClick={() => handleAutofill(acc)}
+                      className="rounded-lg border border-border bg-muted px-2.5 py-1 text-[10px] font-semibold text-muted-foreground transition-colors hover:border-primary/40 hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    >
+                      {acc.name} ({acc.surgeonCode || acc.initials})
+                    </button>
+                  ))}
+                </div>
               </div>
-              <div className="flex flex-wrap gap-1.5">
-                {PRESET_ACCOUNTS.map((acc) => (
-                  <button
-                    key={acc.email}
-                    type="button"
-                    onClick={() => handleAutofill(acc)}
-                    className="rounded-lg border border-border bg-muted px-2.5 py-1 text-[10px] font-semibold text-muted-foreground transition-colors hover:border-primary/40 hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  >
-                    {acc.name} ({acc.surgeonCode || acc.initials})
-                  </button>
-                ))}
-              </div>
-            </div>
+            )}
 
             <AuthSubmit type="submit" icon={Lock} disabled={isAuthenticating}>
               {isAuthenticating ? 'Authenticating session…' : 'Sign in to clinical registry'}

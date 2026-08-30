@@ -8,10 +8,11 @@ import { Button } from '@/components/ui/button';
 import { FormField, FormLabel } from '@/components/ui/form';
 import { ArrowLeft, Mail, HeartPulse, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { APP_CONFIG } from '@/config/environment';
 
 export default function ForgotPasswordPage() {
   const { toast } = useToast();
-  const [email, setEmail] = useState('v.kannan@nhs.net');
+  const [email, setEmail] = useState(APP_CONFIG.showDemoHelpers ? 'v.kannan@nhs.net' : '');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
