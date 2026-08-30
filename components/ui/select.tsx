@@ -1,15 +1,20 @@
+'use client';
+
 import * as React from 'react';
 import { cn } from '@/lib/utils';
+import { useFormFieldId } from '@/components/ui/form';
 
 export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   error?: boolean;
 }
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, children, error, ...props }, ref) => {
+  ({ className, children, error, id, ...props }, ref) => {
+    const fieldId = useFormFieldId();
     return (
       <div className="relative">
         <select
+          id={id ?? fieldId}
           className={cn(
             'flex h-9 w-full appearance-none rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 pr-8',
             error && 'border-destructive focus-visible:ring-destructive',
