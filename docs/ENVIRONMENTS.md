@@ -22,18 +22,53 @@ npx supabase start
 
 Production has no project yet. The organisation is on the free plan, which
 allows two active projects, and both slots are in use (`ReachPilot`,
-`ralp-staging`). Creating `ralp-prod` needs one of:
-
-- an upgrade to Pro — also the only way to get daily backups and
-  point-in-time recovery, which a registry holding real patient records
-  should not launch without;
-- a free slot from pausing or removing another project.
-
-Until then the migration path is dev (local) -> staging (cloud), and
-`npm run db:push:prod` will fail because `.env.production` has no project ref.
+`ralp-staging`). Until `ralp-prod` exists, the migration path is
+dev (local) -> staging (cloud), and `npm run db:push:prod` will fail because
+`.env.production` has no project ref.
 
 Non-production tiers render a coloured banner across the top of every page, so
 a test record can never be mistaken for a clinical one.
+
+### Provisioning production (runbook)
+
+Every step below is turnkey **except step 1**, which is an account-owner
+decision because it changes billing. Do them in order.
+
+1. **Make a project slot with backups.** A registry of real patient records
+   must launch with daily backups **and** point-in-time recovery, and on
+   Supabase both require the **Pro** plan. Either upgrade the organisation to
+   Pro (keeps all three projects), or free a slot by pausing a project you can
+   spare — but a free-tier `ralp-prod` has no PITR and should not hold real
+   records, so Pro is the intended path. Create the project as `ralp-prod` in
+   **eu-west-2** (patient data stays in the UK), then enable daily backups and
+   PITR in Project Settings, and **verify a restore actually works** before
+   going further.
+
+2. **Fill in `.env.production`** from Project Settings -> API (never commit it):
+   `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`,
+   `SUPABASE_SERVICE_ROLE_KEY`, and `SUPABASE_PROJECT_REF` +
+   `SUPABASE_DB_PASSWORD` for the migration script.
+
+3. **Apply every migration** (0001–0010, including the export-gating and
+   Storage-policy migrations added in this review):
+
+   ```bash
+   npm run db:push:prod        # requires the --yes already baked into the script
+   ```
+
+   0010 creates the private `clinical-documents` Storage bucket and its
+   policies, so there is no separate manual bucket step.
+
+4. **Set the same env vars in the host** (hosting dashboard, not the repo) for
+   the `main` branch, and deploy. The build throws on a missing Supabase URL/key
+   in production, so a misconfigured deploy fails loudly.
+
+5. **Promote the first administrator** in the Supabase SQL editor — see
+   [First user](#first-user) below (once per environment).
+
+6. **Confirm the hardening is live**: the Claude/production security headers
+   respond (`curl -sI` the deployed URL), and the Supabase advisors report no
+   new RLS or Storage findings.
 
 ---
 
