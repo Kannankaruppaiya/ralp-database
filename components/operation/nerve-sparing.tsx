@@ -17,7 +17,7 @@ export function NerveSparingDisplay({
         {side || 'Not recorded'}
       </Badge>
       {side === 'Bilateral' && (
-        <span className="text-xs text-slate-500">
+        <span className="text-xs text-muted-foreground">
           (L: {leftGrade || '5/5'} | R: {rightGrade || '5/5'})
         </span>
       )}

@@ -93,9 +93,9 @@ export default function AdminAuditLogPage() {
       />
 
       {/* Filter Bar */}
-      <div className="flex flex-col sm:flex-row items-center gap-3 p-4 rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div className="flex flex-col sm:flex-row items-center gap-3 p-4 rounded-xl border border-border bg-card shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="relative flex-1 w-full">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search by clinician, patient, action or details..."
             value={search}
@@ -125,7 +125,7 @@ export default function AdminAuditLogPage() {
       </div>
 
       {/* Audit Log Table */}
-      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
+      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
         <Table>
           <TableHeader>
             <TableRow>
@@ -140,17 +140,17 @@ export default function AdminAuditLogPage() {
           <TableBody>
             {!mounted || paginatedLogs.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-12 text-sm text-slate-500">
+                <TableCell colSpan={6} className="text-center py-12 text-sm text-muted-foreground">
                   {!mounted ? 'Loading audit trail…' : 'No audit log entries found matching criteria.'}
                 </TableCell>
               </TableRow>
             ) : (
               paginatedLogs.map((log) => (
-                <TableRow key={log.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50">
-                  <TableCell className="text-xs font-mono text-slate-500">
+                <TableRow key={log.id} className="hover:bg-muted/80 dark:hover:bg-slate-800/50">
+                  <TableCell className="text-xs font-mono text-muted-foreground">
                     {formatDateTime(log.timestamp)}
                   </TableCell>
-                  <TableCell className="text-xs font-semibold text-slate-900 dark:text-slate-100">
+                  <TableCell className="text-xs font-semibold text-foreground dark:text-slate-100">
                     {log.userName}
                   </TableCell>
                   <TableCell className="text-xs">
@@ -161,10 +161,10 @@ export default function AdminAuditLogPage() {
                       {log.action}
                     </Badge>
                   </TableCell>
-                  <TableCell className="text-xs font-medium text-slate-800 dark:text-slate-200">
+                  <TableCell className="text-xs font-medium text-foreground dark:text-slate-200">
                     {log.patientName || '—'}
                   </TableCell>
-                  <TableCell className="text-xs text-slate-600 dark:text-slate-400">
+                  <TableCell className="text-xs text-muted-foreground dark:text-slate-400">
                     {log.details}
                   </TableCell>
                 </TableRow>
@@ -176,7 +176,7 @@ export default function AdminAuditLogPage() {
 
       {/* Pagination Controls */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between px-1 text-xs text-slate-500">
+        <div className="flex items-center justify-between px-1 text-xs text-muted-foreground">
           <span>
             Showing {((page - 1) * PAGE_SIZE) + 1}–{Math.min(page * PAGE_SIZE, filteredLogs.length)} of {filteredLogs.length} events
           </span>
@@ -191,7 +191,7 @@ export default function AdminAuditLogPage() {
               <ChevronLeft className="h-3.5 w-3.5" />
               Previous
             </Button>
-            <span className="font-medium text-slate-700 dark:text-slate-300">
+            <span className="font-medium text-foreground dark:text-slate-300">
               Page {page} of {totalPages}
             </span>
             <Button

@@ -10,7 +10,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
+    <div className="min-h-screen bg-muted text-foreground flex flex-col font-sans">
       <AdminSidebar />
       <div className="flex flex-1 flex-col md:pl-64">
         <AdminTopbar />

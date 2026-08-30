@@ -5,12 +5,12 @@ import { HeartPulse, ArrowLeft } from 'lucide-react';
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 text-center p-4">
-      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-teal-100 text-teal-600 mb-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-muted text-center p-4">
+      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/15 text-primary mb-4">
         <HeartPulse className="h-8 w-8" />
       </div>
-      <h1 className="text-3xl font-extrabold text-slate-900">404 — Record Not Found</h1>
-      <p className="text-xs text-slate-500 mt-2 max-w-sm">
+      <h1 className="text-3xl font-extrabold text-foreground">404 — Record Not Found</h1>
+      <p className="text-xs text-muted-foreground mt-2 max-w-sm">
         The requested clinical page or patient record could not be found in the RALP database.
       </p>
       <Link href="/dashboard" className="mt-6">

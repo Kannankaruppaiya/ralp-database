@@ -48,18 +48,18 @@ export default function ReviewQueuePage() {
           onClick={() => setActiveTab('extractions')}
           className={`p-4 rounded-xl border text-left transition-all ${
             activeTab === 'extractions'
-              ? 'border-teal-500 bg-teal-50/50 dark:bg-teal-950/30 ring-2 ring-teal-500/30'
-              : 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
+              ? 'border-primary bg-primary/10/50 dark:bg-teal-950/30 ring-2 ring-ring/30'
+              : 'border-border bg-card hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500">Extraction Review</span>
-            <FileText className="h-4 w-4 text-teal-600" />
+            <span className="text-xs font-semibold text-muted-foreground">Extraction Review</span>
+            <FileText className="h-4 w-4 text-primary" />
           </div>
-          <div className="text-2xl font-bold text-slate-900 dark:text-white mt-1">
+          <div className="text-2xl font-bold text-foreground dark:text-white mt-1">
             {pendingExtractions.length}
           </div>
-          <span className="text-[11px] text-teal-600 font-medium">Awaiting sign-off</span>
+          <span className="text-[11px] text-primary font-medium">Awaiting sign-off</span>
         </button>
 
         <button
@@ -68,14 +68,14 @@ export default function ReviewQueuePage() {
           className={`p-4 rounded-xl border text-left transition-all ${
             activeTab === 'unmatched'
               ? 'border-purple-500 bg-purple-50/50 dark:bg-purple-950/30 ring-2 ring-purple-500/30'
-              : 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
+              : 'border-border bg-card hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500">Unmatched Docs</span>
+            <span className="text-xs font-semibold text-muted-foreground">Unmatched Docs</span>
             <UserX className="h-4 w-4 text-purple-600" />
           </div>
-          <div className="text-2xl font-bold text-slate-900 dark:text-white mt-1">
+          <div className="text-2xl font-bold text-foreground dark:text-white mt-1">
             {unmatchedDocs.length}
           </div>
           <span className="text-[11px] text-purple-600 font-medium">Needs patient link</span>
@@ -87,14 +87,14 @@ export default function ReviewQueuePage() {
           className={`p-4 rounded-xl border text-left transition-all ${
             activeTab === 'conflicts'
               ? 'border-amber-500 bg-amber-50/50 dark:bg-amber-950/30 ring-2 ring-amber-500/30'
-              : 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
+              : 'border-border bg-card hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500">Conflicts</span>
+            <span className="text-xs font-semibold text-muted-foreground">Conflicts</span>
             <ShieldAlert className="h-4 w-4 text-amber-600" />
           </div>
-          <div className="text-2xl font-bold text-slate-900 dark:text-white mt-1">
+          <div className="text-2xl font-bold text-foreground dark:text-white mt-1">
             {conflictingJobs.length}
           </div>
           <span className="text-[11px] text-amber-600 font-medium">Data discrepancies</span>
@@ -106,14 +106,14 @@ export default function ReviewQueuePage() {
           className={`p-4 rounded-xl border text-left transition-all ${
             activeTab === 'missing'
               ? 'border-rose-500 bg-rose-50/50 dark:bg-rose-950/30 ring-2 ring-rose-500/30'
-              : 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
+              : 'border-border bg-card hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500">Missing Data</span>
+            <span className="text-xs font-semibold text-muted-foreground">Missing Data</span>
             <AlertCircle className="h-4 w-4 text-rose-500" />
           </div>
-          <div className="text-2xl font-bold text-slate-900 dark:text-white mt-1">
+          <div className="text-2xl font-bold text-foreground dark:text-white mt-1">
             {missingDataPatients.length}
           </div>
           <span className="text-[11px] text-rose-600 font-medium">Incomplete records</span>
@@ -121,7 +121,7 @@ export default function ReviewQueuePage() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2">
+      <div className="flex items-center gap-2 border-b border-border dark:border-slate-800 pb-2">
         <Button
           variant={activeTab === 'all' ? 'default' : 'ghost'}
           size="sm"
@@ -169,27 +169,27 @@ export default function ReviewQueuePage() {
         {/* Extractions List */}
         {(activeTab === 'all' || activeTab === 'extractions') && pendingExtractions.length > 0 && (
           <div className="space-y-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-              <FileText className="h-4 w-4 text-teal-600" />
+            <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+              <FileText className="h-4 w-4 text-primary" />
               <span>Pending Document Extractions ({pendingExtractions.length})</span>
             </h3>
             {pendingExtractions.map((job) => (
               <Card key={job.id} className="shadow-sm hover:border-teal-400 transition-colors">
                 <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-50 text-teal-600 dark:bg-teal-950 dark:text-teal-400 flex-shrink-0">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-teal-950 dark:text-teal-400 flex-shrink-0">
                       <ClipboardCheck className="h-5 w-5" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                      <h4 className="text-sm font-bold text-foreground dark:text-slate-100">
                         {job.documentTitle}
                       </h4>
-                      <div className="text-xs text-slate-500 flex flex-wrap items-center gap-x-3 gap-y-1 mt-0.5">
+                      <div className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1 mt-0.5">
                         <span>Matched: <strong>{job.matchedPatient?.fullName || 'Auto-matching'}</strong></span>
                         <span>•</span>
                         <span>{job.extractedFields.length} extracted fields</span>
                         <span>•</span>
-                        <span className="text-teal-600 font-semibold">{job.sourceType.replace('_', ' ')}</span>
+                        <span className="text-primary font-semibold">{job.sourceType.replace('_', ' ')}</span>
                       </div>
                     </div>
                   </div>
@@ -209,7 +209,7 @@ export default function ReviewQueuePage() {
         {/* Conflicts List */}
         {(activeTab === 'all' || activeTab === 'conflicts') && conflictingJobs.length > 0 && (
           <div className="space-y-3 pt-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
               <ShieldAlert className="h-4 w-4 text-amber-600" />
               <span>Conflicting Clinical Data Points ({conflictingJobs.length})</span>
             </h3>
@@ -224,7 +224,7 @@ export default function ReviewQueuePage() {
                       <h4 className="text-sm font-bold text-amber-950 dark:text-amber-200">
                         {job.documentTitle} — Discrepancy in Blood Loss / Duration
                       </h4>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+                      <p className="text-xs text-muted-foreground dark:text-slate-400 mt-0.5">
                         Patient: <strong>{job.matchedPatient?.fullName}</strong> • Extracted value differs from current database record
                       </p>
                     </div>
@@ -245,7 +245,7 @@ export default function ReviewQueuePage() {
         {/* Missing Data Patients */}
         {(activeTab === 'all' || activeTab === 'missing') && missingDataPatients.length > 0 && (
           <div className="space-y-3 pt-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
               <AlertCircle className="h-4 w-4 text-rose-500" />
               <span>Missing Clinical Datasets in Cohort ({missingDataPatients.length})</span>
             </h3>
@@ -257,7 +257,7 @@ export default function ReviewQueuePage() {
                       <AlertCircle className="h-5 w-5" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                      <h4 className="text-sm font-bold text-foreground dark:text-slate-100">
                         {patient.firstName} {patient.surname} (NHS: {patient.nhsNumber}, MRN: {patient.hospitalNumber})
                       </h4>
                       <div className="text-xs text-rose-600 flex items-center gap-2 mt-0.5">

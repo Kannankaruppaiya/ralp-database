@@ -218,7 +218,7 @@ export function BaselineCancerCard({
       </div>
 
       {data?.notes && (
-        <div className="mt-4 p-3 bg-slate-50 dark:bg-slate-800/40 rounded-lg text-xs text-slate-600 dark:text-slate-300">
+        <div className="mt-4 p-3 bg-muted dark:bg-slate-800/40 rounded-lg text-xs text-muted-foreground dark:text-slate-300">
           <strong>Biopsy / MDT Notes:</strong> {data.notes}
         </div>
       )}

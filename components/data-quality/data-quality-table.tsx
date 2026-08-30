@@ -10,7 +10,7 @@ import Link from 'next/link';
 
 export function DataQualityTable({ patients }: { patients: PatientFullRecord[] }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
+    <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
       <Table>
         <TableHeader>
           <TableRow>
@@ -27,11 +27,11 @@ export function DataQualityTable({ patients }: { patients: PatientFullRecord[] }
         <TableBody>
           {patients.map((p) => (
             <TableRow key={p.id}>
-              <TableCell className="font-semibold text-xs text-slate-900 dark:text-slate-100">
-                <Link href={`/patients/${p.id}`} className="hover:text-teal-600">
+              <TableCell className="font-semibold text-xs text-foreground dark:text-slate-100">
+                <Link href={`/patients/${p.id}`} className="hover:text-primary">
                   {p.firstName} {p.surname}
                 </Link>
-                <span className="block text-xs font-normal text-slate-400 font-mono">
+                <span className="block text-xs font-normal text-muted-foreground font-mono">
                   {p.hospitalNumber}
                 </span>
               </TableCell>
@@ -67,7 +67,7 @@ export function DataQualityTable({ patients }: { patients: PatientFullRecord[] }
                   <AlertCircle className="h-4 w-4 text-rose-500" />
                 )}
               </TableCell>
-              <TableCell className="text-xs text-slate-600">
+              <TableCell className="text-xs text-muted-foreground">
                 {p.completeness.followUpsComplete} / 7
               </TableCell>
               <TableCell className="text-right">

@@ -68,9 +68,9 @@ export function FollowUpCard({
 
   if (isEditing) {
     return (
-      <Card className="border-teal-500 shadow-md">
+      <Card className="border-primary shadow-md">
         <CardHeader className="p-4 pb-2 border-b flex flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-sm font-bold text-slate-900">
+          <CardTitle className="text-sm font-bold text-foreground">
             Edit {followUp.milestone.toUpperCase()} Follow-up ({followUp.targetMonths} Months)
           </CardTitle>
           <div className="flex items-center gap-1.5">
@@ -181,52 +181,52 @@ export function FollowUpCard({
     <Card className="shadow-sm hover:shadow-md transition-shadow">
       <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between space-y-0">
         <div>
-          <CardTitle className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <CardTitle className="text-sm font-bold text-foreground dark:text-slate-100 flex items-center gap-2">
             <span>{followUp.milestone.toUpperCase()} Milestone</span>
-            <span className="text-xs font-normal text-slate-500">({followUp.targetMonths} Months Post-Op)</span>
+            <span className="text-xs font-normal text-muted-foreground">({followUp.targetMonths} Months Post-Op)</span>
           </CardTitle>
-          <span className="text-xs text-slate-500">Target Due: {formatDate(followUp.dueDate)}</span>
+          <span className="text-xs text-muted-foreground">Target Due: {formatDate(followUp.dueDate)}</span>
         </div>
         <div className="flex items-center gap-2">
           {getStatusBadge()}
-          <Button variant="ghost" size="sm" onClick={() => setIsEditing(true)} className="h-8 px-2 text-slate-500">
+          <Button variant="ghost" size="sm" onClick={() => setIsEditing(true)} className="h-8 px-2 text-muted-foreground">
             <Edit2 className="h-3.5 w-3.5" />
           </Button>
         </div>
       </CardHeader>
       <CardContent className="p-4 pt-2">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-          <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800/40">
-            <span className="text-slate-400 block text-[11px]">Serum PSA</span>
-            <strong className="text-slate-900 dark:text-slate-100 font-semibold text-sm">
+          <div className="p-2.5 rounded-lg bg-muted dark:bg-slate-800/40">
+            <span className="text-muted-foreground block text-[11px]">Serum PSA</span>
+            <strong className="text-foreground dark:text-slate-100 font-semibold text-sm">
               {followUp.psa !== undefined ? formatPsa(followUp.psa) : '—'}
             </strong>
           </div>
 
-          <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800/40">
-            <span className="text-slate-400 block text-[11px]">Continence</span>
-            <strong className="text-slate-900 dark:text-slate-100 font-semibold truncate block">
+          <div className="p-2.5 rounded-lg bg-muted dark:bg-slate-800/40">
+            <span className="text-muted-foreground block text-[11px]">Continence</span>
+            <strong className="text-foreground dark:text-slate-100 font-semibold truncate block">
               {followUp.continence?.dayStatus?.split(',')[0] || '—'}
             </strong>
           </div>
 
-          <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800/40">
-            <span className="text-slate-400 block text-[11px]">IPSS Score</span>
-            <strong className="text-slate-900 dark:text-slate-100 font-semibold">
+          <div className="p-2.5 rounded-lg bg-muted dark:bg-slate-800/40">
+            <span className="text-muted-foreground block text-[11px]">IPSS Score</span>
+            <strong className="text-foreground dark:text-slate-100 font-semibold">
               {followUp.ipssScore?.totalScore !== undefined ? `${followUp.ipssScore.totalScore}/35` : '—'}
             </strong>
           </div>
 
-          <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800/40">
-            <span className="text-slate-400 block text-[11px]">SHIM (Potency)</span>
-            <strong className="text-slate-900 dark:text-slate-100 font-semibold">
+          <div className="p-2.5 rounded-lg bg-muted dark:bg-slate-800/40">
+            <span className="text-muted-foreground block text-[11px]">SHIM (Potency)</span>
+            <strong className="text-foreground dark:text-slate-100 font-semibold">
               {followUp.shimScore?.totalScore !== undefined ? `${followUp.shimScore.totalScore}/25` : '—'}
             </strong>
           </div>
         </div>
 
         {followUp.clinicalNotes && (
-          <p className="mt-3 text-xs text-slate-600 dark:text-slate-400 border-t pt-2 italic">
+          <p className="mt-3 text-xs text-muted-foreground dark:text-slate-400 border-t pt-2 italic">
             &ldquo;{followUp.clinicalNotes}&rdquo;
           </p>
         )}
@@ -247,8 +247,8 @@ export function FollowUpTimeline({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-          <CalendarClock className="h-5 w-5 text-teal-600" />
+        <h2 className="text-base font-bold text-foreground dark:text-slate-100 flex items-center gap-2">
+          <CalendarClock className="h-5 w-5 text-primary" />
           <span>7-Milestone Longitudinal Follow-up Protocol</span>
         </h2>
       </div>

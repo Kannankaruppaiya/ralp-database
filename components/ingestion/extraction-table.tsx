@@ -74,17 +74,17 @@ export function ExtractionTable({ job }: { job: IngestionJob }) {
     <div className="space-y-6">
       {/* Patient Match Card */}
       {job.matchedPatient && (
-        <Card className="border-teal-200 bg-teal-50/40 dark:border-teal-900 dark:bg-teal-950/20">
+        <Card className="border-primary/30 bg-primary/10/40 dark:border-teal-900 dark:bg-teal-950/20">
           <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-600 text-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
                 <UserCheck className="h-5 w-5" />
               </div>
               <div>
-                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                <h4 className="text-sm font-bold text-foreground dark:text-slate-100">
                   Matched Patient: {job.matchedPatient.fullName}
                 </h4>
-                <div className="text-xs text-slate-500 flex items-center gap-2">
+                <div className="text-xs text-muted-foreground flex items-center gap-2">
                   <span>NHS: {job.matchedPatient.nhsNumber}</span>
                   <span>•</span>
                   <span>MRN: {job.matchedPatient.hospitalNumber}</span>
@@ -108,7 +108,7 @@ export function ExtractionTable({ job }: { job: IngestionJob }) {
           className={`rounded-xl border p-4 text-xs ${
             job.conflictCount > 0
               ? 'border-rose-300 bg-rose-50 text-rose-800'
-              : 'border-slate-200 bg-slate-50 text-slate-600'
+              : 'border-border bg-muted text-muted-foreground'
           }`}
         >
           <div className="mb-1.5 flex items-center gap-1.5 font-bold">
@@ -130,13 +130,13 @@ export function ExtractionTable({ job }: { job: IngestionJob }) {
       )}
 
       {/* Extracted Fields Table */}
-      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
-        <div className="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
+        <div className="p-4 border-b border-border dark:border-slate-800 flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+            <h3 className="text-sm font-bold text-foreground dark:text-slate-100">
               Extracted Clinical Fields & Confidence
             </h3>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-muted-foreground">
               Verify values parsed from &ldquo;{job.documentTitle}&rdquo;
             </p>
           </div>
@@ -160,16 +160,16 @@ export function ExtractionTable({ job }: { job: IngestionJob }) {
           <TableBody>
             {fields.map((field) => (
               <TableRow key={field.id} className={field.hasConflict ? 'bg-amber-50/40 dark:bg-amber-950/20' : undefined}>
-                <TableCell className="font-semibold text-xs text-slate-900 dark:text-slate-100">
+                <TableCell className="font-semibold text-xs text-foreground dark:text-slate-100">
                   {field.fieldLabel}
                 </TableCell>
                 <TableCell className="text-xs">
                   <Badge variant="outline">{field.category}</Badge>
                 </TableCell>
-                <TableCell className="text-xs font-mono font-bold text-teal-700 dark:text-teal-400">
+                <TableCell className="text-xs font-mono font-bold text-primary dark:text-teal-400">
                   {String(field.normalizedValue)}
                 </TableCell>
-                <TableCell className="text-xs text-slate-500 max-w-xs truncate italic">
+                <TableCell className="text-xs text-muted-foreground max-w-xs truncate italic">
                   &ldquo;{field.rawValue}&rdquo;
                 </TableCell>
                 <TableCell>

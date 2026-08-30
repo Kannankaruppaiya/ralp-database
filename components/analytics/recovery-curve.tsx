@@ -28,20 +28,20 @@ export function RecoveryCurve({ curve }: { curve: RecoveryPoint[] }) {
   return (
     <Card className="shadow-sm">
       <CardHeader className="p-5 pb-2">
-        <CardTitle className="text-sm font-bold text-slate-900 dark:text-white">
+        <CardTitle className="text-sm font-bold text-foreground dark:text-white">
           Functional Recovery Curve
         </CardTitle>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-muted-foreground">
           Pad-free continence and potency (SHIM ≥ 17) by milestone, completed assessments only
         </p>
       </CardHeader>
       <CardContent className="p-5 pt-2">
         {data.length === 0 ? (
           <div className="flex h-72 flex-col items-center justify-center gap-1 text-center">
-            <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+            <p className="text-sm font-semibold text-foreground dark:text-slate-300">
               No completed assessments yet
             </p>
-            <p className="text-xs text-slate-500 max-w-xs">
+            <p className="text-xs text-muted-foreground max-w-xs">
               The curve builds as patients return their milestone questionnaires.
             </p>
           </div>

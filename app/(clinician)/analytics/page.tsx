@@ -22,12 +22,12 @@ function Stat({
     <Card className={`border-l-4 ${tone} shadow-sm`}>
       <CardContent className="p-4">
         <div className="flex items-start justify-between">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+          <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             {label}
           </span>
-          <Icon className="h-4 w-4 text-slate-400" />
+          <Icon className="h-4 w-4 text-muted-foreground" />
         </div>
-        <div className="mt-1 text-2xl font-bold text-slate-900 dark:text-white">
+        <div className="mt-1 text-2xl font-bold text-foreground dark:text-white">
           {value === null ? '—' : value.toLocaleString()}
           {value !== null && suffix ? <span className="text-base font-semibold">{suffix}</span> : null}
         </div>
@@ -65,7 +65,7 @@ export default function AnalyticsHubPage() {
       <RecoveryCurve curve={curve} />
       <OutcomeChart />
 
-      <p className="text-[11px] leading-relaxed text-slate-500">
+      <p className="text-[11px] leading-relaxed text-muted-foreground">
         Definitions: continence is pad-free (dry, or occasional leakage without a pad); potency is
         SHIM ≥ 17; biochemical recurrence is PSA ≥ 0.2 ng/mL. Rates count completed assessments
         only, so a milestone patients have not yet reached reports no data rather than 0%.

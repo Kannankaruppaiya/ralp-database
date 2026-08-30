@@ -24,13 +24,13 @@ export default function PatientMatchingPage() {
       />
 
       {/* Matching Rules Info Banner */}
-      <div className="p-4 rounded-xl border border-teal-200 bg-teal-50/50 dark:border-teal-900/40 dark:bg-teal-950/20 text-xs text-teal-900 dark:text-teal-300 flex items-start gap-3">
-        <ShieldCheck className="h-5 w-5 text-teal-600 flex-shrink-0 mt-0.5" />
+      <div className="p-4 rounded-xl border border-primary/30 bg-primary/10/50 dark:border-teal-900/40 dark:bg-teal-950/20 text-xs text-primary dark:text-teal-300 flex items-start gap-3">
+        <ShieldCheck className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
         <div>
           <strong className="font-semibold block text-teal-950 dark:text-teal-200">
             NHS Digital Safe Identity Matching Protocol
           </strong>
-          <p className="mt-0.5 text-teal-800/90 dark:text-teal-400">
+          <p className="mt-0.5 text-primary/90 dark:text-teal-400">
             Documents are deterministically mapped via 10-digit NHS numbers and Hospital MRNs. Per clinical governance, <strong>patient name alone is never permitted</strong> for high-confidence clinical record linking.
           </p>
         </div>
@@ -42,12 +42,12 @@ export default function PatientMatchingPage() {
 
           return (
             <Card key={job.id} className="shadow-sm overflow-hidden">
-              <CardHeader className="p-5 pb-3 border-b bg-slate-50/50 dark:bg-slate-800/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <CardHeader className="p-5 pb-3 border-b bg-muted/50 dark:bg-slate-800/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+                  <h3 className="text-sm font-bold text-foreground dark:text-white">
                     Document: {job.documentTitle}
                   </h3>
-                  <span className="text-xs text-slate-500">
+                  <span className="text-xs text-muted-foreground">
                     Source: {job.sourceType.replace('_', ' ')} • Uploaded: {new Date(job.uploadedAt).toLocaleDateString('en-GB')}
                   </span>
                 </div>
@@ -59,31 +59,31 @@ export default function PatientMatchingPage() {
               <CardContent className="p-5">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Extracted Metadata from Document */}
-                  <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 space-y-2 text-xs">
-                    <span className="font-bold text-slate-700 dark:text-slate-300 block uppercase tracking-wider text-[10px]">
+                  <div className="p-4 rounded-lg bg-muted dark:bg-slate-800/40 border border-border dark:border-slate-800 space-y-2 text-xs">
+                    <span className="font-bold text-foreground dark:text-slate-300 block uppercase tracking-wider text-[10px]">
                       Identifiers Extracted From Document
                     </span>
-                    <div className="flex justify-between py-1 border-b border-slate-200/60">
-                      <span className="text-slate-500">Patient Name:</span>
-                      <strong className="text-slate-900 dark:text-slate-100">{job.matchedPatient?.fullName || 'John Smith'}</strong>
+                    <div className="flex justify-between py-1 border-b border-border/60">
+                      <span className="text-muted-foreground">Patient Name:</span>
+                      <strong className="text-foreground dark:text-slate-100">{job.matchedPatient?.fullName || 'John Smith'}</strong>
                     </div>
-                    <div className="flex justify-between py-1 border-b border-slate-200/60">
-                      <span className="text-slate-500">NHS Number:</span>
-                      <strong className="font-mono text-teal-700 dark:text-teal-400">{job.matchedPatient?.nhsNumber || '456 789 0123'}</strong>
+                    <div className="flex justify-between py-1 border-b border-border/60">
+                      <span className="text-muted-foreground">NHS Number:</span>
+                      <strong className="font-mono text-primary dark:text-teal-400">{job.matchedPatient?.nhsNumber || '456 789 0123'}</strong>
                     </div>
-                    <div className="flex justify-between py-1 border-b border-slate-200/60">
-                      <span className="text-slate-500">Hospital Number (MRN):</span>
-                      <strong className="font-mono text-slate-900 dark:text-slate-100">{job.matchedPatient?.hospitalNumber || 'HOS-89421'}</strong>
+                    <div className="flex justify-between py-1 border-b border-border/60">
+                      <span className="text-muted-foreground">Hospital Number (MRN):</span>
+                      <strong className="font-mono text-foreground dark:text-slate-100">{job.matchedPatient?.hospitalNumber || 'HOS-89421'}</strong>
                     </div>
                     <div className="flex justify-between py-1">
-                      <span className="text-slate-500">Date of Birth:</span>
-                      <strong className="text-slate-900 dark:text-slate-100">{job.matchedPatient?.dob || '14 May 1961'}</strong>
+                      <span className="text-muted-foreground">Date of Birth:</span>
+                      <strong className="text-foreground dark:text-slate-100">{job.matchedPatient?.dob || '14 May 1961'}</strong>
                     </div>
                   </div>
 
                   {/* Matching Criteria Breakdown */}
                   <div className="space-y-3">
-                    <span className="font-bold text-slate-700 dark:text-slate-300 block uppercase tracking-wider text-[10px]">
+                    <span className="font-bold text-foreground dark:text-slate-300 block uppercase tracking-wider text-[10px]">
                       Deterministic Match Verification
                     </span>
 
@@ -104,12 +104,12 @@ export default function PatientMatchingPage() {
                         <strong className="font-mono text-emerald-700">100%</strong>
                       </div>
 
-                      <div className="flex items-center justify-between p-2 rounded-md bg-slate-50 text-slate-700 dark:bg-slate-800/40 dark:text-slate-300 border border-slate-200">
+                      <div className="flex items-center justify-between p-2 rounded-md bg-muted text-foreground dark:bg-slate-800/40 dark:text-slate-300 border border-border">
                         <span className="flex items-center gap-1.5 font-medium">
-                          <CheckCircle2 className="h-4 w-4 text-teal-600" />
+                          <CheckCircle2 className="h-4 w-4 text-primary" />
                           DOB & Surname Verification
                         </span>
-                        <strong className="font-mono text-teal-700">Verified</strong>
+                        <strong className="font-mono text-primary">Verified</strong>
                       </div>
                     </div>
 

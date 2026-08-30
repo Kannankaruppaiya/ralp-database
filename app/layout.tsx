@@ -25,7 +25,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-teal-500 selection:text-white font-sans">
+      <body className="min-h-screen bg-muted text-foreground antialiased selection:bg-teal-500 selection:text-white font-sans">
         <EnvBanner />
         {children}
         <PerformanceHud />

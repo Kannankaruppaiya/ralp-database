@@ -91,7 +91,7 @@ export default function AdminExportsPage() {
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {/* ---------------------------------------------- pseudonymised */}
-        <Card className="flex flex-col justify-between border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <Card className="flex flex-col justify-between border-border bg-card shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <CardHeader className="border-b p-5 pb-3">
             <div className="flex items-center justify-between">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
@@ -99,12 +99,12 @@ export default function AdminExportsPage() {
               </div>
               <Badge variant="success" className="text-[10px]">No identifiers</Badge>
             </div>
-            <CardTitle className="mt-3 text-base font-bold text-slate-900 dark:text-white">
+            <CardTitle className="mt-3 text-base font-bold text-foreground dark:text-white">
               Research &amp; Audit Extract
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 p-5">
-            <p className="text-xs leading-relaxed text-slate-500">
+            <p className="text-xs leading-relaxed text-muted-foreground">
               Pre-operative risk, operative detail, histology and 12-month functional outcomes. Each
               patient appears under a stable pseudonym, so records still link across submissions
               without carrying an NHS number, hospital number, name or date of birth.
@@ -121,7 +121,7 @@ export default function AdminExportsPage() {
         </Card>
 
         {/* ---------------------------------------------- identifiable */}
-        <Card className="flex flex-col justify-between border-rose-200 bg-white shadow-sm dark:border-rose-900/50 dark:bg-slate-900">
+        <Card className="flex flex-col justify-between border-rose-200 bg-card shadow-sm dark:border-rose-900/50 dark:bg-slate-900">
           <CardHeader className="border-b p-5 pb-3">
             <div className="flex items-center justify-between">
               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-rose-50 text-rose-700 dark:bg-rose-950 dark:text-rose-400">
@@ -129,12 +129,12 @@ export default function AdminExportsPage() {
               </div>
               <Badge variant="destructive" className="text-[10px]">Identifiable</Badge>
             </div>
-            <CardTitle className="mt-3 text-base font-bold text-slate-900 dark:text-white">
+            <CardTitle className="mt-3 text-base font-bold text-foreground dark:text-white">
               NPCA National Submission
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 p-5">
-            <p className="text-xs leading-relaxed text-slate-500">
+            <p className="text-xs leading-relaxed text-muted-foreground">
               The same clinical fields <strong>plus NHS number, hospital number, name and date of
               birth</strong>, as the national audit requires for record linkage. The downloaded file
               is identifiable patient data wherever it is saved, and the export is recorded in the
@@ -184,7 +184,7 @@ export default function AdminExportsPage() {
         </Card>
       </div>
 
-      <p className="text-[11px] leading-relaxed text-slate-500">
+      <p className="text-[11px] leading-relaxed text-muted-foreground">
         Both exports are written to the Caldicott audit trail under distinct actions, so an
         identifiable extract is always distinguishable from a pseudonymised one after the fact.
       </p>

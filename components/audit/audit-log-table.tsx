@@ -15,7 +15,7 @@ export function AuditLogTable({ logs }: { logs: AuditLogEntry[] }) {
 
   if (logs.length === 0) {
     return (
-      <div className="rounded-xl border border-slate-200 bg-white p-12 text-center text-sm text-slate-500 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div className="rounded-xl border border-border bg-card p-12 text-center text-sm text-muted-foreground shadow-sm dark:border-slate-800 dark:bg-slate-900">
         No audit log events recorded yet.
       </div>
     );
@@ -26,7 +26,7 @@ export function AuditLogTable({ logs }: { logs: AuditLogEntry[] }) {
 
   return (
     <div className="space-y-3">
-      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
+      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
         <Table>
           <TableHeader>
             <TableRow>
@@ -41,10 +41,10 @@ export function AuditLogTable({ logs }: { logs: AuditLogEntry[] }) {
           <TableBody>
             {paginatedLogs.map((log) => (
               <TableRow key={log.id}>
-                <TableCell className="text-xs font-mono text-slate-500">
+                <TableCell className="text-xs font-mono text-muted-foreground">
                   {formatDateTime(log.timestamp)}
                 </TableCell>
-                <TableCell className="text-xs font-semibold text-slate-900 dark:text-slate-100">
+                <TableCell className="text-xs font-semibold text-foreground dark:text-slate-100">
                   {log.userName}
                 </TableCell>
                 <TableCell className="text-xs">
@@ -55,10 +55,10 @@ export function AuditLogTable({ logs }: { logs: AuditLogEntry[] }) {
                     {log.action}
                   </Badge>
                 </TableCell>
-                <TableCell className="text-xs font-medium text-slate-800 dark:text-slate-200">
+                <TableCell className="text-xs font-medium text-foreground dark:text-slate-200">
                   {log.patientName || '—'}
                 </TableCell>
-                <TableCell className="text-xs text-slate-600 dark:text-slate-400">
+                <TableCell className="text-xs text-muted-foreground dark:text-slate-400">
                   {log.details}
                 </TableCell>
               </TableRow>
@@ -68,7 +68,7 @@ export function AuditLogTable({ logs }: { logs: AuditLogEntry[] }) {
       </div>
 
       {totalPages > 1 && (
-        <div className="flex items-center justify-between px-1 text-xs text-slate-500">
+        <div className="flex items-center justify-between px-1 text-xs text-muted-foreground">
           <span>
             Showing {((page - 1) * PAGE_SIZE) + 1}–{Math.min(page * PAGE_SIZE, logs.length)} of {logs.length} events
           </span>
@@ -83,7 +83,7 @@ export function AuditLogTable({ logs }: { logs: AuditLogEntry[] }) {
               <ChevronLeft className="h-3.5 w-3.5" />
               Previous
             </Button>
-            <span className="font-medium text-slate-700 dark:text-slate-300">
+            <span className="font-medium text-foreground dark:text-slate-300">
               Page {page} of {totalPages}
             </span>
             <Button

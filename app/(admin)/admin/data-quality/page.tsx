@@ -80,55 +80,55 @@ export default function AdminDataQualityPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="border-l-4 border-l-teal-600 shadow-sm">
           <CardHeader className="p-4 pb-1 flex flex-row items-center justify-between space-y-0">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">NPCA Compliant</span>
-            <CheckCircle2 className="h-4 w-4 text-teal-600" />
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">NPCA Compliant</span>
+            <CheckCircle2 className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent className="p-4 pt-1">
-            <div className="text-2xl font-bold text-slate-900 dark:text-white">
+            <div className="text-2xl font-bold text-foreground dark:text-white">
               {total > 0 ? Math.round((completeCount / total) * 100) : 0}%
             </div>
-            <p className="text-[11px] text-slate-500 mt-1">{completeCount} / {total} patients (&gt;85% data score)</p>
+            <p className="text-[11px] text-muted-foreground mt-1">{completeCount} / {total} patients (&gt;85% data score)</p>
           </CardContent>
         </Card>
 
         <Card className="border-l-4 border-l-rose-500 shadow-sm">
           <CardHeader className="p-4 pb-1 flex flex-row items-center justify-between space-y-0">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Missing Histology</span>
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Missing Histology</span>
             <AlertCircle className="h-4 w-4 text-rose-600" />
           </CardHeader>
           <CardContent className="p-4 pt-1">
-            <div className="text-2xl font-bold text-slate-900 dark:text-white">{missingHistologyCount}</div>
-            <p className="text-[11px] text-slate-500 mt-1">Post-op pathology reports pending</p>
+            <div className="text-2xl font-bold text-foreground dark:text-white">{missingHistologyCount}</div>
+            <p className="text-[11px] text-muted-foreground mt-1">Post-op pathology reports pending</p>
           </CardContent>
         </Card>
 
         <Card className="border-l-4 border-l-amber-500 shadow-sm">
           <CardHeader className="p-4 pb-1 flex flex-row items-center justify-between space-y-0">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Missing Baseline</span>
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Missing Baseline</span>
             <FileCheck2 className="h-4 w-4 text-amber-600" />
           </CardHeader>
           <CardContent className="p-4 pt-1">
-            <div className="text-2xl font-bold text-slate-900 dark:text-white">{missingBaselineCount}</div>
-            <p className="text-[11px] text-slate-500 mt-1">Pre-op PSA or biopsy grades</p>
+            <div className="text-2xl font-bold text-foreground dark:text-white">{missingBaselineCount}</div>
+            <p className="text-[11px] text-muted-foreground mt-1">Pre-op PSA or biopsy grades</p>
           </CardContent>
         </Card>
 
         <Card className="border-l-4 border-l-indigo-600 shadow-sm">
           <CardHeader className="p-4 pb-1 flex flex-row items-center justify-between space-y-0">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Missing Operation</span>
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Missing Operation</span>
             <CheckCircle2 className="h-4 w-4 text-indigo-600" />
           </CardHeader>
           <CardContent className="p-4 pt-1">
-            <div className="text-2xl font-bold text-slate-900 dark:text-white">{missingOperationCount}</div>
-            <p className="text-[11px] text-slate-500 mt-1">Surgical theatre logs</p>
+            <div className="text-2xl font-bold text-foreground dark:text-white">{missingOperationCount}</div>
+            <p className="text-[11px] text-muted-foreground mt-1">Surgical theatre logs</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Filter Toolbar */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-3 p-3.5 rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-3 p-3.5 rounded-xl border border-border bg-card shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="relative flex-1 w-full">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search audit records by patient name, NHS, MRN..."
             value={search}
@@ -141,7 +141,7 @@ export default function AdminDataQualityPage() {
         </div>
 
         <div className="flex items-center gap-2.5 w-full md:w-auto">
-          <div className="flex items-center gap-1 text-xs text-slate-500 whitespace-nowrap">
+          <div className="flex items-center gap-1 text-xs text-muted-foreground whitespace-nowrap">
             <Filter className="h-3.5 w-3.5" />
             <span>Audit Filter:</span>
           </div>
@@ -177,11 +177,11 @@ export default function AdminDataQualityPage() {
       </div>
 
       {/* Table Container with Sticky Header */}
-      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
+      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
         <div className="max-h-[540px] overflow-y-auto">
           <Table>
-            <TableHeader className="sticky top-0 z-10 bg-slate-50/95 backdrop-blur-sm dark:bg-slate-900/95 shadow-sm">
-              <TableRow className="border-b border-slate-200 dark:border-slate-800">
+            <TableHeader className="sticky top-0 z-10 bg-muted/95 backdrop-blur-sm dark:bg-slate-900/95 shadow-sm">
+              <TableRow className="border-b border-border dark:border-slate-800">
                 <TableHead>Patient Details</TableHead>
                 <TableHead>Surgeon</TableHead>
                 <TableHead>Pre-Op Baseline</TableHead>
@@ -194,21 +194,21 @@ export default function AdminDataQualityPage() {
             <TableBody>
               {paginatedPatients.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center py-12 text-sm text-slate-500">
+                  <TableCell colSpan={7} className="text-center py-12 text-sm text-muted-foreground">
                     No patient records matching the selected audit criteria.
                   </TableCell>
                 </TableRow>
               ) : (
                 paginatedPatients.map((patient) => (
-                  <TableRow key={patient.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors">
-                    <TableCell className="font-semibold text-xs text-slate-900 dark:text-slate-100 py-3">
-                      <Link href={`/patients/${patient.id}`} className="hover:text-teal-600 transition-colors font-bold">
+                  <TableRow key={patient.id} className="hover:bg-muted/80 dark:hover:bg-slate-800/50 transition-colors">
+                    <TableCell className="font-semibold text-xs text-foreground dark:text-slate-100 py-3">
+                      <Link href={`/patients/${patient.id}`} className="hover:text-primary transition-colors font-bold">
                         {patient.firstName} {patient.surname}
                       </Link>
-                      <div className="text-[10px] font-mono text-slate-400 mt-0.5">NHS: {patient.nhsNumber} • MRN: {patient.hospitalNumber}</div>
+                      <div className="text-[10px] font-mono text-muted-foreground mt-0.5">NHS: {patient.nhsNumber} • MRN: {patient.hospitalNumber}</div>
                     </TableCell>
 
-                    <TableCell className="text-xs font-mono font-bold text-teal-700 dark:text-teal-400">
+                    <TableCell className="text-xs font-mono font-bold text-primary dark:text-teal-400">
                       {patient.primarySurgeon}
                     </TableCell>
 
@@ -232,13 +232,13 @@ export default function AdminDataQualityPage() {
 
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <div className="w-16 bg-slate-100 rounded-full h-1.5 dark:bg-slate-800">
+                        <div className="w-16 bg-muted rounded-full h-1.5 dark:bg-slate-800">
                           <div
-                            className="bg-teal-600 h-1.5 rounded-full"
+                            className="bg-primary h-1.5 rounded-full"
                             style={{ width: `${patient.completeness.score}%` }}
                           />
                         </div>
-                        <span className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300">
+                        <span className="text-xs font-mono font-bold text-foreground dark:text-slate-300">
                           {patient.completeness.score}%
                         </span>
                       </div>
@@ -260,12 +260,12 @@ export default function AdminDataQualityPage() {
         </div>
 
         {/* Industry Standard Pagination Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3.5 bg-slate-50/75 dark:bg-slate-900/75 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3.5 bg-muted/75 dark:bg-slate-900/75 border-t border-border dark:border-slate-800 text-xs text-muted-foreground">
           <div>
             <span>
-              Showing <strong className="text-slate-900 dark:text-white">{totalRecords === 0 ? 0 : startIndex + 1}</strong> to{' '}
-              <strong className="text-slate-900 dark:text-white">{Math.min(startIndex + pageSize, totalRecords)}</strong> of{' '}
-              <strong className="text-slate-900 dark:text-white">{totalRecords.toLocaleString()}</strong> audit records
+              Showing <strong className="text-foreground dark:text-white">{totalRecords === 0 ? 0 : startIndex + 1}</strong> to{' '}
+              <strong className="text-foreground dark:text-white">{Math.min(startIndex + pageSize, totalRecords)}</strong> of{' '}
+              <strong className="text-foreground dark:text-white">{totalRecords.toLocaleString()}</strong> audit records
             </span>
           </div>
 
@@ -291,7 +291,7 @@ export default function AdminDataQualityPage() {
               <ChevronLeft className="h-3.5 w-3.5" />
             </Button>
 
-            <span className="px-2 text-xs font-mono font-medium text-slate-700 dark:text-slate-300">
+            <span className="px-2 text-xs font-mono font-medium text-foreground dark:text-slate-300">
               Page {currentPage} of {totalPages}
             </span>
 

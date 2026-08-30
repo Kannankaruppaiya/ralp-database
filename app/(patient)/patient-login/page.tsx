@@ -89,7 +89,7 @@ export default function PatientLoginPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/85 to-purple-950/60" />
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
         </div>
 
         {/* Top Header */}
@@ -128,45 +128,45 @@ export default function PatientLoginPage() {
             </span>
           </h1>
 
-          <p className="text-sm text-slate-300 leading-relaxed max-w-xl">
+          <p className="text-sm text-muted-foreground leading-relaxed max-w-xl">
             Complete your confidential follow-up questionnaires (IPSS urinary scores, continence recovery, and SHIM wellness index) from the comfort of home.
           </p>
 
           <div className="grid grid-cols-4 gap-3 pt-4">
-            <div className="p-1 rounded-2xl bg-white/5 border border-white/10 shadow-lg backdrop-blur-md">
+            <div className="p-1 rounded-2xl bg-card/5 border border-white/10 shadow-lg backdrop-blur-md">
               <div className="p-3 rounded-xl bg-slate-900/80 border border-white/5 text-center space-y-1">
-                <div className="text-xs font-bold text-teal-400">6 Weeks</div>
-                <div className="text-[10px] text-slate-400">Catheter TWOC</div>
+                <div className="text-xs font-bold text-primary">6 Weeks</div>
+                <div className="text-[10px] text-muted-foreground">Catheter TWOC</div>
               </div>
             </div>
 
-            <div className="p-1 rounded-2xl bg-white/5 border border-white/10 shadow-lg backdrop-blur-md">
+            <div className="p-1 rounded-2xl bg-card/5 border border-white/10 shadow-lg backdrop-blur-md">
               <div className="p-3 rounded-xl bg-slate-900/80 border border-white/5 text-center space-y-1">
                 <div className="text-xs font-bold text-purple-300">6 Months</div>
-                <div className="text-[10px] text-slate-400">Continence Check</div>
+                <div className="text-[10px] text-muted-foreground">Continence Check</div>
               </div>
             </div>
 
-            <div className="p-1 rounded-2xl bg-white/5 border border-white/10 shadow-lg backdrop-blur-md">
+            <div className="p-1 rounded-2xl bg-card/5 border border-white/10 shadow-lg backdrop-blur-md">
               <div className="p-3 rounded-xl bg-slate-900/80 border border-white/5 text-center space-y-1">
                 <div className="text-xs font-bold text-pink-300">12 Months</div>
-                <div className="text-[10px] text-slate-400">Potency & PSA</div>
+                <div className="text-[10px] text-muted-foreground">Potency & PSA</div>
               </div>
             </div>
 
-            <div className="p-1 rounded-2xl bg-white/5 border border-white/10 shadow-lg backdrop-blur-md">
+            <div className="p-1 rounded-2xl bg-card/5 border border-white/10 shadow-lg backdrop-blur-md">
               <div className="p-3 rounded-xl bg-slate-900/80 border border-white/5 text-center space-y-1">
                 <div className="text-xs font-bold text-indigo-300">36 Months</div>
-                <div className="text-[10px] text-slate-400">Long-Term Care</div>
+                <div className="text-[10px] text-muted-foreground">Long-Term Care</div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Bottom Trust */}
-        <div className="relative z-10 pt-6 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+        <div className="relative z-10 pt-6 border-t border-slate-800/80 flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5 text-slate-300">
+            <span className="flex items-center gap-1.5 text-muted-foreground">
               <ShieldCheck className="h-4 w-4 text-purple-400" />
               <span>Strictly Confidential</span>
             </span>
@@ -175,7 +175,7 @@ export default function PatientLoginPage() {
             <span>•</span>
             <span>Direct Surgical Team Sync</span>
           </div>
-          <span className="font-mono text-[11px] text-slate-500">OXFORD-PROMS-V2</span>
+          <span className="font-mono text-[11px] text-muted-foreground">OXFORD-PROMS-V2</span>
         </div>
       </div>
 
@@ -185,21 +185,21 @@ export default function PatientLoginPage() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-widest text-purple-400">Patient Portal Sign In</span>
-              <Link href="/login" className="text-xs text-teal-400 hover:text-teal-300 transition-colors flex items-center gap-1">
+              <Link href="/login" className="text-xs text-primary hover:text-teal-300 transition-colors flex items-center gap-1">
                 <span>Doctor Login</span>
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
             </div>
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">Patient Login</h2>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-muted-foreground">
               Sign in with your 10-digit NHS Number and Date of Birth to view your recovery record.
             </p>
           </div>
 
-          <div className="rounded-[2rem] p-1.5 bg-white/5 border border-white/10 shadow-2xl backdrop-blur-xl">
+          <div className="rounded-[2rem] p-1.5 bg-card/5 border border-white/10 shadow-2xl backdrop-blur-xl">
             <div className="rounded-[calc(2rem-0.375rem)] bg-slate-900/90 border border-white/5 p-6 space-y-5">
               {/* Segmented Mode Selector */}
-              <div className="grid grid-cols-2 p-1 rounded-xl bg-slate-950/80 border border-slate-800 text-xs font-semibold text-slate-400">
+              <div className="grid grid-cols-2 p-1 rounded-xl bg-slate-950/80 border border-slate-800 text-xs font-semibold text-muted-foreground">
                 <button
                   type="button"
                   onClick={() => setAuthMode('nhs_number')}
@@ -236,9 +236,9 @@ export default function PatientLoginPage() {
               {authMode === 'nhs_number' && (
                 <form onSubmit={(e) => void handleSignIn(e)} className="space-y-4">
                   <FormField>
-                    <FormLabel className="text-xs font-semibold text-slate-300">Email Address</FormLabel>
+                    <FormLabel className="text-xs font-semibold text-muted-foreground">Email Address</FormLabel>
                     <div className="relative">
-                      <CreditCard className="absolute left-3.5 top-3 h-4 w-4 text-slate-500" />
+                      <CreditCard className="absolute left-3.5 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
                         type="email"
                         value={email}
@@ -251,9 +251,9 @@ export default function PatientLoginPage() {
                   </FormField>
 
                   <FormField>
-                    <FormLabel className="text-xs font-semibold text-slate-300">Password</FormLabel>
+                    <FormLabel className="text-xs font-semibold text-muted-foreground">Password</FormLabel>
                     <div className="relative">
-                      <Calendar className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
+                      <Calendar className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input
                         type="password"
                         value={password}
@@ -286,7 +286,7 @@ export default function PatientLoginPage() {
                       </div>
                       <div>
                         <h3 className="text-sm font-bold text-white">NHS Notify SMS Authentication</h3>
-                        <p className="text-xs text-slate-400 mt-1">
+                        <p className="text-xs text-muted-foreground mt-1">
                           We will send a one-time 6-digit security code to your registered mobile number.
                         </p>
                       </div>
@@ -312,7 +312,7 @@ export default function PatientLoginPage() {
                       </div>
 
                       <FormField>
-                        <FormLabel className="text-xs font-semibold text-slate-300">6-Digit Security Code</FormLabel>
+                        <FormLabel className="text-xs font-semibold text-muted-foreground">6-Digit Security Code</FormLabel>
                         <Input
                           value={smsOtp}
                           onChange={(e) => setSmsOtp(e.target.value)}
@@ -338,7 +338,7 @@ export default function PatientLoginPage() {
             </div>
           </div>
 
-          <div className="text-center text-[11px] text-slate-500">
+          <div className="text-center text-[11px] text-muted-foreground">
             Oxford University Hospitals NHS Foundation Trust • Urology Registry
           </div>
         </div>

@@ -111,20 +111,20 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
   };
 
   const getSortIcon = (field: SortField) => {
-    if (sortField !== field) return <ArrowUpDown className="h-3 w-3 text-slate-400" />;
+    if (sortField !== field) return <ArrowUpDown className="h-3 w-3 text-muted-foreground" />;
     return sortOrder === 'asc' ? (
-      <ArrowUp className="h-3 w-3 text-teal-600" />
+      <ArrowUp className="h-3 w-3 text-primary" />
     ) : (
-      <ArrowDown className="h-3 w-3 text-teal-600" />
+      <ArrowDown className="h-3 w-3 text-primary" />
     );
   };
 
   return (
     <div className="space-y-4">
       {/* Industry Standard Search & Filter Controls Toolbar */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-3 p-3.5 rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-3 p-3.5 rounded-xl border border-border bg-card shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="relative flex-1 w-full">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search by patient name, NHS number, MRN..."
             value={search}
@@ -137,7 +137,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
         </div>
 
         <div className="flex items-center gap-2.5 w-full md:w-auto">
-          <div className="flex items-center gap-1 text-xs text-slate-500 whitespace-nowrap">
+          <div className="flex items-center gap-1 text-xs text-muted-foreground whitespace-nowrap">
             <Filter className="h-3.5 w-3.5" />
             <span>Filters:</span>
           </div>
@@ -194,13 +194,13 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
       </div>
 
       {/* Table Container with Sticky Header & Contained Viewport Height */}
-      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
+      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
         <div className="max-h-[580px] overflow-y-auto">
           <Table>
-            <TableHeader className="sticky top-0 z-10 bg-slate-50/95 backdrop-blur-sm dark:bg-slate-900/95 shadow-sm">
-              <TableRow className="border-b border-slate-200 dark:border-slate-800">
+            <TableHeader className="sticky top-0 z-10 bg-muted/95 backdrop-blur-sm dark:bg-slate-900/95 shadow-sm">
+              <TableRow className="border-b border-border dark:border-slate-800">
                 <TableHead
-                  className="cursor-pointer select-none hover:text-teal-600 transition-colors"
+                  className="cursor-pointer select-none hover:text-primary transition-colors"
                   onClick={() => toggleSort('patient')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -209,7 +209,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
                   </div>
                 </TableHead>
                 <TableHead
-                  className="cursor-pointer select-none hover:text-teal-600 transition-colors"
+                  className="cursor-pointer select-none hover:text-primary transition-colors"
                   onClick={() => toggleSort('milestone')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -218,7 +218,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
                   </div>
                 </TableHead>
                 <TableHead
-                  className="cursor-pointer select-none hover:text-teal-600 transition-colors"
+                  className="cursor-pointer select-none hover:text-primary transition-colors"
                   onClick={() => toggleSort('surgeon')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -227,7 +227,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
                   </div>
                 </TableHead>
                 <TableHead
-                  className="cursor-pointer select-none hover:text-teal-600 transition-colors"
+                  className="cursor-pointer select-none hover:text-primary transition-colors"
                   onClick={() => toggleSort('dueDate')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -236,7 +236,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
                   </div>
                 </TableHead>
                 <TableHead
-                  className="cursor-pointer select-none hover:text-teal-600 transition-colors"
+                  className="cursor-pointer select-none hover:text-primary transition-colors"
                   onClick={() => toggleSort('psa')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -246,7 +246,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
                 </TableHead>
                 <TableHead>PROM Checklist</TableHead>
                 <TableHead
-                  className="cursor-pointer select-none hover:text-teal-600 transition-colors"
+                  className="cursor-pointer select-none hover:text-primary transition-colors"
                   onClick={() => toggleSort('status')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -260,7 +260,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
             <TableBody>
               {paginatedList.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={8} className="text-center py-12 text-sm text-slate-500">
+                  <TableCell colSpan={8} className="text-center py-12 text-sm text-muted-foreground">
                     No follow-up records found matching the active filters.
                   </TableCell>
                 </TableRow>
@@ -274,20 +274,20 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
                   const hasContinence = fu.continence?.dayStatus !== undefined;
 
                   return (
-                    <TableRow key={fu.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors">
-                      <TableCell className="font-semibold text-slate-900 dark:text-slate-100 py-3">
-                        <Link href={`/patients/${fu.patient.id}`} className="hover:text-teal-600 transition-colors">
+                    <TableRow key={fu.id} className="hover:bg-muted/70 dark:hover:bg-slate-800/40 transition-colors">
+                      <TableCell className="font-semibold text-foreground dark:text-slate-100 py-3">
+                        <Link href={`/patients/${fu.patient.id}`} className="hover:text-primary transition-colors">
                           {fu.patient.firstName} {fu.patient.surname}
                         </Link>
-                        <span className="block text-[11px] font-normal text-slate-400 font-mono mt-0.5">
+                        <span className="block text-[11px] font-normal text-muted-foreground font-mono mt-0.5">
                           MRN: {fu.patient.hospitalNumber} • NHS: {fu.patient.nhsNumber}
                         </span>
                       </TableCell>
                       <TableCell>
-                        <span className="font-bold text-slate-800 dark:text-slate-200">
+                        <span className="font-bold text-foreground dark:text-slate-200">
                           {fu.milestone.toUpperCase()}
                         </span>
-                        <span className="text-[11px] text-slate-400 block font-mono">({fu.targetMonths}m)</span>
+                        <span className="text-[11px] text-muted-foreground block font-mono">({fu.targetMonths}m)</span>
                       </TableCell>
                       <TableCell>
                         <Badge variant="outline" className="font-bold text-[11px]">{fu.patient.primarySurgeon}</Badge>
@@ -297,24 +297,24 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
                       </TableCell>
                       <TableCell className="text-xs font-mono font-medium">
                         {hasPsa ? (
-                          <span className={fu.biochemicalRecurrence ? 'text-red-600 font-bold' : 'text-teal-700 dark:text-teal-400 font-bold'}>
+                          <span className={fu.biochemicalRecurrence ? 'text-red-600 font-bold' : 'text-primary dark:text-teal-400 font-bold'}>
                             {formatPsa(fu.psa)} {fu.biochemicalRecurrence && '⚠️'}
                           </span>
                         ) : (
-                          <span className="text-slate-400 italic">Pending PSA</span>
+                          <span className="text-muted-foreground italic">Pending PSA</span>
                         )}
                       </TableCell>
                       <TableCell className="text-xs">
                         <div className="flex items-center gap-1.5 font-mono text-[11px]">
-                          <span className={hasIpss ? 'text-emerald-700 dark:text-emerald-400 font-bold' : 'text-slate-300 dark:text-slate-600'} title="IPSS">
+                          <span className={hasIpss ? 'text-emerald-700 dark:text-emerald-400 font-bold' : 'text-muted-foreground dark:text-slate-600'} title="IPSS">
                             IPSS {hasIpss ? '✓' : '✕'}
                           </span>
                           <span>•</span>
-                          <span className={hasShim ? 'text-purple-700 dark:text-purple-400 font-bold' : 'text-slate-300 dark:text-slate-600'} title="SHIM">
+                          <span className={hasShim ? 'text-purple-700 dark:text-purple-400 font-bold' : 'text-muted-foreground dark:text-slate-600'} title="SHIM">
                             SHIM {hasShim ? '✓' : '✕'}
                           </span>
                           <span>•</span>
-                          <span className={hasContinence ? 'text-blue-700 dark:text-blue-400 font-bold' : 'text-slate-300 dark:text-slate-600'} title="Continence">
+                          <span className={hasContinence ? 'text-blue-700 dark:text-blue-400 font-bold' : 'text-muted-foreground dark:text-slate-600'} title="Continence">
                             Cont {hasContinence ? '✓' : '✕'}
                           </span>
                         </div>
@@ -374,12 +374,12 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
         </div>
 
         {/* Industry Standard Pagination Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3.5 bg-slate-50/75 dark:bg-slate-900/75 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3.5 bg-muted/75 dark:bg-slate-900/75 border-t border-border dark:border-slate-800 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
             <span>
-              Showing <strong className="text-slate-900 dark:text-white">{totalRecords === 0 ? 0 : startIndex + 1}</strong> to{' '}
-              <strong className="text-slate-900 dark:text-white">{Math.min(startIndex + pageSize, totalRecords)}</strong> of{' '}
-              <strong className="text-slate-900 dark:text-white">{totalRecords.toLocaleString()}</strong> records
+              Showing <strong className="text-foreground dark:text-white">{totalRecords === 0 ? 0 : startIndex + 1}</strong> to{' '}
+              <strong className="text-foreground dark:text-white">{Math.min(startIndex + pageSize, totalRecords)}</strong> of{' '}
+              <strong className="text-foreground dark:text-white">{totalRecords.toLocaleString()}</strong> records
             </span>
           </div>
 
@@ -405,7 +405,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
               <ChevronLeft className="h-3.5 w-3.5" />
             </Button>
 
-            <span className="px-2 text-xs font-mono font-medium text-slate-700 dark:text-slate-300">
+            <span className="px-2 text-xs font-mono font-medium text-foreground dark:text-slate-300">
               Page {currentPage} of {totalPages}
             </span>
 

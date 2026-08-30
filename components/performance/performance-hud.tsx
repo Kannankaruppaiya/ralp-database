@@ -162,37 +162,37 @@ export function PerformanceHud() {
           {renderTime}ms
         </span>
 
-        <span className="text-slate-500">•</span>
+        <span className="text-muted-foreground">•</span>
 
         <span className="font-mono text-cyan-400">{fps} FPS</span>
 
         {memoryMb > 0 && (
           <>
-            <span className="text-slate-500">•</span>
+            <span className="text-muted-foreground">•</span>
             <span className="font-mono text-purple-300">{memoryMb} MB</span>
           </>
         )}
 
-        <Badge variant="outline" className="bg-teal-950/80 text-teal-300 border-teal-700/50 text-[10px] px-1.5 py-0">
+        <Badge variant="outline" className="bg-teal-950/80 text-teal-300 border-primary/50 text-[10px] px-1.5 py-0">
           Live Speed HUD
         </Badge>
 
-        {isOpen ? <ChevronDown className="h-3.5 w-3.5 text-slate-400" /> : <ChevronUp className="h-3.5 w-3.5 text-slate-400" />}
+        {isOpen ? <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" /> : <ChevronUp className="h-3.5 w-3.5 text-muted-foreground" />}
       </button>
 
       {/* Expanded Live Telemetry Drawer */}
       {isOpen && (
-        <Card className="mt-3 w-96 rounded-2xl border-slate-200 bg-white/95 p-5 shadow-2xl backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/95 transition-all animate-in fade-in slide-in-from-bottom-3 duration-200">
-          <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+        <Card className="mt-3 w-96 rounded-2xl border-border bg-card/95 p-5 shadow-2xl backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/95 transition-all animate-in fade-in slide-in-from-bottom-3 duration-200">
+          <div className="flex items-center justify-between border-b border-border dark:border-slate-800 pb-3 mb-4">
             <div className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-teal-500/10 text-teal-600 dark:text-teal-400">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 text-primary dark:text-teal-400">
                 <Gauge className="h-4 w-4" />
               </div>
               <div>
-                <h4 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+                <h4 className="text-xs font-bold text-foreground dark:text-white uppercase tracking-wider">
                   Live Performance Telemetry
                 </h4>
-                <p className="text-[11px] text-slate-500">Real-time browser rendering & execution speed</p>
+                <p className="text-[11px] text-muted-foreground">Real-time browser rendering & execution speed</p>
               </div>
             </div>
             <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px]">
@@ -202,49 +202,49 @@ export function PerformanceHud() {
 
           {/* Live Metrics Grid */}
           <div className="grid grid-cols-2 gap-2.5 mb-4">
-            <div className="rounded-xl border border-slate-100 bg-slate-50/80 p-3 dark:border-slate-800 dark:bg-slate-800/40">
-              <span className="text-[11px] font-medium text-slate-500 flex items-center gap-1.5 mb-1">
+            <div className="rounded-xl border border-border bg-muted/80 p-3 dark:border-slate-800 dark:bg-slate-800/40">
+              <span className="text-[11px] font-medium text-muted-foreground flex items-center gap-1.5 mb-1">
                 <Zap className="h-3.5 w-3.5 text-amber-500" />
                 Route Render Time
               </span>
-              <span className="text-lg font-extrabold text-slate-900 dark:text-white font-mono">
-                {renderTime} <span className="text-xs font-normal text-slate-500">ms</span>
+              <span className="text-lg font-extrabold text-foreground dark:text-white font-mono">
+                {renderTime} <span className="text-xs font-normal text-muted-foreground">ms</span>
               </span>
             </div>
 
-            <div className="rounded-xl border border-slate-100 bg-slate-50/80 p-3 dark:border-slate-800 dark:bg-slate-800/40">
-              <span className="text-[11px] font-medium text-slate-500 flex items-center gap-1.5 mb-1">
+            <div className="rounded-xl border border-border bg-muted/80 p-3 dark:border-slate-800 dark:bg-slate-800/40">
+              <span className="text-[11px] font-medium text-muted-foreground flex items-center gap-1.5 mb-1">
                 <Activity className="h-3.5 w-3.5 text-emerald-500" />
                 Display Frame Rate
               </span>
               <span className="text-lg font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
-                {fps} <span className="text-xs font-normal text-slate-500">FPS</span>
+                {fps} <span className="text-xs font-normal text-muted-foreground">FPS</span>
               </span>
             </div>
 
-            <div className="rounded-xl border border-slate-100 bg-slate-50/80 p-3 dark:border-slate-800 dark:bg-slate-800/40">
-              <span className="text-[11px] font-medium text-slate-500 flex items-center gap-1.5 mb-1">
+            <div className="rounded-xl border border-border bg-muted/80 p-3 dark:border-slate-800 dark:bg-slate-800/40">
+              <span className="text-[11px] font-medium text-muted-foreground flex items-center gap-1.5 mb-1">
                 <Cpu className="h-3.5 w-3.5 text-blue-500" />
                 Action Response Time
               </span>
-              <span className="text-lg font-extrabold text-slate-900 dark:text-white font-mono">
+              <span className="text-lg font-extrabold text-foreground dark:text-white font-mono">
                 {lastActionTime > 0 ? `${lastActionTime} ms` : '< 1 ms'}
               </span>
             </div>
 
-            <div className="rounded-xl border border-slate-100 bg-slate-50/80 p-3 dark:border-slate-800 dark:bg-slate-800/40">
-              <span className="text-[11px] font-medium text-slate-500 flex items-center gap-1.5 mb-1">
+            <div className="rounded-xl border border-border bg-muted/80 p-3 dark:border-slate-800 dark:bg-slate-800/40">
+              <span className="text-[11px] font-medium text-muted-foreground flex items-center gap-1.5 mb-1">
                 <HardDrive className="h-3.5 w-3.5 text-purple-500" />
                 DOM Elements
               </span>
-              <span className="text-lg font-extrabold text-slate-900 dark:text-white font-mono">
+              <span className="text-lg font-extrabold text-foreground dark:text-white font-mono">
                 {domNodes.toLocaleString()}
               </span>
             </div>
           </div>
 
           {/* Interactive 1,000 Record Benchmark Simulator */}
-          <div className="rounded-xl border border-teal-100 bg-teal-50/50 p-3.5 dark:border-teal-900/40 dark:bg-teal-950/20">
+          <div className="rounded-xl border border-primary/20 bg-primary/10/50 p-3.5 dark:border-teal-900/40 dark:bg-teal-950/20">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold text-teal-950 dark:text-teal-200">
                 1,000 Record Live Speed Test
@@ -255,7 +255,7 @@ export function PerformanceHud() {
                   variant="default"
                   disabled={benchmarkRunning}
                   onClick={runLiveBenchmark}
-                  className="h-7 text-xs bg-teal-600 hover:bg-teal-700 text-white gap-1 px-2.5"
+                  className="h-7 text-xs bg-primary hover:bg-primary/90 text-white gap-1 px-2.5"
                 >
                   {benchmarkRunning ? (
                     <>
@@ -274,13 +274,13 @@ export function PerformanceHud() {
 
             {benchmarkRunning && (
               <div className="space-y-1.5 my-2">
-                <div className="flex justify-between text-[11px] text-teal-800 dark:text-teal-300 font-mono">
+                <div className="flex justify-between text-[11px] text-primary dark:text-teal-300 font-mono">
                   <span>Processing clinical datasets...</span>
                   <span>{benchmarkProgress}%</span>
                 </div>
                 <div className="h-2 w-full bg-teal-200/60 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-teal-600 transition-all duration-150 rounded-full"
+                    className="h-full bg-primary transition-all duration-150 rounded-full"
                     style={{ width: `${benchmarkProgress}%` }}
                   />
                 </div>
@@ -288,25 +288,25 @@ export function PerformanceHud() {
             )}
 
             {benchmarkResult && (
-              <div className="mt-2.5 rounded-lg bg-white dark:bg-slate-800 p-2.5 border border-teal-200/60 dark:border-teal-800 text-[11px] space-y-1">
+              <div className="mt-2.5 rounded-lg bg-card dark:bg-slate-800 p-2.5 border border-primary/30/60 dark:border-teal-800 text-[11px] space-y-1">
                 <div className="flex items-center justify-between font-semibold text-emerald-600 dark:text-emerald-400">
                   <span className="flex items-center gap-1">
                     <CheckCircle2 className="h-3.5 w-3.5" /> 1,000 Patients Processed
                   </span>
                   <span className="font-mono">{benchmarkResult.totalTimeMs} ms</span>
                 </div>
-                <div className="flex justify-between text-slate-600 dark:text-slate-300 font-mono text-[10px]">
+                <div className="flex justify-between text-muted-foreground dark:text-slate-300 font-mono text-[10px]">
                   <span>Throughput Speed:</span>
-                  <strong className="text-slate-900 dark:text-white">{benchmarkResult.opsPerSec.toLocaleString()} records/sec</strong>
+                  <strong className="text-foreground dark:text-white">{benchmarkResult.opsPerSec.toLocaleString()} records/sec</strong>
                 </div>
-                <div className="flex justify-between text-slate-600 dark:text-slate-300 font-mono text-[10px]">
+                <div className="flex justify-between text-muted-foreground dark:text-slate-300 font-mono text-[10px]">
                   <span>Avg per Patient Record:</span>
-                  <strong className="text-slate-900 dark:text-white">{benchmarkResult.p50Ms} ms</strong>
+                  <strong className="text-foreground dark:text-white">{benchmarkResult.p50Ms} ms</strong>
                 </div>
               </div>
             )}
 
-            <p className="text-[10px] text-slate-500 mt-2">
+            <p className="text-[10px] text-muted-foreground mt-2">
               Tests in-memory search, longitudinal aggregation, and DOM update speeds directly inside your browser.
             </p>
           </div>

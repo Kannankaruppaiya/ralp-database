@@ -54,10 +54,10 @@ export function PromTrends({ patient }: { patient: PatientFullRecord }) {
         {/* SHIM Potency Recovery Trajectory */}
         <Card className="shadow-sm">
           <CardHeader className="p-5 pb-2">
-            <CardTitle className="text-sm font-bold text-slate-800 dark:text-slate-200">
+            <CardTitle className="text-sm font-bold text-foreground dark:text-slate-200">
               SHIM (IIEF-5) Erectile Function Trajectory (1-25)
             </CardTitle>
-            <p className="text-xs text-slate-500">Longitudinal recovery of erectile function post-surgery</p>
+            <p className="text-xs text-muted-foreground">Longitudinal recovery of erectile function post-surgery</p>
           </CardHeader>
           <CardContent className="p-5 pt-2">
             <div className="h-64 w-full">
@@ -88,10 +88,10 @@ export function PromTrends({ patient }: { patient: PatientFullRecord }) {
         {/* IPSS Urinary Recovery */}
         <Card className="shadow-sm">
           <CardHeader className="p-5 pb-2">
-            <CardTitle className="text-sm font-bold text-slate-800 dark:text-slate-200">
+            <CardTitle className="text-sm font-bold text-foreground dark:text-slate-200">
               IPSS Urinary Symptom Trajectory (0-35)
             </CardTitle>
-            <p className="text-xs text-slate-500">Lower score indicates better urinary stream and less bother</p>
+            <p className="text-xs text-muted-foreground">Lower score indicates better urinary stream and less bother</p>
           </CardHeader>
           <CardContent className="p-5 pt-2">
             <div className="h-64 w-full">
@@ -126,7 +126,7 @@ export function PromTrends({ patient }: { patient: PatientFullRecord }) {
           <CardTitle className="text-sm font-bold text-cyan-950 dark:text-cyan-200">
             Longitudinal Serum PSA Surveillance (ng/mL)
           </CardTitle>
-          <p className="text-xs text-slate-500">Biochemical recurrence threshold: PSA ≥ 0.20 ng/mL</p>
+          <p className="text-xs text-muted-foreground">Biochemical recurrence threshold: PSA ≥ 0.20 ng/mL</p>
         </CardHeader>
         <CardContent className="p-5 pt-2">
           <div className="h-60 w-full">

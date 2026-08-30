@@ -36,16 +36,16 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950 md:flex">
+    <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground md:flex">
       {/* Brand Header */}
-      <div className="flex h-16 items-center justify-between border-b border-slate-200 px-6 dark:border-slate-800">
+      <div className="flex h-16 items-center justify-between border-b border-sidebar-border px-6">
         <Link href="/dashboard" className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-600 text-white shadow-md shadow-teal-600/20">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-md shadow-primary/20">
             <HeartPulse className="h-5 w-5" />
           </div>
           <div>
-            <span className="font-bold text-slate-900 dark:text-white leading-none block">RALP Registry</span>
-            <span className="text-[10px] font-semibold tracking-wider text-teal-600 uppercase">Surgical Database v2</span>
+            <span className="font-bold text-sidebar-foreground leading-none block">RALP Registry</span>
+            <span className="text-[10px] font-semibold tracking-wider text-primary uppercase">Surgical Database v2</span>
           </div>
         </Link>
       </div>
@@ -53,7 +53,7 @@ export function Sidebar() {
       {/* Navigation List */}
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-6">
         <div>
-          <p className="px-2 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+          <p className="px-2 pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             Clinical Registry
           </p>
           <nav className="space-y-1">
@@ -66,12 +66,12 @@ export function Sidebar() {
                   className={cn(
                     'group flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors',
                     isActive
-                      ? 'bg-teal-50 text-teal-900 dark:bg-teal-950/50 dark:text-teal-200 font-semibold'
-                      : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-900 dark:hover:text-slate-200'
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold'
+                      : 'text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
                   )}
                 >
                   <div className="flex items-center gap-3">
-                    <span className={cn('text-slate-400 group-hover:text-teal-600 transition-colors', isActive && 'text-teal-600 dark:text-teal-400')}>
+                    <span className={cn('text-muted-foreground group-hover:text-primary transition-colors', isActive && 'text-primary')}>
                       {item.icon && ICON_MAP[item.icon]}
                     </span>
                     <span>{item.title}</span>
@@ -88,27 +88,27 @@ export function Sidebar() {
         </div>
 
         {/* Patient Portal Switcher Link */}
-        <div className="rounded-xl border border-teal-100 bg-teal-50/50 p-3.5 dark:border-teal-900/50 dark:bg-teal-950/20">
+        <div className="rounded-xl border border-primary/15 bg-primary/5 p-3.5">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs font-semibold text-teal-900 dark:text-teal-300">
-              <Activity className="h-4 w-4 text-teal-600" />
+            <div className="flex items-center gap-2 text-xs font-semibold text-primary">
+              <Activity className="h-4 w-4 text-primary" />
               <span>Patient Portal View</span>
             </div>
             <Link
               href="/home"
               target="_blank"
-              className="text-teal-700 hover:text-teal-900 dark:text-teal-400"
+              className="text-primary hover:text-primary/80"
               title="Open Patient Portal in new tab"
             >
               <ExternalLink className="h-3.5 w-3.5" />
             </Link>
           </div>
-          <p className="mt-1 text-[11px] text-teal-800/80 dark:text-teal-400/80">
+          <p className="mt-1 text-[11px] text-primary/80">
             Preview patient digital PROMs questionnaire experience.
           </p>
           <Link
             href="/home"
-            className="mt-2.5 inline-flex w-full items-center justify-center rounded-md bg-teal-600 py-1.5 text-xs font-medium text-white hover:bg-teal-700 transition-colors"
+            className="mt-2.5 inline-flex w-full items-center justify-center rounded-md bg-primary py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
           >
             Launch Patient App
           </Link>
@@ -138,20 +138,20 @@ export function Sidebar() {
       </div>
 
       {/* User Session Footer */}
-      <div className="border-t border-slate-200 p-3.5 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+      <div className="border-t border-sidebar-border p-3.5 bg-muted/40">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-600 font-bold text-xs text-white shadow-sm">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary font-bold text-xs text-primary-foreground shadow-sm">
               VK
             </div>
             <div className="flex-1 overflow-hidden">
-              <p className="truncate text-xs font-bold text-slate-900 dark:text-slate-100">Mr. V. Kannan</p>
-              <p className="truncate text-[10px] text-slate-500 font-medium">Consultant Surgeon (VK)</p>
+              <p className="truncate text-xs font-bold text-foreground">Mr. V. Kannan</p>
+              <p className="truncate text-[10px] text-muted-foreground font-medium">Consultant Surgeon (VK)</p>
             </div>
           </div>
           <Link
             href="/login"
-            className="text-[11px] font-semibold text-teal-600 hover:text-teal-800 dark:text-teal-400 p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-colors"
+            className="text-[11px] font-semibold text-primary hover:text-primary/80 p-1.5 hover:bg-muted rounded-md transition-colors"
             title="Switch User / Sign Out"
           >
             Switch

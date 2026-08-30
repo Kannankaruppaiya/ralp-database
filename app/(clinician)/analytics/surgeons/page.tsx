@@ -45,13 +45,13 @@ export default function SurgeonsAnalyticsPage() {
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="py-8 text-center text-xs text-slate-500">
+                  <TableCell colSpan={5} className="py-8 text-center text-xs text-muted-foreground">
                     Loading benchmarks…
                   </TableCell>
                 </TableRow>
               ) : benchmark.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="py-8 text-center text-xs text-slate-500">
+                  <TableCell colSpan={5} className="py-8 text-center text-xs text-muted-foreground">
                     No operations recorded yet.
                   </TableCell>
                 </TableRow>
@@ -60,16 +60,16 @@ export default function SurgeonsAnalyticsPage() {
                   <TableRow key={b.surgeon}>
                     <TableCell>
                       <div className="font-semibold">{b.surgeon}</div>
-                      <div className="text-[11px] text-slate-500">{fullName(b.surgeon)}</div>
+                      <div className="text-[11px] text-muted-foreground">{fullName(b.surgeon)}</div>
                     </TableCell>
                     <TableCell className="font-semibold">{b.caseload}</TableCell>
                     <TableCell>
                       {pct(b.continenceRate)}
-                      <span className="ml-1 text-[11px] text-slate-400">n={b.continenceN}</span>
+                      <span className="ml-1 text-[11px] text-muted-foreground">n={b.continenceN}</span>
                     </TableCell>
                     <TableCell>
                       {pct(b.potencyRate)}
-                      <span className="ml-1 text-[11px] text-slate-400">n={b.potencyN}</span>
+                      <span className="ml-1 text-[11px] text-muted-foreground">n={b.potencyN}</span>
                     </TableCell>
                     <TableCell>
                       {b.marginPositiveRate === null ? (
@@ -79,7 +79,7 @@ export default function SurgeonsAnalyticsPage() {
                           {b.marginPositiveRate}%
                         </Badge>
                       )}
-                      <span className="ml-1 text-[11px] text-slate-400">n={b.histologyN}</span>
+                      <span className="ml-1 text-[11px] text-muted-foreground">n={b.histologyN}</span>
                     </TableCell>
                   </TableRow>
                 ))
@@ -89,7 +89,7 @@ export default function SurgeonsAnalyticsPage() {
         </CardContent>
       </Card>
 
-      <p className="text-[11px] leading-relaxed text-slate-500">
+      <p className="text-[11px] leading-relaxed text-muted-foreground">
         Case mix is not adjusted for. A surgeon operating on higher-risk disease will show a higher
         positive-margin rate and slower functional recovery, so these figures compare activity, not
         skill, and should not be read as a ranking.

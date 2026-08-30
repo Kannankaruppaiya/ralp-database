@@ -36,7 +36,7 @@ function ExtractionReviewContent() {
           // every other document in the queue unreachable.
           pending.length > 1 ? (
             <div className="flex items-center gap-2">
-              <span className="text-xs font-semibold text-slate-500">
+              <span className="text-xs font-semibold text-muted-foreground">
                 {pending.length} awaiting review:
               </span>
               <Select
@@ -68,13 +68,13 @@ function ExtractionReviewContent() {
       )}
 
       {isLoading ? (
-        <div className="rounded-xl border bg-white p-12 text-center text-sm text-slate-500 dark:bg-slate-900">
+        <div className="rounded-xl border bg-card p-12 text-center text-sm text-muted-foreground dark:bg-slate-900">
           Loading extraction queue…
         </div>
       ) : currentJob ? (
         <ExtractionTable job={currentJob} />
       ) : (
-        <div className="rounded-xl border bg-white p-12 text-center text-sm text-slate-500 dark:bg-slate-900">
+        <div className="rounded-xl border bg-card p-12 text-center text-sm text-muted-foreground dark:bg-slate-900">
           No extraction jobs pending review.
         </div>
       )}
@@ -84,7 +84,7 @@ function ExtractionReviewContent() {
 
 export default function ExtractionReviewPage() {
   return (
-    <Suspense fallback={<div className="p-12 text-center text-sm text-slate-500">Loading…</div>}>
+    <Suspense fallback={<div className="p-12 text-center text-sm text-muted-foreground">Loading…</div>}>
       <ExtractionReviewContent />
     </Suspense>
   );

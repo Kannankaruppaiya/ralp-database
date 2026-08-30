@@ -29,10 +29,10 @@ export function OutcomeChart() {
   return (
     <Card className="shadow-sm">
       <CardHeader className="p-5 pb-2">
-        <CardTitle className="text-sm font-bold text-slate-900 dark:text-white">
+        <CardTitle className="text-sm font-bold text-foreground dark:text-white">
           Surgeon Benchmarking
         </CardTitle>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-muted-foreground">
           12-month pad-free continence and potency (SHIM ≥ 17), with positive-margin rate
         </p>
       </CardHeader>
@@ -40,13 +40,13 @@ export function OutcomeChart() {
         {error ? (
           <div className="flex h-72 items-center justify-center text-xs text-rose-600">{error}</div>
         ) : isLoading ? (
-          <div className="h-72 w-full animate-pulse rounded-xl bg-slate-100 dark:bg-slate-800" />
+          <div className="h-72 w-full animate-pulse rounded-xl bg-muted dark:bg-slate-800" />
         ) : noAssessments ? (
           <div className="flex h-72 flex-col items-center justify-center gap-1 text-center">
-            <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+            <p className="text-sm font-semibold text-foreground dark:text-slate-300">
               No completed 12-month assessments yet
             </p>
-            <p className="text-xs text-slate-500 max-w-xs">
+            <p className="text-xs text-muted-foreground max-w-xs">
               Benchmarking appears once patients reach their 1-year milestone and return their
               questionnaires.
             </p>

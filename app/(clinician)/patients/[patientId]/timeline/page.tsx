@@ -16,7 +16,7 @@ export default function PatientTimelinePage({
   const { patient, isLoading } = usePatient(resolvedParams.patientId);
 
   if (isLoading || !patient) {
-    return <div className="p-8 text-center text-sm text-slate-500">Loading timeline...</div>;
+    return <div className="p-8 text-center text-sm text-muted-foreground">Loading timeline...</div>;
   }
 
   return (

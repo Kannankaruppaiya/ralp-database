@@ -16,8 +16,8 @@ export function DocumentList({ documents }: { documents: ClinicalDocument[] }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-          <FileText className="h-4 w-4 text-teal-600" />
+        <h3 className="text-sm font-bold text-foreground dark:text-slate-100 flex items-center gap-2">
+          <FileText className="h-4 w-4 text-primary" />
           <span>Uploaded Clinical Notes & Letters</span>
         </h3>
         <Link href="/data-ingestion/upload">
@@ -28,7 +28,7 @@ export function DocumentList({ documents }: { documents: ClinicalDocument[] }) {
         </Link>
       </div>
 
-      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
+      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
         <Table>
           <TableHeader>
             <TableRow>
@@ -43,17 +43,17 @@ export function DocumentList({ documents }: { documents: ClinicalDocument[] }) {
           <TableBody>
             {documents.map((doc) => (
               <TableRow key={doc.id}>
-                <TableCell className="font-semibold text-xs text-slate-900 dark:text-slate-100 flex items-center gap-2">
-                  <FileText className="h-4 w-4 text-slate-400" />
+                <TableCell className="font-semibold text-xs text-foreground dark:text-slate-100 flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-muted-foreground" />
                   <span>{doc.title}</span>
                 </TableCell>
                 <TableCell className="text-xs">
                   <Badge variant="outline">{doc.docType}</Badge>
                 </TableCell>
-                <TableCell className="text-xs text-slate-500">
+                <TableCell className="text-xs text-muted-foreground">
                   {formatDate(doc.uploadedAt)}
                 </TableCell>
-                <TableCell className="text-xs text-slate-600">
+                <TableCell className="text-xs text-muted-foreground">
                   {doc.uploadedBy}
                 </TableCell>
                 <TableCell>
@@ -83,7 +83,7 @@ export function DocumentList({ documents }: { documents: ClinicalDocument[] }) {
         <Dialog open={!!selectedDoc} onOpenChange={(open) => !open && setSelectedDoc(null)}>
           <DialogHeader>
             <DialogTitle className="text-base flex items-center gap-2">
-              <FileText className="h-4 w-4 text-teal-600" />
+              <FileText className="h-4 w-4 text-primary" />
               <span>{selectedDoc.title}</span>
             </DialogTitle>
           </DialogHeader>

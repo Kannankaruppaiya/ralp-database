@@ -42,13 +42,13 @@ export default function OutcomesPage() {
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="py-8 text-center text-xs text-slate-500">
+                  <TableCell colSpan={6} className="py-8 text-center text-xs text-muted-foreground">
                     Loading outcomes…
                   </TableCell>
                 </TableRow>
               ) : curve.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="py-8 text-center text-xs text-slate-500">
+                  <TableCell colSpan={6} className="py-8 text-center text-xs text-muted-foreground">
                     No completed assessments yet.
                   </TableCell>
                 </TableRow>

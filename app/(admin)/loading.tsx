@@ -18,24 +18,24 @@ export default function AdminLoading() {
         {[1, 2, 3].map((i) => (
           <div
             key={i}
-            className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-3"
+            className="p-5 rounded-xl border border-border dark:border-slate-800 bg-card dark:bg-slate-900 shadow-sm space-y-3"
           >
-            <div className="h-4 w-28 bg-slate-200 dark:bg-slate-800 rounded" />
-            <div className="h-8 w-16 bg-slate-200 dark:bg-slate-800 rounded-md" />
-            <div className="h-3 w-40 bg-slate-100 dark:bg-slate-800/60 rounded" />
+            <div className="h-4 w-28 bg-muted dark:bg-slate-800 rounded" />
+            <div className="h-8 w-16 bg-muted dark:bg-slate-800 rounded-md" />
+            <div className="h-3 w-40 bg-muted dark:bg-slate-800/60 rounded" />
           </div>
         ))}
       </div>
 
       {/* Admin Table Skeleton */}
-      <div className="p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-4">
+      <div className="p-6 rounded-xl border border-border dark:border-slate-800 bg-card dark:bg-slate-900 shadow-sm space-y-4">
         <div className="flex justify-between items-center">
-          <div className="h-5 w-48 bg-slate-200 dark:bg-slate-800 rounded" />
-          <div className="h-9 w-32 bg-slate-200 dark:bg-slate-800 rounded-lg" />
+          <div className="h-5 w-48 bg-muted dark:bg-slate-800 rounded" />
+          <div className="h-9 w-32 bg-muted dark:bg-slate-800 rounded-lg" />
         </div>
         <div className="space-y-2.5 pt-2">
           {[1, 2, 3, 4, 5, 6].map((row) => (
-            <div key={row} className="h-12 w-full bg-slate-100 dark:bg-slate-800/40 rounded-lg" />
+            <div key={row} className="h-12 w-full bg-muted dark:bg-slate-800/40 rounded-lg" />
           ))}
         </div>
       </div>

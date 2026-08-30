@@ -32,7 +32,7 @@ function ClinicSummaryContent() {
           ]}
           action={
             <div className="flex items-center gap-3">
-              <span className="text-xs font-semibold text-slate-500">Select Patient:</span>
+              <span className="text-xs font-semibold text-muted-foreground">Select Patient:</span>
               <Select
                 value={effectiveId}
                 onChange={(e) => setSelectedId(e.target.value)}
@@ -52,7 +52,7 @@ function ClinicSummaryContent() {
       {selectedPatient ? (
         <ClinicSummary patient={selectedPatient} />
       ) : (
-        <div className="p-12 text-center text-sm text-slate-500">No patient selected.</div>
+        <div className="p-12 text-center text-sm text-muted-foreground">No patient selected.</div>
       )}
     </div>
   );
@@ -60,7 +60,7 @@ function ClinicSummaryContent() {
 
 export default function ClinicSummaryPage() {
   return (
-    <Suspense fallback={<div className="p-12 text-center text-sm text-slate-500">Loading summary...</div>}>
+    <Suspense fallback={<div className="p-12 text-center text-sm text-muted-foreground">Loading summary...</div>}>
       <ClinicSummaryContent />
     </Suspense>
   );

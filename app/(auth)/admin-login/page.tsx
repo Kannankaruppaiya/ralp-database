@@ -115,38 +115,38 @@ export default function AdminLoginPage() {
             </span>
           </h1>
 
-          <p className="text-sm text-slate-300 leading-relaxed max-w-xl">
+          <p className="text-sm text-muted-foreground leading-relaxed max-w-xl">
             Dedicated administrative console for National Prostate Cancer Audit (NPCA) compliance audits, Caldicott Principle 7 emergency overrides, and multi-surgeon data management.
           </p>
 
           <div className="grid grid-cols-3 gap-3.5 pt-4">
-            <div className="p-1 rounded-2xl bg-white/5 border border-white/10 shadow-lg backdrop-blur-md">
+            <div className="p-1 rounded-2xl bg-card/5 border border-white/10 shadow-lg backdrop-blur-md">
               <div className="p-3.5 rounded-xl bg-slate-900/80 border border-white/5 space-y-1">
                 <div className="text-2xl font-black text-white font-mono">100%</div>
-                <div className="text-[11px] text-slate-400 font-medium">Audit Trail Logging</div>
+                <div className="text-[11px] text-muted-foreground font-medium">Audit Trail Logging</div>
               </div>
             </div>
 
-            <div className="p-1 rounded-2xl bg-white/5 border border-white/10 shadow-lg backdrop-blur-md">
+            <div className="p-1 rounded-2xl bg-card/5 border border-white/10 shadow-lg backdrop-blur-md">
               <div className="p-3.5 rounded-xl bg-slate-900/80 border border-white/5 space-y-1">
                 <div className="text-2xl font-black text-indigo-300 font-mono">RBAC</div>
-                <div className="text-[11px] text-slate-400 font-medium">Role Access Matrix</div>
+                <div className="text-[11px] text-muted-foreground font-medium">Role Access Matrix</div>
               </div>
             </div>
 
-            <div className="p-1 rounded-2xl bg-white/5 border border-white/10 shadow-lg backdrop-blur-md">
+            <div className="p-1 rounded-2xl bg-card/5 border border-white/10 shadow-lg backdrop-blur-md">
               <div className="p-3.5 rounded-xl bg-slate-900/80 border border-white/5 space-y-1">
                 <div className="text-2xl font-black text-blue-300 font-mono">NPCA</div>
-                <div className="text-[11px] text-slate-400 font-medium">Annual Audit Sync</div>
+                <div className="text-[11px] text-muted-foreground font-medium">Annual Audit Sync</div>
               </div>
             </div>
           </div>
         </div>
 
         {/* Bottom Trust */}
-        <div className="relative z-10 pt-6 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
+        <div className="relative z-10 pt-6 border-t border-slate-800/80 flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5 text-slate-300">
+            <span className="flex items-center gap-1.5 text-muted-foreground">
               <ShieldCheck className="h-4 w-4 text-indigo-400" />
               <span>Immutable Ledger</span>
             </span>
@@ -155,7 +155,7 @@ export default function AdminLoginPage() {
             <span>•</span>
             <span>NHS Digital DSPT Standard Met</span>
           </div>
-          <span className="font-mono text-[11px] text-slate-500">OUH-ADMIN-PORTAL</span>
+          <span className="font-mono text-[11px] text-muted-foreground">OUH-ADMIN-PORTAL</span>
         </div>
       </div>
 
@@ -165,24 +165,24 @@ export default function AdminLoginPage() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-widest text-indigo-400">Admin Authentication</span>
-              <Link href="/login" className="text-xs text-teal-400 hover:text-teal-300 transition-colors flex items-center gap-1">
+              <Link href="/login" className="text-xs text-primary hover:text-teal-300 transition-colors flex items-center gap-1">
                 <span>Doctor Login</span>
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
             </div>
             <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">System Admin Sign In</h2>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-muted-foreground">
               Restricted console for Database Administrators and Caldicott Information Governance Leads.
             </p>
           </div>
 
-          <div className="rounded-[2rem] p-1.5 bg-white/5 border border-white/10 shadow-2xl backdrop-blur-xl">
+          <div className="rounded-[2rem] p-1.5 bg-card/5 border border-white/10 shadow-2xl backdrop-blur-xl">
             <div className="rounded-[calc(2rem-0.375rem)] bg-slate-900/90 border border-white/5 p-6 space-y-4">
               <form onSubmit={(e) => void handleAdminLogin(e)} className="space-y-4">
                 <FormField>
-                  <FormLabel className="text-xs font-semibold text-slate-300">Admin Email / Staff ID</FormLabel>
+                  <FormLabel className="text-xs font-semibold text-muted-foreground">Admin Email / Staff ID</FormLabel>
                   <div className="relative">
-                    <Mail className="absolute left-3.5 top-3 h-4 w-4 text-slate-500" />
+                    <Mail className="absolute left-3.5 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
                       type="email"
                       value={adminEmail}
@@ -195,9 +195,9 @@ export default function AdminLoginPage() {
                 </FormField>
 
                 <FormField>
-                  <FormLabel className="text-xs font-semibold text-slate-300">Master Password</FormLabel>
+                  <FormLabel className="text-xs font-semibold text-muted-foreground">Master Password</FormLabel>
                   <div className="relative">
-                    <Lock className="absolute left-3.5 top-3 h-4 w-4 text-slate-500" />
+                    <Lock className="absolute left-3.5 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
                       type={showPassword ? 'text' : 'password'}
                       value={password}
@@ -208,7 +208,7 @@ export default function AdminLoginPage() {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-3 text-slate-500 hover:text-slate-300"
+                      className="absolute right-3.5 top-3 text-muted-foreground hover:text-muted-foreground"
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -216,7 +216,7 @@ export default function AdminLoginPage() {
                 </FormField>
 
                 <div className="pt-1">
-                  <div className="text-[11px] text-slate-500 mb-1.5 flex items-center gap-1">
+                  <div className="text-[11px] text-muted-foreground mb-1.5 flex items-center gap-1">
                     <UserCheck className="h-3 w-3 text-indigo-400" />
                     <span>Quick Fill Admin Credentials:</span>
                   </div>
@@ -224,14 +224,14 @@ export default function AdminLoginPage() {
                     <button
                       type="button"
                       onClick={() => handleAutofillAdmin('admin')}
-                      className="px-2.5 py-1 text-[10px] font-semibold rounded-lg bg-slate-800/80 hover:bg-indigo-950 hover:border-indigo-500/50 border border-slate-700 text-slate-300 transition-colors"
+                      className="px-2.5 py-1 text-[10px] font-semibold rounded-lg bg-slate-800/80 hover:bg-indigo-950 hover:border-indigo-500/50 border border-slate-700 text-muted-foreground transition-colors"
                     >
                       System Admin (Alex Ward)
                     </button>
                     <button
                       type="button"
                       onClick={() => handleAutofillAdmin('caldicott')}
-                      className="px-2.5 py-1 text-[10px] font-semibold rounded-lg bg-slate-800/80 hover:bg-indigo-950 hover:border-indigo-500/50 border border-slate-700 text-slate-300 transition-colors"
+                      className="px-2.5 py-1 text-[10px] font-semibold rounded-lg bg-slate-800/80 hover:bg-indigo-950 hover:border-indigo-500/50 border border-slate-700 text-muted-foreground transition-colors"
                     >
                       Caldicott Lead (Dr. Roberts)
                     </button>
@@ -250,7 +250,7 @@ export default function AdminLoginPage() {
             </div>
           </div>
 
-          <div className="text-center text-[11px] text-slate-500">
+          <div className="text-center text-[11px] text-muted-foreground">
             Oxford University Hospitals NHS FT • Information Governance
           </div>
         </div>

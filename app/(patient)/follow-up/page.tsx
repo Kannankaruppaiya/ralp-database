@@ -15,12 +15,12 @@ export default function PatientFollowUpSchedulePage() {
   const { patient, isLoading } = useCurrentPatient();
 
   if (isLoading) {
-    return <div className="p-12 text-center text-sm text-slate-500">Loading your record...</div>;
+    return <div className="p-12 text-center text-sm text-muted-foreground">Loading your record...</div>;
   }
 
   if (!patient) {
     return (
-      <div className="p-12 text-center text-sm text-slate-500">
+      <div className="p-12 text-center text-sm text-muted-foreground">
         No patient record is linked to this login. Please contact your clinical team.
       </div>
     );
@@ -30,8 +30,8 @@ export default function PatientFollowUpSchedulePage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Your 3-Year Follow-up Care Pathway</h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <h1 className="text-2xl font-bold text-foreground">Your 3-Year Follow-up Care Pathway</h1>
+          <p className="text-xs text-muted-foreground mt-1">
             Personalized recovery milestone schedule for <strong>{patient.firstName} {patient.surname}</strong> (Surgeon: {patient.primarySurgeon}).
           </p>
         </div>
@@ -43,35 +43,35 @@ export default function PatientFollowUpSchedulePage() {
       <div className="space-y-4">
         {patient?.followUps?.length === 0 ? (
           <Card className="shadow-sm">
-            <CardContent className="p-8 text-center text-xs text-slate-500">
+            <CardContent className="p-8 text-center text-xs text-muted-foreground">
               No follow-up milestones scheduled yet.
             </CardContent>
           </Card>
         ) : (
           patient?.followUps?.map((fu) => (
-            <Card key={fu.id} className="shadow-sm bg-white">
+            <Card key={fu.id} className="shadow-sm bg-card">
               <CardContent className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-start gap-4">
                   <div className={`flex h-10 w-10 items-center justify-center rounded-xl font-bold text-sm ${
-                    fu.status === 'completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-600'
+                    fu.status === 'completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-muted text-muted-foreground'
                   }`}>
                     {fu.milestone.toUpperCase()}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h4 className="font-bold text-sm text-slate-900">
+                      <h4 className="font-bold text-sm text-foreground">
                         {fu.targetMonths}-Month Milestone Review
                       </h4>
                       <Badge variant={fu.status === 'completed' ? 'success' : 'warning'} className="text-[10px]">
                         {fu.status === 'completed' ? 'Completed' : 'Scheduled'}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-500 mt-0.5">
+                    <p className="text-xs text-muted-foreground mt-0.5">
                       Target Due Date: <strong>{formatDate(fu.dueDate)}</strong>
                     </p>
                     {fu.status === 'completed' && (
-                      <div className="text-xs text-slate-600 mt-1">
-                        PSA: <strong className="text-teal-700">{fu.psa !== undefined ? `${fu.psa} ng/mL` : 'Undetectable (<0.01)'}</strong> • Continence: {fu.continence?.dayStatus || 'Dry'}
+                      <div className="text-xs text-muted-foreground mt-1">
+                        PSA: <strong className="text-primary">{fu.psa !== undefined ? `${fu.psa} ng/mL` : 'Undetectable (<0.01)'}</strong> • Continence: {fu.continence?.dayStatus || 'Dry'}
                       </div>
                     )}
                   </div>
@@ -79,7 +79,7 @@ export default function PatientFollowUpSchedulePage() {
 
                 {fu.status !== 'completed' && (
                   <Link href="/assessment">
-                    <Button size="sm" variant="outline" className="gap-1.5 text-xs border-teal-300 text-teal-800 hover:bg-teal-50">
+                    <Button size="sm" variant="outline" className="gap-1.5 text-xs border-teal-300 text-primary hover:bg-teal-50">
                       <span>Fill Questionnaire</span>
                       <ArrowRight className="h-3.5 w-3.5" />
                     </Button>

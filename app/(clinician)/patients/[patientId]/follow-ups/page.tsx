@@ -16,7 +16,7 @@ export default function PatientFollowUpsPage({
   const { patient, isLoading, refresh } = usePatient(resolvedParams.patientId);
 
   if (isLoading || !patient) {
-    return <div className="p-8 text-center text-sm text-slate-500">Loading follow-ups...</div>;
+    return <div className="p-8 text-center text-sm text-muted-foreground">Loading follow-ups...</div>;
   }
 
   return (

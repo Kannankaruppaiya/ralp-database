@@ -37,12 +37,13 @@ export function Topbar({ onMenuClick }: TopbarProps) {
   };
 
   return (
-    <header className="sticky top-0 z-20 flex h-16 w-full items-center justify-between border-b border-slate-200 bg-white/95 px-4 md:px-8 backdrop-blur dark:border-slate-800 dark:bg-slate-950/95">
+    <header className="sticky top-0 z-20 flex h-16 w-full items-center justify-between border-b border-border bg-card/95 px-4 md:px-8 backdrop-blur dark:border-slate-800 dark:bg-slate-950/95">
       {/* Mobile Menu & Search Input */}
       <div className="flex items-center gap-3 flex-1 max-w-lg">
         <button
           onClick={onMenuClick}
-          className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 md:hidden"
+          aria-label="Open navigation menu"
+          className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted md:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           <Menu className="h-5 w-5" />
         </button>
@@ -50,7 +51,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
         {/* Global Patient Search Dropdown */}
         <div className="relative w-full">
           <div className="relative">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+            <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="text"
               placeholder="Search patient by name, NHS number, hospital MRN..."
@@ -62,18 +63,18 @@ export function Topbar({ onMenuClick }: TopbarProps) {
               onFocus={() => {
                 if (search.length > 0) setIsSearchOpen(true);
               }}
-              className="pl-9 pr-4 h-9 bg-slate-50/80 border-slate-200 focus:bg-white text-sm"
+              className="pl-9 pr-4 h-9 bg-muted/80 border-border focus:bg-card text-sm"
             />
           </div>
 
           {/* Live Search Results Modal */}
           {isSearchOpen && (
-            <div className="absolute left-0 right-0 top-11 z-50 rounded-xl border border-slate-200 bg-white p-2 shadow-xl dark:border-slate-800 dark:bg-slate-900 max-h-96 overflow-y-auto">
-              <div className="p-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <div className="absolute left-0 right-0 top-11 z-50 rounded-xl border border-border bg-card p-2 shadow-xl dark:border-slate-800 dark:bg-slate-900 max-h-96 overflow-y-auto">
+              <div className="p-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                 Matching Patients ({patients.length})
               </div>
               {patients.length === 0 ? (
-                <div className="p-4 text-center text-sm text-slate-500">
+                <div className="p-4 text-center text-sm text-muted-foreground">
                   No patient matches found for &ldquo;{search}&rdquo;
                 </div>
               ) : (
@@ -82,18 +83,18 @@ export function Topbar({ onMenuClick }: TopbarProps) {
                     <button
                       key={patient.id}
                       onClick={() => handleSelectPatient(patient.id)}
-                      className="flex w-full items-center justify-between rounded-lg p-2.5 text-left text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                      className="flex w-full items-center justify-between rounded-lg p-2.5 text-left text-sm hover:bg-muted dark:hover:bg-slate-800 transition-colors"
                     >
                       <div>
-                        <div className="font-semibold text-slate-900 dark:text-slate-100">
+                        <div className="font-semibold text-foreground dark:text-slate-100">
                           {patient.firstName} {patient.surname}
                         </div>
-                        <div className="text-xs text-slate-500 flex items-center gap-2">
+                        <div className="text-xs text-muted-foreground flex items-center gap-2">
                           <span>NHS: {patient.nhsNumber}</span>
                           <span>•</span>
                           <span>MRN: {patient.hospitalNumber}</span>
                           <span>•</span>
-                          <span className="font-medium text-teal-600">Surgeon: {patient.primarySurgeon}</span>
+                          <span className="font-medium text-primary">Surgeon: {patient.primarySurgeon}</span>
                         </div>
                       </div>
                       <Badge variant="outline" className="text-[11px]">
@@ -110,8 +111,8 @@ export function Topbar({ onMenuClick }: TopbarProps) {
 
       {/* Action Header Items */}
       <div className="flex items-center gap-3">
-        <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-md bg-slate-100 text-xs text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-          <Hospital className="h-3.5 w-3.5 text-teal-600" />
+        <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-md bg-muted text-xs text-muted-foreground dark:bg-slate-800 dark:text-slate-300">
+          <Hospital className="h-3.5 w-3.5 text-primary" />
           <span>Oxford Urology Centre</span>
         </div>
 

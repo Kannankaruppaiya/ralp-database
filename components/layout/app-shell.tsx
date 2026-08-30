@@ -9,7 +9,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50/50 dark:bg-slate-950">
+    <div className="min-h-screen bg-muted/50 dark:bg-slate-950">
       <div className="no-print print:hidden">
         <Sidebar />
         <MobileNav open={mobileNavOpen} onClose={() => setMobileNavOpen(false)} />
