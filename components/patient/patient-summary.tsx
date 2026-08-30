@@ -63,7 +63,7 @@ export function PatientSummary({ patient }: { patient: PatientFullRecord }) {
       <Card className="border-l-4 border-l-purple-500 shadow-sm">
         <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
-            <Microscope className="h-4 w-4 text-purple-600" />
+            <Microscope className="h-4 w-4 text-category-muted-foreground" />
             Post-Op Histology
           </CardTitle>
           <Badge variant="purple" className="text-[10px]">pT{patient.histology?.pathologicalStage || '—'}</Badge>

@@ -139,11 +139,11 @@ export default function PatientHomePage() {
         <Card className="hover:border-purple-500 transition-colors shadow-sm bg-card">
           <CardContent className="p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-100 text-purple-700">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-category-muted text-category-muted-foreground">
                 <Sparkles className="h-6 w-6" />
               </div>
               {hasShim && (
-                <Badge variant="outline" className="text-xs bg-purple-50 text-purple-700 border-purple-300">
+                <Badge variant="outline" className="text-xs bg-category-muted text-category-muted-foreground border-category/20">
                   ✓ Submitted
                 </Badge>
               )}
@@ -157,7 +157,7 @@ export default function PatientHomePage() {
             </div>
 
             <Link href="/assessment/shim" className="block">
-              <Button size="sm" variant="outline" className="w-full gap-1.5 text-xs border-purple-300 text-purple-700 hover:bg-purple-50">
+              <Button size="sm" variant="outline" className="w-full gap-1.5 text-xs border-category/20 text-category-muted-foreground hover:bg-category-muted">
                 <span>{hasShim ? 'Update SHIM Score' : 'Complete SHIM'}</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </Button>

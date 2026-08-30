@@ -115,22 +115,22 @@ export function Sidebar() {
         </div>
 
         {/* Dedicated Admin Portal Switcher */}
-        <div className="rounded-xl border border-indigo-100 bg-indigo-50/40 p-3.5 dark:border-indigo-900/40 dark:bg-indigo-950/20">
+        <div className="rounded-xl border border-admin/20 bg-admin-muted/40 p-3.5 dark:border-indigo-900/40 dark:bg-indigo-950/20">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs font-semibold text-indigo-950 dark:text-indigo-300">
-              <ShieldCheck className="h-4 w-4 text-indigo-600" />
+            <div className="flex items-center gap-2 text-xs font-semibold text-admin-muted-foreground dark:text-indigo-300">
+              <ShieldCheck className="h-4 w-4 text-admin-muted-foreground" />
               <span>Admin Portal (Separate)</span>
             </div>
-            <Badge variant="outline" className="border-indigo-300 text-indigo-700 text-[9px] font-mono">
+            <Badge variant="outline" className="border-admin/20 text-admin-muted-foreground text-[9px] font-mono">
               RBAC
             </Badge>
           </div>
-          <p className="mt-1 text-[11px] text-indigo-900/70 dark:text-indigo-300/70">
+          <p className="mt-1 text-[11px] text-admin-muted-foreground/70 dark:text-indigo-300/70">
             User management, Caldicott audit logs & NPCA data quality controls.
           </p>
           <Link
             href="/admin"
-            className="mt-2.5 inline-flex w-full items-center justify-center rounded-md bg-indigo-700 py-1.5 text-xs font-medium text-white hover:bg-indigo-800 transition-colors shadow-sm"
+            className="mt-2.5 inline-flex w-full items-center justify-center rounded-md bg-admin py-1.5 text-xs font-medium text-white hover:bg-admin/90 transition-colors shadow-sm"
           >
             Open Admin Portal
           </Link>

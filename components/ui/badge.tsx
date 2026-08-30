@@ -21,7 +21,7 @@ const badgeVariants = cva(
         info:
           'border-info/20 bg-info-muted text-info-muted-foreground',
         purple:
-          'border-purple-200 bg-purple-50 text-purple-700 dark:bg-purple-950/40 dark:text-purple-300 dark:border-purple-800/50',
+          'border-category/20 bg-category-muted text-category-muted-foreground dark:bg-purple-950/40 dark:text-purple-300 dark:border-purple-800/50',
       },
     },
     defaultVariants: {

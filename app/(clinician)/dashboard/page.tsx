@@ -136,16 +136,16 @@ export default function ClinicianDashboardPage() {
 
       {/* Role-Specific Smart Banners */}
       {currentUser?.role === 'Clinical Nurse Specialist' && (
-        <div className="p-4 rounded-xl border border-purple-200 bg-purple-50/50 dark:border-purple-900/40 dark:bg-purple-950/20 flex items-center justify-between">
+        <div className="p-4 rounded-xl border border-category/20 bg-category-muted/50 dark:border-purple-900/40 dark:bg-purple-950/20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <HeartPulse className="h-5 w-5 text-purple-600" />
+            <HeartPulse className="h-5 w-5 text-category-muted-foreground" />
             <div>
-              <div className="text-xs font-bold text-purple-950 dark:text-purple-200">Specialist Nursing Triage Dashboard Active</div>
-              <div className="text-[11px] text-purple-700 dark:text-purple-400">Highlighting TWOC catheter removals, incontinence rehabilitation, and PROM non-responder triage.</div>
+              <div className="text-xs font-bold text-category-muted-foreground dark:text-purple-200">Specialist Nursing Triage Dashboard Active</div>
+              <div className="text-[11px] text-category-muted-foreground dark:text-purple-400">Highlighting TWOC catheter removals, incontinence rehabilitation, and PROM non-responder triage.</div>
             </div>
           </div>
           <Link href="/follow-ups/overdue">
-            <Button size="sm" variant="outline" className="text-xs border-purple-300 text-purple-800 hover:bg-purple-100">
+            <Button size="sm" variant="outline" className="text-xs border-category/20 text-category-muted-foreground hover:bg-category-muted">
               Review Nurse Triage Queue
             </Button>
           </Link>
@@ -211,7 +211,7 @@ export default function ClinicianDashboardPage() {
         <Card className="border-l-4 border-l-purple-500 shadow-sm">
           <CardHeader className="p-4 pb-1 flex flex-row items-center justify-between space-y-0">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Registry Completeness</span>
-            <ShieldCheck className="h-4 w-4 text-purple-600" />
+            <ShieldCheck className="h-4 w-4 text-category-muted-foreground" />
           </CardHeader>
           <CardContent className="p-4 pt-1">
             <div className="text-2xl font-bold text-foreground dark:text-white">{avgCompleteness}%</div>

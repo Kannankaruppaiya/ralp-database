@@ -234,7 +234,7 @@ export function PerformanceHud() {
 
             <div className="rounded-xl border border-border bg-muted/80 p-3 dark:border-slate-800 dark:bg-slate-800/40">
               <span className="text-[11px] font-medium text-muted-foreground flex items-center gap-1.5 mb-1">
-                <HardDrive className="h-3.5 w-3.5 text-purple-500" />
+                <HardDrive className="h-3.5 w-3.5 text-category" />
                 DOM Elements
               </span>
               <span className="text-lg font-extrabold text-foreground dark:text-white font-mono">

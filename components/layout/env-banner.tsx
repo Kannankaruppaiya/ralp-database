@@ -17,7 +17,7 @@ export function EnvBanner() {
     <div
       role="status"
       className={`sticky top-0 z-[60] flex items-center justify-center gap-2 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white ${
-        isStaging ? 'bg-warning' : 'bg-indigo-600'
+        isStaging ? 'bg-warning' : 'bg-admin'
       }`}
     >
       <span>{APP_CONFIG.tier} environment</span>

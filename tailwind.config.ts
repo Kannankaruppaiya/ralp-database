@@ -64,6 +64,18 @@ const config: Config = {
           muted: "hsl(var(--info-muted))",
           "muted-foreground": "hsl(var(--info-muted-foreground))",
         },
+        admin: {
+          DEFAULT: "hsl(var(--admin))",
+          foreground: "hsl(var(--admin-foreground))",
+          muted: "hsl(var(--admin-muted))",
+          "muted-foreground": "hsl(var(--admin-muted-foreground))",
+        },
+        category: {
+          DEFAULT: "hsl(var(--category))",
+          foreground: "hsl(var(--category-foreground))",
+          muted: "hsl(var(--category-muted))",
+          "muted-foreground": "hsl(var(--category-muted-foreground))",
+        },
         chart: {
           1: "hsl(var(--chart-1))",
           2: "hsl(var(--chart-2))",

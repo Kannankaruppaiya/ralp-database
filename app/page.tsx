@@ -38,7 +38,7 @@ export default function RootHomePage() {
               <Button variant="ghost" size="sm" className="text-xs">Clinician Login</Button>
             </Link>
             <Link href="/patient-login">
-              <Button variant="outline" size="sm" className="text-xs text-purple-700 border-purple-200 hover:bg-purple-50">Patient Login</Button>
+              <Button variant="outline" size="sm" className="text-xs text-category-muted-foreground border-category/20 hover:bg-category-muted">Patient Login</Button>
             </Link>
             <Link href="/dashboard">
               <Button size="sm" className="shadow-sm text-xs">Open Registry</Button>
@@ -110,7 +110,7 @@ export default function RootHomePage() {
           <Card className="hover:border-purple-500 hover:shadow-xl transition-all border-border/80 bg-card group flex flex-col justify-between">
             <CardContent className="p-6 space-y-5">
               <div className="flex items-center justify-between">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-50 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors shadow-sm">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-category-muted text-category-muted-foreground group-hover:bg-purple-600 group-hover:text-white transition-colors shadow-sm">
                   <Users className="h-6 w-6" />
                 </div>
                 <Badge variant="purple" className="text-[10px]">Patients Cohort</Badge>
@@ -127,21 +127,21 @@ export default function RootHomePage() {
 
               <div className="space-y-1.5 text-xs text-muted-foreground pt-2 border-t">
                 <div className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-category" />
                   <span>7-Question IPSS Urinary scoring</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-category" />
                   <span>5-Question SHIM Erectile function</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-category" />
                   <span>Longitudinal recovery timeline</span>
                 </div>
               </div>
 
               <Link href="/patient-login" className="block pt-2">
-                <Button variant="secondary" className="w-full gap-2 bg-purple-600 text-white hover:bg-purple-700 shadow-sm text-xs">
+                <Button variant="secondary" className="w-full gap-2 bg-category text-white hover:bg-category/90 shadow-sm text-xs">
                   <span>Patient Sign In & Access</span>
                   <ArrowRight className="h-4 w-4" />
                 </Button>
@@ -153,10 +153,10 @@ export default function RootHomePage() {
           <Card className="hover:border-indigo-500 hover:shadow-xl transition-all border-border/80 bg-card group flex flex-col justify-between">
             <CardContent className="p-6 space-y-5">
               <div className="flex items-center justify-between">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors shadow-sm">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-admin-muted text-admin-muted-foreground group-hover:bg-indigo-600 group-hover:text-white transition-colors shadow-sm">
                   <ShieldCheck className="h-6 w-6" />
                 </div>
-                <Badge className="bg-indigo-100 text-indigo-800 border-indigo-200 text-[10px]">
+                <Badge className="bg-admin-muted text-admin-muted-foreground border-admin/20 text-[10px]">
                   Caldicott & Governance
                 </Badge>
               </div>
@@ -172,21 +172,21 @@ export default function RootHomePage() {
 
               <div className="space-y-1.5 text-xs text-muted-foreground pt-2 border-t">
                 <div className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-admin" />
                   <span>Staff accounts & surgeon codes</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-admin" />
                   <span>Immutable Caldicott audit trail</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-indigo-500" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-admin" />
                   <span>NPCA registry exports & snapshots</span>
                 </div>
               </div>
 
               <Link href="/admin-login" className="block pt-2">
-                <Button variant="outline" className="w-full gap-2 border-indigo-300 text-indigo-700 hover:bg-indigo-50 shadow-sm text-xs">
+                <Button variant="outline" className="w-full gap-2 border-admin/20 text-admin-muted-foreground hover:bg-admin-muted shadow-sm text-xs">
                   <span>Enter Admin Portal</span>
                   <ArrowRight className="h-4 w-4" />
                 </Button>

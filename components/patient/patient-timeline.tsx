@@ -31,7 +31,7 @@ export function PatientTimeline({ patient }: { patient: PatientFullRecord }) {
             title: 'Post-Op Histopathology Report',
             category: 'Pathology',
             icon: Microscope,
-            color: 'bg-purple-600 text-white',
+            color: 'bg-category text-white',
             details: `Gleason ${patient.histology.gleasonGrade} (GG${patient.histology.gradeGroup}) | pT${patient.histology.pathologicalStage} | Margins: ${patient.histology.surgicalMargins}`,
           },
         ]

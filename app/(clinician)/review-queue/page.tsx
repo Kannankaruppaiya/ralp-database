@@ -67,18 +67,18 @@ export default function ReviewQueuePage() {
           onClick={() => setActiveTab('unmatched')}
           className={`p-4 rounded-xl border text-left transition-all ${
             activeTab === 'unmatched'
-              ? 'border-purple-500 bg-purple-50/50 dark:bg-purple-950/30 ring-2 ring-purple-500/30'
+              ? 'border-category bg-category-muted/50 dark:bg-purple-950/30 ring-2 ring-category/30'
               : 'border-border bg-card hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
           }`}
         >
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground">Unmatched Docs</span>
-            <UserX className="h-4 w-4 text-purple-600" />
+            <UserX className="h-4 w-4 text-category-muted-foreground" />
           </div>
           <div className="text-2xl font-bold text-foreground dark:text-white mt-1">
             {unmatchedDocs.length}
           </div>
-          <span className="text-[11px] text-purple-600 font-medium">Needs patient link</span>
+          <span className="text-[11px] text-category-muted-foreground font-medium">Needs patient link</span>
         </button>
 
         <button

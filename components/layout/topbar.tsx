@@ -118,7 +118,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
 
         {/* Quick Admin Portal */}
         <Link href="/admin">
-          <Button variant="outline" size="sm" className="gap-1.5 text-xs border-indigo-200 text-indigo-700 hover:bg-indigo-50 hover:text-indigo-900 dark:border-indigo-900 dark:text-indigo-300">
+          <Button variant="outline" size="sm" className="gap-1.5 text-xs border-admin/20 text-admin-muted-foreground hover:bg-admin-muted hover:text-admin-muted-foreground dark:border-indigo-900 dark:text-indigo-300">
             <Shield className="h-3.5 w-3.5" />
             <span className="hidden sm:inline">Admin Console</span>
           </Button>

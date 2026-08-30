@@ -10,7 +10,7 @@ export default function AdminLoading() {
           <div className="h-6 w-72 bg-indigo-900/50 rounded-lg" />
           <div className="h-4 w-96 bg-indigo-950/70 rounded" />
         </div>
-        <ShieldCheck className="h-10 w-10 text-indigo-400 opacity-50" />
+        <ShieldCheck className="h-10 w-10 text-admin opacity-50" />
       </div>
 
       {/* Admin Metric Cards Skeleton */}

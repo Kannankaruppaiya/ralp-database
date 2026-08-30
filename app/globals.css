@@ -49,6 +49,17 @@
     --info-muted: 204 94% 96%;
     --info-muted-foreground: 201 90% 30%;
 
+    /* Category identity tokens: admin portal (indigo) + clinical category (violet) */
+    --admin: 243 75% 59%;
+    --admin-foreground: 0 0% 100%;
+    --admin-muted: 226 100% 97%;
+    --admin-muted-foreground: 243 54% 41%;
+
+    --category: 262 83% 58%;
+    --category-foreground: 0 0% 100%;
+    --category-muted: 270 100% 98%;
+    --category-muted-foreground: 263 70% 42%;
+
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 173 80% 32%;
@@ -111,6 +122,17 @@
     --info-foreground: 202 90% 10%;
     --info-muted: 201 80% 12%;
     --info-muted-foreground: 200 90% 72%;
+
+    /* Category identity tokens — dark */
+    --admin: 243 75% 70%;
+    --admin-foreground: 243 60% 12%;
+    --admin-muted: 243 47% 18%;
+    --admin-muted-foreground: 240 90% 85%;
+
+    --category: 262 83% 72%;
+    --category-foreground: 263 60% 12%;
+    --category-muted: 263 45% 20%;
+    --category-muted-foreground: 269 90% 86%;
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;

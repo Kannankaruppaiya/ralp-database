@@ -35,20 +35,20 @@ export function SHIMQuestionnaire({ initialAnswers, onComplete, isReadOnly = fal
   return (
     <div className="space-y-6">
       {/* Live Scoring Banner */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl border border-purple-200 bg-purple-50/60 dark:border-purple-900 dark:bg-purple-950/30">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl border border-category/20 bg-category-muted/60 dark:border-purple-900 dark:bg-purple-950/30">
         <div>
-          <h3 className="text-sm font-bold text-purple-950 dark:text-purple-200 flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-purple-600" />
+          <h3 className="text-sm font-bold text-category-muted-foreground dark:text-purple-200 flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-category-muted-foreground" />
             Sexual Health Inventory for Men (SHIM / IIEF-5)
           </h3>
-          <p className="text-xs text-purple-800/80 dark:text-purple-400 mt-0.5">
+          <p className="text-xs text-category-muted-foreground/80 dark:text-purple-400 mt-0.5">
             Erectile function & potency recovery score (Past 6 months)
           </p>
         </div>
         <div className="flex items-center gap-3">
           <div className="text-right">
             <span className="text-xs text-muted-foreground block">Total Score:</span>
-            <span className="text-xl font-extrabold text-purple-900 dark:text-purple-100 font-mono">
+            <span className="text-xl font-extrabold text-category-muted-foreground dark:text-purple-100 font-mono">
               {score.totalScore} / 25
             </span>
           </div>
@@ -94,7 +94,7 @@ export function SHIMQuestionnaire({ initialAnswers, onComplete, isReadOnly = fal
                         className={cn(
                           'flex items-center p-3 rounded-lg border text-left transition-all',
                           isSelected
-                            ? 'border-purple-600 bg-purple-600 text-white font-bold shadow-sm ring-2 ring-purple-600/30'
+                            ? 'border-category bg-category text-white font-bold shadow-sm ring-2 ring-purple-600/30'
                             : 'border-border bg-muted/60 text-foreground hover:bg-muted hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300'
                         )}
                       >

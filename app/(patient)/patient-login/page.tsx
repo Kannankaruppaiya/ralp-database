@@ -88,7 +88,7 @@ export default function PatientLoginPage() {
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/85 to-purple-950/60" />
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-category/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
         </div>
 
@@ -108,16 +108,16 @@ export default function PatientLoginPage() {
             </div>
           </Link>
 
-          <Badge variant="outline" className="border-purple-500/30 bg-purple-950/40 text-purple-300 text-xs px-3 py-1 gap-1.5 backdrop-blur-md">
-            <ShieldCheck className="h-3.5 w-3.5 text-purple-400" />
+          <Badge variant="outline" className="border-category/30 bg-purple-950/40 text-purple-300 text-xs px-3 py-1 gap-1.5 backdrop-blur-md">
+            <ShieldCheck className="h-3.5 w-3.5 text-category" />
             <span>NHS Caldicott Protected</span>
           </Badge>
         </div>
 
         {/* Center Statement */}
         <div className="relative z-10 my-auto py-8 space-y-6 max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-[11px] font-semibold uppercase tracking-wider backdrop-blur-sm">
-            <Activity className="h-3.5 w-3.5 text-purple-400" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-category/10 border border-category/20 text-purple-300 text-[11px] font-semibold uppercase tracking-wider backdrop-blur-sm">
+            <Activity className="h-3.5 w-3.5 text-category" />
             <span>Personalized Recovery Tracking</span>
           </div>
 
@@ -167,7 +167,7 @@ export default function PatientLoginPage() {
         <div className="relative z-10 pt-6 border-t border-slate-800/80 flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5 text-muted-foreground">
-              <ShieldCheck className="h-4 w-4 text-purple-400" />
+              <ShieldCheck className="h-4 w-4 text-category" />
               <span>Strictly Confidential</span>
             </span>
             <span>•</span>
@@ -184,7 +184,7 @@ export default function PatientLoginPage() {
         <div className="max-w-md w-full mx-auto my-auto space-y-6">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-widest text-purple-400">Patient Portal Sign In</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-category">Patient Portal Sign In</span>
               <Link href="/login" className="text-xs text-primary hover:text-teal-300 transition-colors flex items-center gap-1">
                 <span>Doctor Login</span>
                 <ArrowUpRight className="h-3.5 w-3.5" />
@@ -205,7 +205,7 @@ export default function PatientLoginPage() {
                   onClick={() => setAuthMode('nhs_number')}
                   className={`py-2.5 px-3 rounded-lg text-center transition-all flex items-center justify-center gap-1.5 ${
                     authMode === 'nhs_number'
-                      ? 'bg-purple-600 text-white font-bold shadow-md'
+                      ? 'bg-category text-white font-bold shadow-md'
                       : 'hover:text-slate-200'
                   }`}
                 >
@@ -217,7 +217,7 @@ export default function PatientLoginPage() {
                   onClick={() => setAuthMode('sms_token')}
                   className={`py-2.5 px-3 rounded-lg text-center transition-all flex items-center justify-center gap-1.5 ${
                     authMode === 'sms_token'
-                      ? 'bg-purple-600 text-white font-bold shadow-md'
+                      ? 'bg-category text-white font-bold shadow-md'
                       : 'hover:text-slate-200'
                   }`}
                 >
@@ -281,7 +281,7 @@ export default function PatientLoginPage() {
                 <div className="space-y-4">
                   {!otpSent ? (
                     <div className="text-center py-3 space-y-3">
-                      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-purple-500/10 border border-purple-500/30 text-purple-400">
+                      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-category/10 border border-category/30 text-category">
                         <Smartphone className="h-7 w-7" />
                       </div>
                       <div>
@@ -303,7 +303,7 @@ export default function PatientLoginPage() {
                     <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
                       <div className="p-3 bg-purple-950/50 rounded-xl border border-purple-800/80 text-xs text-purple-200">
                         <div className="font-semibold flex items-center gap-1.5 text-purple-300">
-                          <CheckCircle2 className="h-4 w-4 text-purple-400" />
+                          <CheckCircle2 className="h-4 w-4 text-category" />
                           <span>Security Code Dispatched!</span>
                         </div>
                         <p className="text-[11px] text-purple-300/80 mt-1">

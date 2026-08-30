@@ -75,7 +75,7 @@ export default function AdminLoginPage() {
       <div className="relative hidden lg:flex lg:col-span-7 flex-col justify-between p-12 overflow-hidden border-r border-slate-800/80">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/90 to-indigo-950/40" />
-          <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-admin/10 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
         </div>
 
@@ -89,22 +89,22 @@ export default function AdminLoginPage() {
               <span className="font-extrabold text-white text-lg tracking-tight leading-none block">
                 Trust Governance Console
               </span>
-              <span className="text-[11px] font-semibold text-indigo-400 uppercase tracking-widest mt-1 block">
+              <span className="text-[11px] font-semibold text-admin uppercase tracking-widest mt-1 block">
                 Caldicott & Security Audit
               </span>
             </div>
           </Link>
 
-          <Badge variant="outline" className="border-indigo-500/30 bg-indigo-950/40 text-indigo-300 text-xs px-3 py-1 gap-1.5 backdrop-blur-md">
-            <ShieldAlert className="h-3.5 w-3.5 text-indigo-400" />
+          <Badge variant="outline" className="border-admin/30 bg-indigo-950/40 text-indigo-300 text-xs px-3 py-1 gap-1.5 backdrop-blur-md">
+            <ShieldAlert className="h-3.5 w-3.5 text-admin" />
             <span>Restricted Governance Gateway</span>
           </Badge>
         </div>
 
         {/* Center Statement */}
         <div className="relative z-10 my-auto py-8 space-y-6 max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-[11px] font-semibold uppercase tracking-wider backdrop-blur-sm">
-            <Terminal className="h-3.5 w-3.5 text-indigo-400" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-admin/10 border border-admin/20 text-indigo-300 text-[11px] font-semibold uppercase tracking-wider backdrop-blur-sm">
+            <Terminal className="h-3.5 w-3.5 text-admin" />
             <span>Audit Trail & Registry Administration</span>
           </div>
 
@@ -147,7 +147,7 @@ export default function AdminLoginPage() {
         <div className="relative z-10 pt-6 border-t border-slate-800/80 flex items-center justify-between text-xs text-muted-foreground">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5 text-muted-foreground">
-              <ShieldCheck className="h-4 w-4 text-indigo-400" />
+              <ShieldCheck className="h-4 w-4 text-admin" />
               <span>Immutable Ledger</span>
             </span>
             <span>•</span>
@@ -164,7 +164,7 @@ export default function AdminLoginPage() {
         <div className="max-w-md w-full mx-auto my-auto space-y-6">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-widest text-indigo-400">Admin Authentication</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-admin">Admin Authentication</span>
               <Link href="/login" className="text-xs text-primary hover:text-teal-300 transition-colors flex items-center gap-1">
                 <span>Doctor Login</span>
                 <ArrowUpRight className="h-3.5 w-3.5" />
@@ -217,7 +217,7 @@ export default function AdminLoginPage() {
 
                 <div className="pt-1">
                   <div className="text-[11px] text-muted-foreground mb-1.5 flex items-center gap-1">
-                    <UserCheck className="h-3 w-3 text-indigo-400" />
+                    <UserCheck className="h-3 w-3 text-admin" />
                     <span>Quick Fill Admin Credentials:</span>
                   </div>
                   <div className="flex gap-2">

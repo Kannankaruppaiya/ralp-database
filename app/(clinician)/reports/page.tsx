@@ -62,7 +62,7 @@ export default function ReportsHubPage() {
 
         <Card className="shadow-sm hover:border-purple-500 transition-colors">
           <CardContent className="p-6 space-y-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950 dark:text-purple-400">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-category-muted text-category-muted-foreground dark:bg-purple-950 dark:text-purple-400">
               <Download className="h-6 w-6" />
             </div>
             <div>

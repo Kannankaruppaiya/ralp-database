@@ -310,7 +310,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
                             IPSS {hasIpss ? '✓' : '✕'}
                           </span>
                           <span>•</span>
-                          <span className={hasShim ? 'text-purple-700 dark:text-purple-400 font-bold' : 'text-muted-foreground dark:text-slate-600'} title="SHIM">
+                          <span className={hasShim ? 'text-category-muted-foreground dark:text-purple-400 font-bold' : 'text-muted-foreground dark:text-slate-600'} title="SHIM">
                             SHIM {hasShim ? '✓' : '✕'}
                           </span>
                           <span>•</span>

@@ -97,10 +97,10 @@ export default function AssessmentReviewPage() {
           </CardContent>
         </Card>
 
-        <Card className="shadow-sm border-purple-200 bg-card">
+        <Card className="shadow-sm border-category/20 bg-card">
           <CardHeader className="p-4 pb-2">
-            <CardTitle className="text-sm font-bold text-purple-900 flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-purple-600" />
+            <CardTitle className="text-sm font-bold text-category-muted-foreground flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-category-muted-foreground" />
               <span>2. Erectile Health (SHIM)</span>
             </CardTitle>
           </CardHeader>

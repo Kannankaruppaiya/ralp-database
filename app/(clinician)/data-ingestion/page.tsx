@@ -58,7 +58,7 @@ export default function DataIngestionPage() {
         <Link href="/data-ingestion/patient-matching" className="group">
           <Card className="h-full hover:border-teal-500 transition-colors shadow-sm">
             <CardContent className="p-5 space-y-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950 dark:text-purple-400 group-hover:scale-105 transition-transform">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-category-muted text-category-muted-foreground dark:bg-purple-950 dark:text-purple-400 group-hover:scale-105 transition-transform">
                 <UserCheck className="h-5 w-5" />
               </div>
               <h3 className="font-bold text-sm text-foreground dark:text-slate-100">3. Patient Matching</h3>

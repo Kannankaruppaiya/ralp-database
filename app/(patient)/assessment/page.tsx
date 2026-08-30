@@ -79,7 +79,7 @@ export default function AssessmentHubPage() {
         <Card className="shadow-sm hover:border-purple-500 transition-colors bg-card">
           <CardContent className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-start gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-100 text-purple-700 flex-shrink-0">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-category-muted text-category-muted-foreground flex-shrink-0">
                 <Sparkles className="h-6 w-6" />
               </div>
               <div>
@@ -98,7 +98,7 @@ export default function AssessmentHubPage() {
               </div>
             </div>
             <Link href="/assessment/shim">
-              <Button variant="outline" className="gap-1.5 text-xs border-purple-300 text-purple-700 hover:bg-purple-50">
+              <Button variant="outline" className="gap-1.5 text-xs border-category/20 text-category-muted-foreground hover:bg-category-muted">
                 <span>{hasShim ? 'Update SHIM' : 'Start SHIM'}</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </Button>

@@ -240,7 +240,7 @@ export default function ClinicianLoginPage() {
             <span className="font-bold text-white text-base">RALP Database</span>
           </Link>
           <Link href="/patient-login">
-            <Button variant="outline" size="sm" className="text-xs border-purple-500/30 text-purple-300">
+            <Button variant="outline" size="sm" className="text-xs border-category/30 text-purple-300">
               Patient Portal →
             </Button>
           </Link>
@@ -252,12 +252,12 @@ export default function ClinicianLoginPage() {
             <div className="hidden lg:flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-widest text-primary">Clinician Sign In</span>
               <div className="flex items-center gap-3">
-                <Link href="/patient-login" className="text-xs text-purple-400 hover:text-purple-300 transition-colors flex items-center gap-1">
+                <Link href="/patient-login" className="text-xs text-category hover:text-purple-300 transition-colors flex items-center gap-1">
                   <span>Patient Login</span>
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </Link>
                 <span className="text-foreground">|</span>
-                <Link href="/admin-login" className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors flex items-center gap-1">
+                <Link href="/admin-login" className="text-xs text-admin hover:text-indigo-300 transition-colors flex items-center gap-1">
                   <span>Admin Login</span>
                   <ArrowUpRight className="h-3.5 w-3.5" />
                 </Link>
