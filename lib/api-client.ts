@@ -43,6 +43,30 @@ function unwrap<T>(res: { data: unknown; error: { message: string } | null }): T
   return res.data as T;
 }
 
+// Whole-table reads are fetched in bounded pages rather than one open-ended
+// request, so PostgREST's row cap can never silently truncate a worklist. The
+// builder must apply a stable .order() before this pages it with .range().
+// The ceiling is a guard against a runaway query, not a limit reached in
+// practice — 100k rows is far beyond a single unit's registry; hitting it
+// throws rather than returning a partial set, which is the whole point.
+const PAGE_ROWS = 1000;
+const MAX_PAGES = 100;
+
+async function fetchAllPaged<T>(
+  build: (from: number, to: number) => PromiseLike<{ data: unknown; error: { message: string } | null }>
+): Promise<T[]> {
+  const out: T[] = [];
+  for (let page = 0; page < MAX_PAGES; page++) {
+    const from = page * PAGE_ROWS;
+    const { data, error } = await build(from, from + PAGE_ROWS - 1);
+    if (error) throw new Error(error.message);
+    const batch = (data ?? []) as T[];
+    out.push(...batch);
+    if (batch.length < PAGE_ROWS) return out;
+  }
+  throw new Error(`fetchAllPaged exceeded ${MAX_PAGES * PAGE_ROWS} rows — paginate this view`);
+}
+
 /**
  * Updates a patient's one-row clinical section, inserting it only if there is
  * not one yet.
@@ -199,14 +223,17 @@ export const db = {
   async getFollowUps(status?: 'due' | 'overdue' | 'completed'): Promise<
     { followUp: FollowUpRecord; patient: PatientFullRecord }[]
   > {
-    let query = supabase()
-      .from('follow_ups')
-      .select(`*, patients!inner(${LIST_PATIENT})`)
-      .order('due_date');
-    if (status) query = query.eq('status', status);
-
-    const rows = unwrap<Record<string, any>[]>(await query);
-    return (rows ?? []).map((r) => ({
+    const rows = await fetchAllPaged<Record<string, any>>((from, to) => {
+      let query = supabase()
+        .from('follow_ups')
+        .select(`*, patients!inner(${LIST_PATIENT})`)
+        .order('due_date')
+        .order('id') // stable tiebreaker so paging never repeats or skips a row
+        .range(from, to);
+      if (status) query = query.eq('status', status);
+      return query;
+    });
+    return rows.map((r) => ({
       followUp: toFollowUp(r),
       patient: toPatient(r.patients),
     }));
@@ -346,13 +373,15 @@ export const db = {
   // ------------------------------------------------------------- ingestion
 
   async getIngestionJobs(): Promise<IngestionJob[]> {
-    const rows = unwrap<Record<string, any>[]>(
-      await supabase()
+    const rows = await fetchAllPaged<Record<string, any>>((from, to) =>
+      supabase()
         .from('ingestion_jobs')
         .select('*, documents(*), patients(id, first_name, surname, nhs_number, hospital_number, date_of_birth)')
         .order('created_at', { ascending: false })
+        .order('id') // stable tiebreaker for paging
+        .range(from, to)
     );
-    return (rows ?? []).map(toIngestionJob);
+    return rows.map(toIngestionJob);
   },
 
   async saveIngestionJob(job: Partial<IngestionJob> & { id?: string }): Promise<void> {

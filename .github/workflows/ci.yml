@@ -1,0 +1,44 @@
+name: CI
+
+# Typecheck, lint and build on every pull request and on the tier branches.
+# Keeps the three schemas' app in a known-good state before anything is deployed.
+on:
+  push:
+    branches: [main, staging, dev]
+  pull_request:
+
+# A newer commit on the same ref supersedes an in-flight run.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Typecheck · Lint · Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+        env:
+          # Placeholder values: the build only needs the variables present — no
+          # request is made at build time. Real per-tier keys are set in the
+          # hosting provider's dashboard, never in CI.
+          NEXT_PUBLIC_SUPABASE_URL: https://placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: sb_publishable_placeholder
+          NEXT_TELEMETRY_DISABLED: "1"
