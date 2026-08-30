@@ -10,18 +10,18 @@ export interface BreadcrumbItem {
 export function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
   return (
     <nav className="flex items-center gap-1.5 text-xs text-muted-foreground mb-3" aria-label="Breadcrumb">
-      <Link href="/dashboard" className="hover:text-foreground dark:hover:text-slate-200 transition-colors">
-        <Home className="h-3.5 w-3.5" />
+      <Link href="/dashboard" aria-label="Dashboard" className="hover:text-foreground dark:hover:text-slate-200 transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <Home className="h-3.5 w-3.5" aria-hidden="true" />
       </Link>
       {items.map((item, idx) => (
         <React.Fragment key={idx}>
-          <ChevronRight className="h-3 w-3 text-muted-foreground" />
+          <ChevronRight className="h-3 w-3 text-muted-foreground" aria-hidden="true" />
           {item.href ? (
             <Link href={item.href} className="hover:text-foreground dark:hover:text-slate-200 transition-colors font-medium">
               {item.label}
             </Link>
           ) : (
-            <span className="text-foreground dark:text-slate-100 font-semibold truncate max-w-xs">{item.label}</span>
+            <span aria-current="page" className="text-foreground dark:text-slate-100 font-semibold truncate max-w-xs">{item.label}</span>
           )}
         </React.Fragment>
       ))}

@@ -56,7 +56,7 @@ export function Sidebar() {
           <p className="px-2 pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
             Clinical Registry
           </p>
-          <nav className="space-y-1">
+          <nav className="space-y-1" aria-label="Clinical registry">
             {CLINICIAN_NAVIGATION.map((item) => {
               const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname.startsWith(item.href));
               return (

@@ -18,7 +18,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="no-print print:hidden">
           <Topbar onMenuClick={() => setMobileNavOpen(true)} />
         </div>
-        <main className="flex-1 p-4 md:p-8 max-w-7xl w-full mx-auto animate-in fade-in duration-300 print:p-0 print:max-w-none print:m-0">
+        <main id="main-content" tabIndex={-1} className="flex-1 p-4 md:p-8 max-w-7xl w-full mx-auto animate-in fade-in duration-300 print:p-0 print:max-w-none print:m-0 focus:outline-none">
           {children}
         </main>
       </div>
