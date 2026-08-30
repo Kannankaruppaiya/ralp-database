@@ -201,7 +201,7 @@ export default function PatientHomePage() {
         <CardHeader className="p-5 pb-3 border-b flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-sm font-bold text-slate-900 flex items-center gap-2">
             <Calendar className="h-4 w-4 text-teal-600" />
-            <span>Your Surgical Milestones ({patient.firstName}'s Timeline)</span>
+            <span>Your Surgical Milestones ({patient.firstName}&apos;s Timeline)</span>
           </CardTitle>
           <Link href="/follow-up" className="text-xs text-teal-700 hover:underline flex items-center gap-1">
             <span>View Full Schedule</span>
