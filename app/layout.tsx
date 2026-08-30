@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 
 import { PerformanceHud } from '@/components/performance/performance-hud';
 import { EnvBanner } from '@/components/layout/env-banner';
+import { APP_CONFIG } from '@/config/environment';
 
 export default function RootLayout({
   children,
@@ -34,7 +35,7 @@ export default function RootLayout({
         </a>
         <EnvBanner />
         {children}
-        <PerformanceHud />
+        {!APP_CONFIG.isProduction && <PerformanceHud />}
       </body>
     </html>
   );
