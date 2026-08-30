@@ -175,7 +175,7 @@ export function ClinicSummary({ patient }: { patient: PatientFullRecord }) {
             </div>
             <div>
               <span className="text-muted-foreground block">Surgical Margins:</span>
-              <strong className={patient.histology?.surgicalMargins?.includes('Positive') ? 'text-rose-600 font-bold' : 'text-foreground'}>
+              <strong className={patient.histology?.surgicalMargins?.includes('Positive') ? 'text-destructive font-bold' : 'text-foreground'}>
                 {patient.histology?.surgicalMargins || '—'}
               </strong>
             </div>

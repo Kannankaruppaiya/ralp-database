@@ -101,7 +101,7 @@ export default function AdminSettingsPage() {
                 onChange={(e) => setNotifyApiKey(e.target.value)}
                 className="mt-1 text-xs font-mono"
               />
-              <span className="text-[11px] text-emerald-600 flex items-center gap-1 mt-1 font-medium">
+              <span className="text-[11px] text-success-muted-foreground flex items-center gap-1 mt-1 font-medium">
                 <CheckCircle2 className="h-3 w-3" />
                 <span>Connected to NHS Notify Gateway</span>
               </span>

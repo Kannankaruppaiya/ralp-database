@@ -23,8 +23,8 @@ export function AdminTopbar() {
 
       {/* Right side status & portal switcher */}
       <div className="flex items-center gap-3">
-        <div className="hidden md:flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs">
-          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+        <div className="hidden md:flex items-center gap-2 px-2.5 py-1 rounded-md bg-success-muted border border-success/20 text-success-muted-foreground text-xs">
+          <span className="h-2 w-2 rounded-full bg-success animate-pulse" />
           <span className="font-mono">Audit Logging: ACTIVE</span>
         </div>
 

@@ -49,11 +49,11 @@ export function RecoveryCurve({ curve }: { curve: RecoveryPoint[] }) {
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                <XAxis dataKey="label" tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} />
-                <YAxis domain={[0, 100]} unit="%" tickLine={false} tick={{ fontSize: 11, fill: '#64748b' }} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                <XAxis dataKey="label" tickLine={false} tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }} />
+                <YAxis domain={[0, 100]} unit="%" tickLine={false} tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} />
                 <Tooltip
-                  contentStyle={{ fontSize: 12, borderRadius: 12, border: '1px solid #e2e8f0' }}
+                  contentStyle={{ background: 'hsl(var(--card))', color: 'hsl(var(--card-foreground))', fontSize: 12, borderRadius: 12, border: '1px solid hsl(var(--border))' }}
                   formatter={(v, name) =>
                     (v === null || v === undefined ? ['no data', String(name)] : [`${v}%`, String(name)]) as [string, string]
                   }
@@ -65,11 +65,11 @@ export function RecoveryCurve({ curve }: { curve: RecoveryPoint[] }) {
                 <Legend wrapperStyle={{ fontSize: 11 }} />
                 <Line
                   type="monotone" dataKey="continent" name="Pad-free continence"
-                  stroke="#0d9488" strokeWidth={2.5} dot={{ r: 3 }} connectNulls
+                  stroke="hsl(var(--chart-1))" strokeWidth={2.5} dot={{ r: 3 }} connectNulls
                 />
                 <Line
                   type="monotone" dataKey="potent" name="Potency (SHIM ≥ 17)"
-                  stroke="#7c3aed" strokeWidth={2.5} dot={{ r: 3 }} connectNulls
+                  stroke="hsl(var(--chart-3))" strokeWidth={2.5} dot={{ r: 3 }} connectNulls
                 />
               </LineChart>
             </ResponsiveContainer>

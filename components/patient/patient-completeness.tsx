@@ -5,9 +5,9 @@ import { DataCompleteness } from '@/types/common';
 
 export function PatientCompleteness({ completeness }: { completeness: DataCompleteness }) {
   const getScoreColor = (score: number) => {
-    if (score >= 85) return 'bg-emerald-500 text-emerald-700';
-    if (score >= 60) return 'bg-amber-500 text-amber-700';
-    return 'bg-rose-500 text-rose-700';
+    if (score >= 85) return 'bg-success text-success-muted-foreground';
+    if (score >= 60) return 'bg-warning text-warning-muted-foreground';
+    return 'bg-destructive text-destructive';
   };
 
   return (
@@ -32,9 +32,9 @@ export function PatientCompleteness({ completeness }: { completeness: DataComple
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs">
         <div className="flex items-center gap-2 p-2 rounded-lg bg-muted dark:bg-slate-800/50">
           {completeness.baselineComplete ? (
-            <CheckCircle2 className="h-4 w-4 text-emerald-600 flex-shrink-0" />
+            <CheckCircle2 className="h-4 w-4 text-success-muted-foreground flex-shrink-0" />
           ) : (
-            <AlertCircle className="h-4 w-4 text-rose-500 flex-shrink-0" />
+            <AlertCircle className="h-4 w-4 text-destructive flex-shrink-0" />
           )}
           <span className={completeness.baselineComplete ? 'text-foreground dark:text-slate-300 font-medium' : 'text-muted-foreground'}>
             Baseline Cancer
@@ -43,9 +43,9 @@ export function PatientCompleteness({ completeness }: { completeness: DataComple
 
         <div className="flex items-center gap-2 p-2 rounded-lg bg-muted dark:bg-slate-800/50">
           {completeness.operationComplete ? (
-            <CheckCircle2 className="h-4 w-4 text-emerald-600 flex-shrink-0" />
+            <CheckCircle2 className="h-4 w-4 text-success-muted-foreground flex-shrink-0" />
           ) : (
-            <AlertCircle className="h-4 w-4 text-rose-500 flex-shrink-0" />
+            <AlertCircle className="h-4 w-4 text-destructive flex-shrink-0" />
           )}
           <span className={completeness.operationComplete ? 'text-foreground dark:text-slate-300 font-medium' : 'text-muted-foreground'}>
             Theatre Notes
@@ -54,9 +54,9 @@ export function PatientCompleteness({ completeness }: { completeness: DataComple
 
         <div className="flex items-center gap-2 p-2 rounded-lg bg-muted dark:bg-slate-800/50">
           {completeness.histologyComplete ? (
-            <CheckCircle2 className="h-4 w-4 text-emerald-600 flex-shrink-0" />
+            <CheckCircle2 className="h-4 w-4 text-success-muted-foreground flex-shrink-0" />
           ) : (
-            <AlertCircle className="h-4 w-4 text-rose-500 flex-shrink-0" />
+            <AlertCircle className="h-4 w-4 text-destructive flex-shrink-0" />
           )}
           <span className={completeness.histologyComplete ? 'text-foreground dark:text-slate-300 font-medium' : 'text-muted-foreground'}>
             Histology Report
@@ -64,7 +64,7 @@ export function PatientCompleteness({ completeness }: { completeness: DataComple
         </div>
 
         <div className="flex items-center gap-2 p-2 rounded-lg bg-muted dark:bg-slate-800/50">
-          <CheckCircle2 className={cn('h-4 w-4 flex-shrink-0', completeness.followUpsComplete > 0 ? 'text-emerald-600' : 'text-muted-foreground')} />
+          <CheckCircle2 className={cn('h-4 w-4 flex-shrink-0', completeness.followUpsComplete > 0 ? 'text-success-muted-foreground' : 'text-muted-foreground')} />
           <span className="text-foreground dark:text-slate-300 font-medium">
             {completeness.followUpsComplete}/7 Follow-ups
           </span>

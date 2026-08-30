@@ -38,7 +38,7 @@ export function OutcomeChart() {
       </CardHeader>
       <CardContent className="p-5 pt-2">
         {error ? (
-          <div className="flex h-72 items-center justify-center text-xs text-rose-600">{error}</div>
+          <div className="flex h-72 items-center justify-center text-xs text-destructive">{error}</div>
         ) : isLoading ? (
           <div className="h-72 w-full animate-pulse rounded-xl bg-muted dark:bg-slate-800" />
         ) : noAssessments ? (
@@ -55,20 +55,20 @@ export function OutcomeChart() {
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                 <XAxis
                   dataKey="surgeon"
                   tickLine={false}
-                  tick={{ fontSize: 12, fontFamily: 'Plus Jakarta Sans, sans-serif', fill: '#64748b' }}
+                  tick={{ fontSize: 12, fontFamily: 'Plus Jakarta Sans, sans-serif', fill: 'hsl(var(--muted-foreground))' }}
                 />
                 <YAxis
                   domain={[0, 100]}
                   tickLine={false}
                   unit="%"
-                  tick={{ fontSize: 11, fontFamily: 'Plus Jakarta Sans, sans-serif', fill: '#64748b' }}
+                  tick={{ fontSize: 11, fontFamily: 'Plus Jakarta Sans, sans-serif', fill: 'hsl(var(--muted-foreground))' }}
                 />
                 <Tooltip
-                  contentStyle={{ fontSize: 12, borderRadius: 12, border: '1px solid #e2e8f0' }}
+                  contentStyle={{ background: 'hsl(var(--card))', color: 'hsl(var(--card-foreground))', fontSize: 12, borderRadius: 12, border: '1px solid hsl(var(--border))' }}
                   formatter={(v, name) =>
                     (v === null || v === undefined ? ['no data', String(name)] : [`${v}%`, String(name)]) as [string, string]
                   }
@@ -78,9 +78,9 @@ export function OutcomeChart() {
                   }}
                 />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Bar dataKey="continenceRate" name="Pad-free continence" fill="#0d9488" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="potencyRate" name="Potency (SHIM ≥ 17)" fill="#7c3aed" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="marginPositiveRate" name="Positive margins" fill="#e11d48" radius={[4, 4, 0, 0]}>
+                <Bar dataKey="continenceRate" name="Pad-free continence" fill="hsl(var(--chart-1))" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="potencyRate" name="Potency (SHIM ≥ 17)" fill="hsl(var(--chart-3))" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="marginPositiveRate" name="Positive margins" fill="hsl(var(--chart-5))" radius={[4, 4, 0, 0]}>
                   {data.map((d) => (
                     <Cell key={d.surgeon} />
                   ))}

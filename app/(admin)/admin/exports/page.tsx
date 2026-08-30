@@ -94,7 +94,7 @@ export default function AdminExportsPage() {
         <Card className="flex flex-col justify-between border-border bg-card shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <CardHeader className="border-b p-5 pb-3">
             <div className="flex items-center justify-between">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-success-muted text-success-muted-foreground dark:bg-emerald-950 dark:text-emerald-400">
                 <ShieldCheck className="h-5 w-5" />
               </div>
               <Badge variant="success" className="text-[10px]">No identifiers</Badge>
@@ -121,10 +121,10 @@ export default function AdminExportsPage() {
         </Card>
 
         {/* ---------------------------------------------- identifiable */}
-        <Card className="flex flex-col justify-between border-rose-200 bg-card shadow-sm dark:border-rose-900/50 dark:bg-slate-900">
+        <Card className="flex flex-col justify-between border-destructive/20 bg-card shadow-sm dark:border-rose-900/50 dark:bg-slate-900">
           <CardHeader className="border-b p-5 pb-3">
             <div className="flex items-center justify-between">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-rose-50 text-rose-700 dark:bg-rose-950 dark:text-rose-400">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-destructive/10 text-destructive dark:bg-rose-950 dark:text-rose-400">
                 <ShieldAlert className="h-5 w-5" />
               </div>
               <Badge variant="destructive" className="text-[10px]">Identifiable</Badge>
@@ -142,8 +142,8 @@ export default function AdminExportsPage() {
             </p>
 
             {confirmIdentifiable ? (
-              <div className="space-y-2 rounded-lg border border-rose-300 bg-rose-50 p-3">
-                <p className="text-[11px] font-semibold text-rose-800">
+              <div className="space-y-2 rounded-lg border border-destructive/20 bg-destructive/10 p-3">
+                <p className="text-[11px] font-semibold text-destructive">
                   Confirm you are exporting identifiable patient data under an agreed
                   information-sharing basis.
                 </p>

@@ -88,20 +88,20 @@ export default function PatientMatchingPage() {
                     </span>
 
                     <div className="space-y-2 text-xs">
-                      <div className="flex items-center justify-between p-2 rounded-md bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-300 border border-emerald-100">
+                      <div className="flex items-center justify-between p-2 rounded-md bg-success-muted text-success-muted-foreground dark:bg-emerald-950/30 dark:text-emerald-300 border border-success/20">
                         <span className="flex items-center gap-1.5 font-medium">
-                          <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                          <CheckCircle2 className="h-4 w-4 text-success-muted-foreground" />
                           Exact NHS Number Checksum Match
                         </span>
-                        <strong className="font-mono text-emerald-700">100%</strong>
+                        <strong className="font-mono text-success-muted-foreground">100%</strong>
                       </div>
 
-                      <div className="flex items-center justify-between p-2 rounded-md bg-emerald-50 text-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-300 border border-emerald-100">
+                      <div className="flex items-center justify-between p-2 rounded-md bg-success-muted text-success-muted-foreground dark:bg-emerald-950/30 dark:text-emerald-300 border border-success/20">
                         <span className="flex items-center gap-1.5 font-medium">
-                          <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                          <CheckCircle2 className="h-4 w-4 text-success-muted-foreground" />
                           Hospital MRN Exact Match ({job.matchedPatient?.hospitalNumber})
                         </span>
-                        <strong className="font-mono text-emerald-700">100%</strong>
+                        <strong className="font-mono text-success-muted-foreground">100%</strong>
                       </div>
 
                       <div className="flex items-center justify-between p-2 rounded-md bg-muted text-foreground dark:bg-slate-800/40 dark:text-slate-300 border border-border">

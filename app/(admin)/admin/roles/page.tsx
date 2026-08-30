@@ -41,7 +41,7 @@ export default function AdminRolesPage() {
                     {key.replace(/([A-Z])/g, ' $1')}
                   </span>
                   {val ? (
-                    <span className="flex items-center gap-1 text-emerald-600 font-medium font-mono text-[11px]">
+                    <span className="flex items-center gap-1 text-success-muted-foreground font-medium font-mono text-[11px]">
                       <Check className="h-3.5 w-3.5" />
                       <span>Allowed</span>
                     </span>

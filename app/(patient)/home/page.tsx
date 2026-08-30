@@ -113,7 +113,7 @@ export default function PatientHomePage() {
                 <Activity className="h-6 w-6" />
               </div>
               {hasIpss && (
-                <Badge variant="outline" className="text-xs bg-emerald-50 text-emerald-700 border-emerald-300">
+                <Badge variant="outline" className="text-xs bg-success-muted text-success-muted-foreground border-success/20">
                   ✓ Submitted
                 </Badge>
               )}
@@ -219,7 +219,7 @@ export default function PatientHomePage() {
                   key={m}
                   className={`p-3 rounded-xl border ${
                     isDone
-                      ? 'bg-emerald-50 border-emerald-200 text-emerald-900 font-semibold'
+                      ? 'bg-success-muted border-success/20 text-success-muted-foreground font-semibold'
                       : 'bg-muted border-border text-muted-foreground'
                   }`}
                 >

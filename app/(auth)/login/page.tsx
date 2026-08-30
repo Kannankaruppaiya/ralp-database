@@ -143,7 +143,7 @@ export default function ClinicianLoginPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/85 to-slate-950/60" />
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-success/10 rounded-full blur-3xl pointer-events-none" />
         </div>
 
         {/* Top Header */}
@@ -392,7 +392,7 @@ export default function ClinicianLoginPage() {
                   <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800 text-xs text-muted-foreground font-mono text-left space-y-1">
                     <div className="flex items-center justify-between text-[10px] text-muted-foreground">
                       <span>READER STATUS</span>
-                      <span className="text-emerald-400 font-bold">READY ●</span>
+                      <span className="text-success font-bold">READY ●</span>
                     </div>
                     <div className="text-slate-200">Device: Omnikey 3121 USB Smartcard Reader</div>
                     <div className="text-primary">Active Surgeon: Mr. V. Kannan (Consultant Surgeon)</div>

@@ -22,7 +22,7 @@ export default function AssessmentSubmittedPage() {
 
   return (
     <div className="max-w-lg mx-auto py-8 text-center space-y-6">
-      <div className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 shadow-inner">
+      <div className="inline-flex h-20 w-20 items-center justify-center rounded-full bg-success-muted text-success-muted-foreground shadow-inner">
         <CheckCircle2 className="h-12 w-12" />
       </div>
 

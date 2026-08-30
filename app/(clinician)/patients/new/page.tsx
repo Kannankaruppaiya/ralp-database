@@ -101,7 +101,7 @@ export default function NewPatientPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-5 space-y-4">
-            {error && <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg">{error}</div>}
+            {error && <div className="p-3 bg-destructive/10 border border-destructive/20 text-destructive text-xs rounded-lg">{error}</div>}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               <FormField>

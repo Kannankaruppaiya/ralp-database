@@ -84,7 +84,7 @@ export function FollowUpCard({
         </CardHeader>
         <CardContent className="p-4 space-y-4 text-xs">
           {saveError && (
-            <div className="rounded-lg border border-rose-200 bg-rose-50 p-2.5 text-[11px] text-rose-700">
+            <div className="rounded-lg border border-destructive/20 bg-destructive/10 p-2.5 text-[11px] text-destructive">
               {saveError}
             </div>
           )}

@@ -53,7 +53,7 @@ export default function PatientFollowUpSchedulePage() {
               <CardContent className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-start gap-4">
                   <div className={`flex h-10 w-10 items-center justify-center rounded-xl font-bold text-sm ${
-                    fu.status === 'completed' ? 'bg-emerald-100 text-emerald-700' : 'bg-muted text-muted-foreground'
+                    fu.status === 'completed' ? 'bg-success-muted text-success-muted-foreground' : 'bg-muted text-muted-foreground'
                   }`}>
                     {fu.milestone.toUpperCase()}
                   </div>

@@ -42,7 +42,7 @@ export default function ReportsHubPage() {
 
         <Card className="shadow-sm hover:border-cyan-500 transition-colors">
           <CardContent className="p-6 space-y-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-50 text-cyan-600 dark:bg-cyan-950 dark:text-cyan-400">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-info-muted text-info-muted-foreground dark:bg-cyan-950 dark:text-cyan-400">
               <BarChart3 className="h-6 w-6" />
             </div>
             <div>

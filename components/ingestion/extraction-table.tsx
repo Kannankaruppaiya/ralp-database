@@ -107,7 +107,7 @@ export function ExtractionTable({ job }: { job: IngestionJob }) {
         <div
           className={`rounded-xl border p-4 text-xs ${
             job.conflictCount > 0
-              ? 'border-rose-300 bg-rose-50 text-rose-800'
+              ? 'border-destructive/20 bg-destructive/10 text-destructive'
               : 'border-border bg-muted text-muted-foreground'
           }`}
         >
@@ -159,7 +159,7 @@ export function ExtractionTable({ job }: { job: IngestionJob }) {
           </TableHeader>
           <TableBody>
             {fields.map((field) => (
-              <TableRow key={field.id} className={field.hasConflict ? 'bg-amber-50/40 dark:bg-amber-950/20' : undefined}>
+              <TableRow key={field.id} className={field.hasConflict ? 'bg-warning-muted/40 dark:bg-amber-950/20' : undefined}>
                 <TableCell className="font-semibold text-xs text-foreground dark:text-slate-100">
                   {field.fieldLabel}
                 </TableCell>
@@ -198,7 +198,7 @@ export function ExtractionTable({ job }: { job: IngestionJob }) {
                       </Button>
                     </div>
                   ) : (
-                    <span className="text-xs text-emerald-700 flex items-center gap-1">
+                    <span className="text-xs text-success-muted-foreground flex items-center gap-1">
                       <CheckCircle2 className="h-3.5 w-3.5" /> No conflict
                     </span>
                   )}

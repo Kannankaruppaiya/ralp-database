@@ -46,7 +46,7 @@ export default function DataIngestionPage() {
         <Link href="/data-ingestion/extraction-review" className="group">
           <Card className="h-full hover:border-teal-500 transition-colors shadow-sm">
             <CardContent className="p-5 space-y-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-50 text-cyan-600 dark:bg-cyan-950 dark:text-cyan-400 group-hover:scale-105 transition-transform">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-info-muted text-info-muted-foreground dark:bg-cyan-950 dark:text-cyan-400 group-hover:scale-105 transition-transform">
                 <FileText className="h-5 w-5" />
               </div>
               <h3 className="font-bold text-sm text-foreground dark:text-slate-100">2. Extraction Review</h3>
@@ -70,7 +70,7 @@ export default function DataIngestionPage() {
         <Link href="/data-ingestion/conflicts" className="group">
           <Card className="h-full hover:border-teal-500 transition-colors shadow-sm">
             <CardContent className="p-5 space-y-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400 group-hover:scale-105 transition-transform">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-warning-muted text-warning-muted-foreground dark:bg-amber-950 dark:text-amber-400 group-hover:scale-105 transition-transform">
                 <ShieldAlert className="h-5 w-5" />
               </div>
               <h3 className="font-bold text-sm text-foreground dark:text-slate-100">4. Conflict Resolver</h3>

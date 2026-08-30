@@ -13,7 +13,7 @@ export function PatientTimeline({ patient }: { patient: PatientFullRecord }) {
       title: 'Baseline Prostate Cancer Diagnosis',
       category: 'Diagnostic',
       icon: Dna,
-      color: 'bg-cyan-500 text-white',
+      color: 'bg-info text-white',
       details: `Pre-op PSA ${formatPsa(patient.baseline?.psa)} | Gleason ${patient.baseline?.gleasonGrade || '—'} | Stage ${patient.baseline?.clinicalStage || '—'}`,
     },
     {
@@ -43,7 +43,7 @@ export function PatientTimeline({ patient }: { patient: PatientFullRecord }) {
         title: `${f.milestone.toUpperCase()} Follow-up Milestone (${f.targetMonths} Months)`,
         category: 'Follow-up',
         icon: CalendarClock,
-        color: 'bg-emerald-600 text-white',
+        color: 'bg-success text-white',
         details: `PSA: ${formatPsa(f.psa)} | Continence: ${f.continence?.dayStatus || '—'} | SHIM: ${f.shimScore?.totalScore ? `${f.shimScore.totalScore}/25` : '—'} | IPSS: ${f.ipssScore?.totalScore ? `${f.ipssScore.totalScore}/35` : '—'}`,
       })),
   ];

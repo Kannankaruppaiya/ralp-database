@@ -140,7 +140,7 @@ export default function AdminOverviewPage() {
                 {completeRecords} of {totalPatients} high quality
               </span>
             </div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-success-muted text-success-muted-foreground dark:bg-emerald-950 dark:text-emerald-400">
               <FileCheck2 className="h-6 w-6" />
             </div>
           </CardContent>
@@ -170,11 +170,11 @@ export default function AdminOverviewPage() {
               <div className="text-2xl font-bold text-foreground dark:text-slate-100 mt-1">
                 {mounted ? pendingJobsCount : '—'}
               </div>
-              <span className="text-[11px] text-amber-600 mt-1 block font-medium">
+              <span className="text-[11px] text-warning-muted-foreground mt-1 block font-medium">
                 Requires clinical review
               </span>
             </div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-400">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-warning-muted text-warning-muted-foreground dark:bg-amber-950 dark:text-amber-400">
               <FileUp className="h-6 w-6" />
             </div>
           </CardContent>

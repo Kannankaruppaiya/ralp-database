@@ -268,7 +268,7 @@ export function DocumentUpload() {
       </div>
 
       {error && (
-        <div className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-800">
+        <div className="flex items-start gap-2 rounded-xl border border-warning/20 bg-warning-muted p-4 text-xs text-warning-muted-foreground">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
           <span>{error}</span>
         </div>
@@ -278,10 +278,10 @@ export function DocumentUpload() {
         <Card className="shadow-sm">
           <CardHeader className="p-5 pb-2">
             <CardTitle className="flex items-center gap-2 text-sm font-bold">
-              <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+              <CheckCircle2 className="h-4 w-4 text-success-muted-foreground" />
               <span>{preview.name}</span>
             </CardTitle>
-            <p className={`text-xs ${preview.nameMismatch ? 'font-semibold text-rose-600' : 'text-muted-foreground'}`}>
+            <p className={`text-xs ${preview.nameMismatch ? 'font-semibold text-destructive' : 'text-muted-foreground'}`}>
               {preview.nameMismatch
                 ? `Identifiers matched ${preview.matched}, but the document names someone else — do not commit without verifying`
                 : preview.matched

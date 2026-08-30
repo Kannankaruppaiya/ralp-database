@@ -48,23 +48,23 @@ export function DataQualityTable({ patients }: { patients: PatientFullRecord[] }
               </TableCell>
               <TableCell>
                 {p.completeness.baselineComplete ? (
-                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                  <CheckCircle2 className="h-4 w-4 text-success-muted-foreground" />
                 ) : (
-                  <AlertCircle className="h-4 w-4 text-rose-500" />
+                  <AlertCircle className="h-4 w-4 text-destructive" />
                 )}
               </TableCell>
               <TableCell>
                 {p.completeness.operationComplete ? (
-                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                  <CheckCircle2 className="h-4 w-4 text-success-muted-foreground" />
                 ) : (
-                  <AlertCircle className="h-4 w-4 text-rose-500" />
+                  <AlertCircle className="h-4 w-4 text-destructive" />
                 )}
               </TableCell>
               <TableCell>
                 {p.completeness.histologyComplete ? (
-                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                  <CheckCircle2 className="h-4 w-4 text-success-muted-foreground" />
                 ) : (
-                  <AlertCircle className="h-4 w-4 text-rose-500" />
+                  <AlertCircle className="h-4 w-4 text-destructive" />
                 )}
               </TableCell>
               <TableCell className="text-xs text-muted-foreground">

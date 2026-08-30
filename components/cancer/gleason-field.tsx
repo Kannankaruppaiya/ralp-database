@@ -26,7 +26,7 @@ export function GradeGroupField({ gradeGroup }: { gradeGroup?: GradeGroup }) {
 export function ClinicalStageField({ stage }: { stage?: ClinicalStage }) {
   if (!stage) return <span className="text-muted-foreground italic">—</span>;
   return (
-    <Badge variant="outline" className="border-cyan-300 bg-cyan-50 text-cyan-800">
+    <Badge variant="outline" className="border-info/20 bg-info-muted text-info-muted-foreground">
       Stage {stage}
     </Badge>
   );

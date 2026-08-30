@@ -154,17 +154,17 @@ export function PerformanceHud() {
       >
         <span className="relative flex h-2.5 w-2.5">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-success"></span>
         </span>
 
-        <span className="flex items-center gap-1 text-emerald-400 font-mono">
+        <span className="flex items-center gap-1 text-success font-mono">
           <Zap className="h-3.5 w-3.5 fill-current" />
           {renderTime}ms
         </span>
 
         <span className="text-muted-foreground">•</span>
 
-        <span className="font-mono text-cyan-400">{fps} FPS</span>
+        <span className="font-mono text-info">{fps} FPS</span>
 
         {memoryMb > 0 && (
           <>
@@ -195,7 +195,7 @@ export function PerformanceHud() {
                 <p className="text-[11px] text-muted-foreground">Real-time browser rendering & execution speed</p>
               </div>
             </div>
-            <Badge className="bg-emerald-50 text-emerald-700 border-emerald-200 text-[10px]">
+            <Badge className="bg-success-muted text-success-muted-foreground border-success/20 text-[10px]">
               Sub-10ms Engine
             </Badge>
           </div>
@@ -204,7 +204,7 @@ export function PerformanceHud() {
           <div className="grid grid-cols-2 gap-2.5 mb-4">
             <div className="rounded-xl border border-border bg-muted/80 p-3 dark:border-slate-800 dark:bg-slate-800/40">
               <span className="text-[11px] font-medium text-muted-foreground flex items-center gap-1.5 mb-1">
-                <Zap className="h-3.5 w-3.5 text-amber-500" />
+                <Zap className="h-3.5 w-3.5 text-warning" />
                 Route Render Time
               </span>
               <span className="text-lg font-extrabold text-foreground dark:text-white font-mono">
@@ -214,10 +214,10 @@ export function PerformanceHud() {
 
             <div className="rounded-xl border border-border bg-muted/80 p-3 dark:border-slate-800 dark:bg-slate-800/40">
               <span className="text-[11px] font-medium text-muted-foreground flex items-center gap-1.5 mb-1">
-                <Activity className="h-3.5 w-3.5 text-emerald-500" />
+                <Activity className="h-3.5 w-3.5 text-success" />
                 Display Frame Rate
               </span>
-              <span className="text-lg font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
+              <span className="text-lg font-extrabold text-success-muted-foreground dark:text-emerald-400 font-mono">
                 {fps} <span className="text-xs font-normal text-muted-foreground">FPS</span>
               </span>
             </div>
@@ -289,7 +289,7 @@ export function PerformanceHud() {
 
             {benchmarkResult && (
               <div className="mt-2.5 rounded-lg bg-card dark:bg-slate-800 p-2.5 border border-primary/30/60 dark:border-teal-800 text-[11px] space-y-1">
-                <div className="flex items-center justify-between font-semibold text-emerald-600 dark:text-emerald-400">
+                <div className="flex items-center justify-between font-semibold text-success-muted-foreground dark:text-emerald-400">
                   <span className="flex items-center gap-1">
                     <CheckCircle2 className="h-3.5 w-3.5" /> 1,000 Patients Processed
                   </span>

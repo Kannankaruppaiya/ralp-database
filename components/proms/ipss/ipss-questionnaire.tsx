@@ -105,9 +105,9 @@ export function IPSSQuestionnaire({ initialAnswers, onComplete, isReadOnly = fal
         })}
 
         {/* Question 8: Quality of life */}
-        <Card className="border-cyan-200 bg-cyan-50/30 dark:border-cyan-900 dark:bg-cyan-950/10 shadow-sm">
+        <Card className="border-info/20 bg-info-muted/30 dark:border-cyan-900 dark:bg-cyan-950/10 shadow-sm">
           <CardHeader className="p-4 pb-2">
-            <CardTitle className="text-sm font-semibold text-cyan-950 dark:text-cyan-200">
+            <CardTitle className="text-sm font-semibold text-info-muted-foreground dark:text-cyan-200">
               8. Quality of Life Due to Urinary Symptoms (Bother Score)
             </CardTitle>
             <p className="text-xs text-muted-foreground dark:text-slate-400 mt-1">
@@ -127,7 +127,7 @@ export function IPSSQuestionnaire({ initialAnswers, onComplete, isReadOnly = fal
                     className={cn(
                       'flex flex-col items-center justify-center p-2.5 rounded-lg border text-center transition-all',
                       isSelected
-                        ? 'border-cyan-600 bg-cyan-600 text-white font-bold shadow-sm ring-2 ring-cyan-600/30'
+                        ? 'border-cyan-600 bg-info text-white font-bold shadow-sm ring-2 ring-cyan-600/30'
                         : 'border-border bg-card text-foreground hover:bg-muted dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300'
                     )}
                   >

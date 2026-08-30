@@ -57,7 +57,7 @@ function ExtractionReviewContent() {
       />
 
       {error && (
-        <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-xs text-rose-700">{error}</div>
+        <div className="rounded-xl border border-destructive/20 bg-destructive/10 p-4 text-xs text-destructive">{error}</div>
       )}
 
       {pending.some((j) => j.conflictCount > 0) && (

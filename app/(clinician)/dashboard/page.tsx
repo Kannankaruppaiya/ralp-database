@@ -189,7 +189,7 @@ export default function ClinicianDashboardPage() {
         <Card className="border-l-4 border-l-amber-500 shadow-sm">
           <CardHeader className="p-4 pb-1 flex flex-row items-center justify-between space-y-0">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Due Follow-ups</span>
-            <CalendarClock className="h-4 w-4 text-amber-600" />
+            <CalendarClock className="h-4 w-4 text-warning-muted-foreground" />
           </CardHeader>
           <CardContent className="p-4 pt-1">
             <div className="text-2xl font-bold text-foreground dark:text-white">{displayDue.length}</div>
@@ -200,10 +200,10 @@ export default function ClinicianDashboardPage() {
         <Card className="border-l-4 border-l-rose-500 shadow-sm">
           <CardHeader className="p-4 pb-1 flex flex-row items-center justify-between space-y-0">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Overdue Alerts</span>
-            <AlertCircle className="h-4 w-4 text-rose-500" />
+            <AlertCircle className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent className="p-4 pt-1">
-            <div className="text-2xl font-bold text-rose-600">{displayOverdue.length}</div>
+            <div className="text-2xl font-bold text-destructive">{displayOverdue.length}</div>
             <p className="text-[11px] text-muted-foreground mt-1">Missing PSA / PROM data</p>
           </CardContent>
         </Card>
@@ -228,7 +228,7 @@ export default function ClinicianDashboardPage() {
             <CardHeader className="p-5 pb-3 border-b flex flex-row items-center justify-between space-y-0">
               <div>
                 <CardTitle className="text-sm font-bold text-foreground dark:text-white flex items-center gap-2">
-                  <AlertCircle className="h-4 w-4 text-rose-500" />
+                  <AlertCircle className="h-4 w-4 text-destructive" />
                   <span>
                     Action Required: Overdue Follow-ups ({displayOverdue.length})
                   </span>
@@ -249,7 +249,7 @@ export default function ClinicianDashboardPage() {
             <CardContent className="p-0 divide-y divide-border dark:divide-slate-800">
               {displayOverdue.length === 0 ? (
                 <div className="p-8 text-center text-xs text-muted-foreground">
-                  <CheckCircle2 className="h-8 w-8 text-emerald-500 mx-auto mb-2" />
+                  <CheckCircle2 className="h-8 w-8 text-success mx-auto mb-2" />
                   No overdue follow-up milestones for this caseload.
                 </div>
               ) : (
@@ -306,7 +306,7 @@ export default function ClinicianDashboardPage() {
                   </div>
                   <div className="flex items-center justify-between text-muted-foreground">
                     <span>{job.extractedFields.length} fields extracted</span>
-                    <span className="text-amber-600 font-semibold">{job.conflictCount} conflict</span>
+                    <span className="text-warning-muted-foreground font-semibold">{job.conflictCount} conflict</span>
                   </div>
                   <Link href="/data-ingestion/extraction-review" className="block">
                     <Button size="sm" className="w-full text-xs h-7">

@@ -73,7 +73,7 @@ export default function ForgotPasswordPage() {
               </form>
             ) : (
               <div className="space-y-4 text-center py-2">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-success-muted text-success-muted-foreground dark:bg-emerald-950/40 border border-success/20 dark:border-emerald-800">
                   <CheckCircle2 className="h-6 w-6" />
                 </div>
                 <div>

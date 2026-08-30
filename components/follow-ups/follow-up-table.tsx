@@ -306,7 +306,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
                       </TableCell>
                       <TableCell className="text-xs">
                         <div className="flex items-center gap-1.5 font-mono text-[11px]">
-                          <span className={hasIpss ? 'text-emerald-700 dark:text-emerald-400 font-bold' : 'text-muted-foreground dark:text-slate-600'} title="IPSS">
+                          <span className={hasIpss ? 'text-success-muted-foreground dark:text-emerald-400 font-bold' : 'text-muted-foreground dark:text-slate-600'} title="IPSS">
                             IPSS {hasIpss ? '✓' : '✕'}
                           </span>
                           <span>•</span>
@@ -346,7 +346,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
                             >
                               {isDispatched ? (
                                 <>
-                                  <Check className="h-3 w-3 text-emerald-600" />
+                                  <Check className="h-3 w-3 text-success-muted-foreground" />
                                   <span>Requested</span>
                                 </>
                               ) : (

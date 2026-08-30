@@ -13,7 +13,7 @@ export function PatientSummary({ patient }: { patient: PatientFullRecord }) {
       <Card className="border-l-4 border-l-cyan-500 shadow-sm">
         <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
-            <Dna className="h-4 w-4 text-cyan-600" />
+            <Dna className="h-4 w-4 text-info-muted-foreground" />
             Baseline Cancer
           </CardTitle>
           <Badge variant="info" className="text-[10px]">Pre-op</Badge>
@@ -75,7 +75,7 @@ export function PatientSummary({ patient }: { patient: PatientFullRecord }) {
           </div>
           <div className="flex justify-between py-1 border-b border-border">
             <span className="text-muted-foreground">Surgical Margins:</span>
-            <strong className={patient.histology?.surgicalMargins?.includes('Positive') ? 'text-rose-600 font-semibold' : 'text-emerald-700 font-semibold'}>
+            <strong className={patient.histology?.surgicalMargins?.includes('Positive') ? 'text-destructive font-semibold' : 'text-success-muted-foreground font-semibold'}>
               {patient.histology?.surgicalMargins || '—'}
             </strong>
           </div>
@@ -92,7 +92,7 @@ export function PatientSummary({ patient }: { patient: PatientFullRecord }) {
       <Card className="border-l-4 border-l-emerald-500 shadow-sm">
         <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5">
-            <CalendarClock className="h-4 w-4 text-emerald-600" />
+            <CalendarClock className="h-4 w-4 text-success-muted-foreground" />
             Latest Outcome
           </CardTitle>
           <Badge variant="success" className="text-[10px]">Follow-up</Badge>

@@ -130,7 +130,7 @@ export default function AssessmentReviewPage() {
             </div>
             <div className="flex justify-between">
               <span>Nighttime:</span>
-              <strong className="text-emerald-700">
+              <strong className="text-success-muted-foreground">
                 {draft.continence ? `${draft.continence.nightPads} pad(s) at night` : '—'}
               </strong>
             </div>
@@ -138,8 +138,8 @@ export default function AssessmentReviewPage() {
         </Card>
       </div>
 
-      <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-emerald-900 flex items-start gap-3">
-        <ShieldCheck className="h-5 w-5 text-emerald-700 flex-shrink-0 mt-0.5" />
+      <div className="p-4 bg-success-muted rounded-xl border border-success/20 text-xs text-success-muted-foreground flex items-start gap-3">
+        <ShieldCheck className="h-5 w-5 text-success-muted-foreground flex-shrink-0 mt-0.5" />
         <div>
           <strong className="block">Data Security and Direct Clinical Sync</strong>
           <span>Your answers will be saved directly into your surgical record and reviewed by your Consultant Surgeon ({patient.primarySurgeon}) at your upcoming milestone review.</span>
