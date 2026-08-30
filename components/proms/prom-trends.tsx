@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { PatientFullRecord } from '@/types/patient';
+import { useChartTheme } from '@/hooks/use-chart-theme';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import {
   ResponsiveContainer,
@@ -17,6 +18,7 @@ import {
 } from 'recharts';
 
 export function PromTrends({ patient }: { patient: PatientFullRecord }) {
+  const chart = useChartTheme();
   // Aggregate data from baseline + follow-ups
   const chartData = [
     {
@@ -63,11 +65,11 @@ export function PromTrends({ patient }: { patient: PatientFullRecord }) {
             <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                  <XAxis dataKey="milestone" tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: '#64748b' }} />
-                  <YAxis domain={[0, 25]} tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: '#64748b' }} />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={chart.grid} />
+                  <XAxis dataKey="milestone" tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: chart.axisTick }} />
+                  <YAxis domain={[0, 25]} tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: chart.axisTick }} />
                   <Tooltip
-                    contentStyle={{ borderRadius: 8, fontSize: 12, fontFamily: 'Hanken Grotesk, sans-serif', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                    contentStyle={chart.tooltip}
                   />
                   <Legend wrapperStyle={{ fontFamily: 'Hanken Grotesk, sans-serif', fontSize: 12 }} />
                   <Line
@@ -97,11 +99,11 @@ export function PromTrends({ patient }: { patient: PatientFullRecord }) {
             <div className="h-64 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                  <XAxis dataKey="milestone" tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: '#64748b' }} />
-                  <YAxis domain={[0, 35]} tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: '#64748b' }} />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={chart.grid} />
+                  <XAxis dataKey="milestone" tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: chart.axisTick }} />
+                  <YAxis domain={[0, 35]} tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: chart.axisTick }} />
                   <Tooltip
-                    contentStyle={{ borderRadius: 8, fontSize: 12, fontFamily: 'Hanken Grotesk, sans-serif', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                    contentStyle={chart.tooltip}
                   />
                   <Legend wrapperStyle={{ fontFamily: 'Hanken Grotesk, sans-serif', fontSize: 12 }} />
                   <Line
@@ -132,11 +134,11 @@ export function PromTrends({ patient }: { patient: PatientFullRecord }) {
           <div className="h-60 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                <XAxis dataKey="milestone" tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: '#64748b' }} />
-                <YAxis tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: '#64748b' }} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={chart.grid} />
+                <XAxis dataKey="milestone" tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: chart.axisTick }} />
+                <YAxis tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: chart.axisTick }} />
                 <Tooltip
-                  contentStyle={{ borderRadius: 8, fontSize: 12, fontFamily: 'Hanken Grotesk, sans-serif', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                  contentStyle={chart.tooltip}
                 />
                 <Area
                   type="monotone"

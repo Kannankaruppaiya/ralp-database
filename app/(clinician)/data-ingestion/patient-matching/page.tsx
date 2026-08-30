@@ -63,15 +63,15 @@ export default function PatientMatchingPage() {
                     <span className="font-bold text-slate-700 dark:text-slate-300 block uppercase tracking-wider text-[10px]">
                       Identifiers Extracted From Document
                     </span>
-                    <div className="flex justify-between py-1 border-b border-slate-200/60">
+                    <div className="flex justify-between py-1 border-b border-slate-200/60 dark:border-slate-700/50">
                       <span className="text-slate-500">Patient Name:</span>
                       <strong className="text-slate-900 dark:text-slate-100">{job.matchedPatient?.fullName || 'John Smith'}</strong>
                     </div>
-                    <div className="flex justify-between py-1 border-b border-slate-200/60">
+                    <div className="flex justify-between py-1 border-b border-slate-200/60 dark:border-slate-700/50">
                       <span className="text-slate-500">NHS Number:</span>
                       <strong className="font-mono text-blue-700 dark:text-blue-400">{job.matchedPatient?.nhsNumber || '456 789 0123'}</strong>
                     </div>
-                    <div className="flex justify-between py-1 border-b border-slate-200/60">
+                    <div className="flex justify-between py-1 border-b border-slate-200/60 dark:border-slate-700/50">
                       <span className="text-slate-500">Hospital Number (MRN):</span>
                       <strong className="font-mono text-slate-900 dark:text-slate-100">{job.matchedPatient?.hospitalNumber || 'HOS-89421'}</strong>
                     </div>

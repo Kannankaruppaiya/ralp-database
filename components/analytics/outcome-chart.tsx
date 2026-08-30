@@ -6,6 +6,7 @@ import {
 } from 'recharts';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useOutcomes } from '@/hooks/use-outcomes';
+import { useChartTheme } from '@/hooks/use-chart-theme';
 
 /**
  * Surgeon benchmarking, computed by the database from completed 12-month
@@ -14,6 +15,7 @@ import { useOutcomes } from '@/hooks/use-outcomes';
  */
 export function OutcomeChart() {
   const { benchmark, isLoading, error } = useOutcomes();
+  const chart = useChartTheme();
 
   const data = benchmark.map((b) => ({
     surgeon: b.surgeon,
@@ -55,20 +57,20 @@ export function OutcomeChart() {
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={chart.grid} />
                 <XAxis
                   dataKey="surgeon"
                   tickLine={false}
-                  tick={{ fontSize: 12, fontFamily: 'Hanken Grotesk, sans-serif', fill: '#64748b' }}
+                  tick={{ fontSize: 12, fontFamily: 'Hanken Grotesk, sans-serif', fill: chart.axisTick }}
                 />
                 <YAxis
                   domain={[0, 100]}
                   tickLine={false}
                   unit="%"
-                  tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: '#64748b' }}
+                  tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: chart.axisTick }}
                 />
                 <Tooltip
-                  contentStyle={{ fontSize: 12, borderRadius: 12, border: '1px solid #e2e8f0' }}
+                  contentStyle={chart.tooltip}
                   formatter={(v, name) =>
                     (v === null || v === undefined ? ['no data', String(name)] : [`${v}%`, String(name)]) as [string, string]
                   }

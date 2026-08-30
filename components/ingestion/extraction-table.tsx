@@ -107,8 +107,8 @@ export function ExtractionTable({ job }: { job: IngestionJob }) {
         <div
           className={`rounded-xl border p-4 text-xs ${
             job.conflictCount > 0
-              ? 'border-rose-300 bg-rose-50 text-rose-800'
-              : 'border-slate-200 bg-slate-50 text-slate-600'
+              ? 'border-rose-300 bg-rose-50 text-rose-800 dark:border-rose-900 dark:bg-rose-950/40 dark:text-rose-300'
+              : 'border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-300'
           }`}
         >
           <div className="mb-1.5 flex items-center gap-1.5 font-bold">

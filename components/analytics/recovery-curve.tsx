@@ -6,6 +6,7 @@ import {
 } from 'recharts';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { RecoveryPoint } from '@/types/outcomes';
+import { useChartTheme } from '@/hooks/use-chart-theme';
 
 /**
  * Functional recovery across the 7 milestones, from completed assessments only.
@@ -16,6 +17,7 @@ import { RecoveryPoint } from '@/types/outcomes';
  * read as a collapse in results.
  */
 export function RecoveryCurve({ curve }: { curve: RecoveryPoint[] }) {
+  const chart = useChartTheme();
   const data = curve
     .filter((p) => p.continenceN > 0 || p.potencyN > 0)
     .map((p) => ({
@@ -49,11 +51,11 @@ export function RecoveryCurve({ curve }: { curve: RecoveryPoint[] }) {
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                <XAxis dataKey="label" tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} />
-                <YAxis domain={[0, 100]} unit="%" tickLine={false} tick={{ fontSize: 11, fill: '#64748b' }} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={chart.grid} />
+                <XAxis dataKey="label" tickLine={false} tick={{ fontSize: 12, fill: chart.axisTick }} />
+                <YAxis domain={[0, 100]} unit="%" tickLine={false} tick={{ fontSize: 11, fill: chart.axisTick }} />
                 <Tooltip
-                  contentStyle={{ fontSize: 12, borderRadius: 12, border: '1px solid #e2e8f0' }}
+                  contentStyle={chart.tooltip}
                   formatter={(v, name) =>
                     (v === null || v === undefined ? ['no data', String(name)] : [`${v}%`, String(name)]) as [string, string]
                   }
