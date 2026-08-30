@@ -1,4 +1,4 @@
-import { format, parseISO, isValid, addMonths, differenceInDays, differenceInYears } from 'date-fns';
+import { format, parseISO, isValid, addMonths, differenceInCalendarDays, differenceInYears } from 'date-fns';
 
 export function formatDate(dateString?: string | null, formatStr: string = 'dd MMM yyyy'): string {
   if (!dateString) return '—';
@@ -27,13 +27,16 @@ export function calculateAge(dobString?: string | null): number | null {
 }
 
 export function calculateMilestoneDate(operationDateStr: string, months: number): string {
+  // parseISO on a date-only string yields local midnight; formatting the result
+  // (rather than going through toISOString) keeps the calendar date intact for
+  // viewers in any time zone, west of UTC included, where a UTC round-trip would
+  // roll the date back a day.
   try {
     const opDate = parseISO(operationDateStr);
-    if (!isValid(opDate)) return new Date().toISOString().split('T')[0];
-    const target = addMonths(opDate, months);
-    return target.toISOString().split('T')[0];
+    const base = isValid(opDate) ? opDate : new Date();
+    return format(addMonths(base, months), 'yyyy-MM-dd');
   } catch {
-    return new Date().toISOString().split('T')[0];
+    return format(new Date(), 'yyyy-MM-dd');
   }
 }
 
@@ -41,8 +44,10 @@ export function getDaysRemaining(dueDateStr?: string): { days: number; isOverdue
   if (!dueDateStr) return { days: 0, isOverdue: false, label: 'No date' };
   try {
     const due = parseISO(dueDateStr);
-    const today = new Date();
-    const diff = differenceInDays(due, today);
+    if (!isValid(due)) return { days: 0, isOverdue: false, label: 'Invalid date' };
+    // Calendar-day difference in local time — the time of day the page loads
+    // must not tip "due today" into "1 day overdue".
+    const diff = differenceInCalendarDays(due, new Date());
     if (diff < 0) {
       return { days: Math.abs(diff), isOverdue: true, label: `${Math.abs(diff)} days overdue` };
     }

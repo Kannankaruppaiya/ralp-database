@@ -15,7 +15,7 @@ The **UK RALP Surgical Outcomes Database v2** is a clinical registry, data inges
 - **Pre-Operative Cancer Profile**: PSA (ng/mL), Biopsy Gleason score (`3+3` to `5+4`), Grade Group (`1-5`), `% positive cores`, Cambridge Prognostic Group (CPG), and D'Amico Risk Stratification.
 - **Theatre Operation Record**: Surgeon code (`VK`, `RDM`, `CI`, `OAK`), Nerve Sparing (`Bilateral 5/5`, `4/5`, `Partial`, `None`), Bladder Neck preservation, EBL (mL), and operating duration.
 - **Post-Operative Histopathology**: Pathological stage (`pT2a` to `pT3b`), Gleason grade migration, Surgical Margins (`R0` vs `R1`), Extraprostatic Extension (`EPE`), and Seminal Vesicle Invasion (`SVI`).
-- **Longitudinal 3-Year Follow-up Protocol**: 7 milestones at **6-week, 2, 6, 12, 18, 24, and 36 Months** with automated Biochemical Recurrence (`PSA >= 0.2 ng/mL`) alerts.
+- **Longitudinal 3-Year Follow-up Protocol**: 7 milestones at **2, 6, 12, 18, 24, 30, and 36 Months** with automated Biochemical Recurrence (`PSA >= 0.2 ng/mL`) alerts.
 - **Surgeon Quality Benchmarking**: Unit-wide and surgeon-specific **Trifecta** (Continence + Potency + Cancer Control) and **Pentafecta** (+ Negative Margins + No Complications) evaluation.
 
 ### 2. Intelligent Document Ingestion & Verification

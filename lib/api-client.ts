@@ -79,9 +79,12 @@ export const db = {
     const page = q.page ?? 1;
     const pageSize = q.pageSize ?? 25;
 
-    let query = supabase()
-      .from('patients')
-      .select(LIST_PATIENT, { count: 'exact' })
+    // Filter and count in SQL, against a flat search view, so every predicate —
+    // including stage, which spans the clinical and pathological tables — applies
+    // to the whole registry before pagination, not to one already-paginated page.
+    let idQuery = supabase()
+      .from('patient_search')
+      .select('id', { count: 'exact' })
       .order('surname');
 
     if (q.search && q.search.trim().length >= 2) {
@@ -93,23 +96,34 @@ export const db = {
       // search_text is a generated column holding name + both identifiers
       const clauses = [`search_text.ilike.%${term}%`];
       if (digits.length >= 3) clauses.push(`search_text.ilike.%${digits}%`);
-      query = query.or(clauses.join(','));
+      idQuery = idQuery.or(clauses.join(','));
     }
-    if (q.surgeon && q.surgeon !== 'ALL') query = query.eq('primary_surgeon', q.surgeon);
-    if (q.status && q.status !== 'ALL') query = query.eq('status', q.status);
+    if (q.surgeon && q.surgeon !== 'ALL') idQuery = idQuery.eq('primary_surgeon', q.surgeon);
+    if (q.status && q.status !== 'ALL') idQuery = idQuery.eq('status', q.status);
+    if (q.stage && q.stage !== 'ALL') {
+      // stage is a fixed enum value from a dropdown, so no escaping is needed;
+      // a patient matches on either their clinical or their pathological stage
+      idQuery = idQuery.or(`clinical_stage.eq.${q.stage},pathological_stage.eq.${q.stage}`);
+    }
 
-    const { data, error, count } = await query.range((page - 1) * pageSize, page * pageSize - 1);
+    const { data: idRows, error: idError, count } = await idQuery.range(
+      (page - 1) * pageSize,
+      page * pageSize - 1
+    );
+    if (idError) throw new Error(idError.message);
+
+    const ids = ((idRows ?? []) as { id: string }[]).map((r) => r.id);
+    if (ids.length === 0) return { patients: [], total: count ?? 0 };
+
+    // Hydrate the page's patients with their nested clinical relations.
+    const { data, error } = await supabase()
+      .from('patients')
+      .select(LIST_PATIENT)
+      .in('id', ids)
+      .order('surname');
     if (error) throw new Error(error.message);
 
-    let patients = ((data ?? []) as Record<string, any>[]).map(toPatient);
-    // Stage spans two tables (clinical vs pathological) — narrowed after mapping
-    if (q.stage && q.stage !== 'ALL') {
-      patients = patients.filter(
-        (p: PatientFullRecord) =>
-          p.baseline?.clinicalStage === q.stage || p.histology?.pathologicalStage === q.stage
-      );
-    }
-
+    const patients = ((data ?? []) as Record<string, any>[]).map(toPatient);
     return { patients, total: count ?? patients.length };
   },
 
@@ -227,26 +241,25 @@ export const db = {
   // audited under its own action.
 
   async exportPseudonymised(): Promise<Record<string, unknown>[]> {
+    // Gated to the Data Manager role and audited inside the database function
+    // (0009), so neither the access check nor the Caldicott entry can be
+    // bypassed by calling PostgREST directly.
     const rows = unwrap<Record<string, unknown>[]>(
-      await supabase().from('registry_export_pseudonymised').select('*').order('pseudonym')
+      await supabase().rpc('export_registry_pseudonymised')
     );
-    await db.audit('EXPORT_PSEUDONYMISED', undefined, `${rows?.length ?? 0} records, no identifiers`);
     return rows ?? [];
   },
 
   /**
    * Carries NHS number, hospital number, name and date of birth. Only for a
    * national submission under an agreed information-sharing basis — the
-   * resulting file is identifiable patient data wherever it is saved.
+   * resulting file is identifiable patient data wherever it is saved. Access is
+   * restricted and audited server-side (0009); a failed audit rolls the export
+   * back, so an identifiable extract is never delivered unlogged.
    */
   async exportIdentifiable(): Promise<Record<string, unknown>[]> {
     const rows = unwrap<Record<string, unknown>[]>(
-      await supabase().from('registry_export_identifiable').select('*').order('surname')
-    );
-    await db.audit(
-      'EXPORT_IDENTIFIABLE',
-      undefined,
-      `${rows?.length ?? 0} records including NHS number, hospital number, name and date of birth`
+      await supabase().rpc('export_registry_identifiable')
     );
     return rows ?? [];
   },
