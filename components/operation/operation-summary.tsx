@@ -334,7 +334,7 @@ export function OperationSummary({
             data?.anteriorReconstruction === 'Excellent' ? (
               <Badge variant="success">Excellent</Badge>
             ) : (
-              <Badge variant="info">{data?.anteriorReconstruction || 'Good'}</Badge>
+              <Badge variant="info">{data?.anteriorReconstruction || '—'}</Badge>
             )
           }
           source={{ type: 'Operation Note', documentTitle: 'Robotic Theatre Note', verified: true }}
@@ -362,7 +362,7 @@ export function OperationSummary({
 
         <PatientDataField
           label="Robot Platform"
-          value={data?.robotType || 'DaVinci Xi'}
+          value={data?.robotType || '—'}
           source={{ type: 'Operation Note', documentTitle: 'Robotic Theatre Note', verified: true }}
         />
       </div>

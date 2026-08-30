@@ -18,7 +18,7 @@ export function NerveSparingDisplay({
       </Badge>
       {side === 'Bilateral' && (
         <span className="text-xs text-slate-500">
-          (L: {leftGrade || '5/5'} | R: {rightGrade || '5/5'})
+          (L: {leftGrade || '—'} | R: {rightGrade || '—'})
         </span>
       )}
     </div>

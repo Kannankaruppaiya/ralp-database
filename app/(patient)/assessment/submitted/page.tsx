@@ -47,7 +47,7 @@ export default function AssessmentSubmittedPage() {
             • <strong>Continence Recovery</strong>: Your progress is consistent with expected post-RALP pelvic floor retraining. Continue your daily Kegel exercises as instructed by your clinical nurse specialist.
           </p>
           <p>
-            • <strong>Potency & Nerve Sparing</strong>: Erectile function recovery is a gradual process over 12 to 24 months. Discuss penile rehabilitation options with Mr. V. Kannan at your next review.
+            • <strong>Potency & Nerve Sparing</strong>: Erectile function recovery is a gradual process over 12 to 24 months. Discuss penile rehabilitation options with your consultant at your next review.
           </p>
           <p>
             • <strong>Next Step</strong>: Your next PSA blood test will be scheduled as part of your longitudinal surveillance pathway.

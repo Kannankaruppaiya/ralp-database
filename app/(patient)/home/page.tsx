@@ -22,13 +22,8 @@ import { db } from '@/lib/api-client';
 import { useCurrentPatient } from '@/lib/auth';
 import { PatientFullRecord } from '@/types/patient';
 import { formatNhsNumber, formatDate, formatPsa } from '@/lib/formatters';
+import { SURGEON_OPTIONS } from '@/config/clinical-options';
 
-const SURGEON_NAME_MAP: Record<string, string> = {
-  VK: 'Mr. V. Kannan',
-  RDM: 'Mr. R. D. MacDonagh',
-  CI: 'Mr. Christopher Jones',
-  OAK: 'Mr. Omar A. Khan',
-};
 
 export default function PatientHomePage() {
   const { patient, isLoading } = useCurrentPatient();
@@ -45,10 +40,15 @@ export default function PatientHomePage() {
     );
   }
 
-  const surgeonName = SURGEON_NAME_MAP[patient.primarySurgeon] || `Surgeon ${patient.primarySurgeon}`;
+  const surgeonName =
+    patient.otherSurgeonName ||
+    SURGEON_OPTIONS.find((s) => s.value === patient.primarySurgeon)?.fullName ||
+    `Surgeon ${patient.primarySurgeon}`;
   const opDate = patient.operation?.operationDate ? formatDate(patient.operation.operationDate) : 'Scheduled';
-  const stage = patient.histology?.pathologicalStage ? `pT${patient.histology.pathologicalStage}` : (patient.baseline?.clinicalStage || 'pT2 Organ-Confined');
-  const gleason = patient.histology?.gleasonGrade || patient.baseline?.gleasonGrade || '3+4';
+  const stage = patient.histology?.pathologicalStage
+    ? `pT${patient.histology.pathologicalStage}`
+    : (patient.baseline?.clinicalStage || '—');
+  const gleason = patient.histology?.gleasonGrade || patient.baseline?.gleasonGrade || '—';
 
   // Calculate completed PROMs
   const completedProms = patient.proms || [];
