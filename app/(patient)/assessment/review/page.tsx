@@ -72,10 +72,10 @@ export default function AssessmentReviewPage() {
       </div>
 
       <div className="space-y-4">
-        <Card className="shadow-sm border-teal-200 bg-white">
+        <Card className="shadow-sm border-blue-200 bg-white">
           <CardHeader className="p-4 pb-2">
-            <CardTitle className="text-sm font-bold text-teal-900 flex items-center gap-2">
-              <Activity className="h-4 w-4 text-teal-600" />
+            <CardTitle className="text-sm font-bold text-blue-900 flex items-center gap-2">
+              <Activity className="h-4 w-4 text-blue-600" />
               <span>1. Urinary Symptoms (IPSS)</span>
             </CardTitle>
           </CardHeader>
@@ -156,7 +156,7 @@ export default function AssessmentReviewPage() {
         <Button
           onClick={() => void handleSubmit()}
           disabled={isSubmitting}
-          className="gap-2 bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-md text-xs"
+          className="gap-2 bg-gradient-to-r from-blue-600 to-emerald-600 text-white shadow-md text-xs"
         >
           <CheckCircle2 className="h-4 w-4" />
           <span>{isSubmitting ? 'Transmitting Data...' : 'Confirm & Transmit Questionnaire'}</span>

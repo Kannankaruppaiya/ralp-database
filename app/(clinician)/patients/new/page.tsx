@@ -96,7 +96,7 @@ export default function NewPatientPage() {
         <Card className="shadow-sm">
           <CardHeader className="p-5 pb-3 border-b">
             <CardTitle className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              <UserPlus className="h-4 w-4 text-teal-600" />
+              <UserPlus className="h-4 w-4 text-blue-600" />
               <span>1. Mandatory Patient Demographics</span>
             </CardTitle>
           </CardHeader>

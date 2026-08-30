@@ -35,10 +35,10 @@ export default function AssessmentSubmittedPage() {
         </p>
       </div>
 
-      <Card className="shadow-sm border-teal-200 bg-teal-50/40 text-left">
+      <Card className="shadow-sm border-blue-200 bg-blue-50/40 text-left">
         <CardHeader className="p-4 pb-2">
-          <CardTitle className="text-xs font-bold text-teal-900 uppercase tracking-wider flex items-center gap-2">
-            <HeartPulse className="h-4 w-4 text-teal-600" />
+          <CardTitle className="text-xs font-bold text-blue-900 uppercase tracking-wider flex items-center gap-2">
+            <HeartPulse className="h-4 w-4 text-blue-600" />
             Personalized Post-Operative Guidance
           </CardTitle>
         </CardHeader>

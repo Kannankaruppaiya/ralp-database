@@ -103,7 +103,7 @@ export function PatientDataField({
         <dt className="text-xs font-medium text-slate-500 dark:text-slate-400">{label}</dt>
         {source && (
           <span
-            className="text-[10px] text-slate-400 hover:text-teal-600 transition-colors font-medium cursor-help"
+            className="text-[10px] text-slate-400 hover:text-blue-600 transition-colors font-medium cursor-help"
             title={`Source: ${source.type}${source.documentTitle ? ` (${source.documentTitle})` : ''} • ${source.verified ? 'Verified by ' + (source.verifiedBy || 'Clinician') : 'Unverified'}`}
           >
             [{source.type.split(' ')[0]}]

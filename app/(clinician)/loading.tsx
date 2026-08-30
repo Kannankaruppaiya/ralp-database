@@ -24,7 +24,7 @@ export default function ClinicianLoading() {
           >
             <div className="flex justify-between items-center">
               <div className="h-4 w-24 bg-slate-200 dark:bg-slate-800 rounded" />
-              <div className="h-8 w-8 rounded-lg bg-teal-100 dark:bg-teal-950/40" />
+              <div className="h-8 w-8 rounded-lg bg-blue-100 dark:bg-blue-950/40" />
             </div>
             <div className="h-8 w-20 bg-slate-200 dark:bg-slate-800 rounded-md" />
             <div className="h-3 w-36 bg-slate-100 dark:bg-slate-800/60 rounded" />

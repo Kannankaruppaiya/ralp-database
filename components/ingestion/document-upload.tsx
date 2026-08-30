@@ -207,8 +207,8 @@ export function DocumentUpload() {
       <div
         className={`rounded-2xl border-2 border-dashed p-8 text-center transition-colors ${
           dragActive
-            ? 'border-teal-500 bg-teal-50/40'
-            : 'border-slate-300 bg-slate-50/70 hover:border-teal-500 hover:bg-teal-50/20 dark:border-slate-800 dark:bg-slate-900/50'
+            ? 'border-blue-500 bg-blue-50/40'
+            : 'border-slate-300 bg-slate-50/70 hover:border-blue-500 hover:bg-blue-50/20 dark:border-slate-800 dark:bg-slate-900/50'
         }`}
         onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
         onDragLeave={() => setDragActive(false)}
@@ -219,7 +219,7 @@ export function DocumentUpload() {
           if (file) void handleFile(file);
         }}
       >
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-100 text-teal-700 shadow-sm dark:bg-teal-950 dark:text-teal-300">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100 text-blue-700 shadow-sm dark:bg-blue-950 dark:text-blue-300">
           {isProcessing ? <RefreshCw className="h-7 w-7 animate-spin" /> : <UploadCloud className="h-7 w-7" />}
         </div>
         <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
@@ -242,8 +242,8 @@ export function DocumentUpload() {
               onClick={() => setDocType(value)}
               className={`rounded-lg border px-3 py-1.5 text-[11px] font-semibold transition-colors ${
                 docType === value
-                  ? 'border-teal-500 bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-200'
-                  : 'border-slate-300 text-slate-600 hover:border-teal-400 dark:border-slate-700 dark:text-slate-400'
+                  ? 'border-blue-500 bg-blue-50 text-blue-800 dark:bg-blue-950 dark:text-blue-200'
+                  : 'border-slate-300 text-slate-600 hover:border-blue-400 dark:border-slate-700 dark:text-slate-400'
               }`}
             >
               {label}

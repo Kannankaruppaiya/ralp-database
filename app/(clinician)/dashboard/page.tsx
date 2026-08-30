@@ -78,7 +78,7 @@ export default function ClinicianDashboardPage() {
       {/* Personalized Clinician Welcome & Caseload Scope Header */}
       <div className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
-          <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-teal-600 to-emerald-600 text-white flex items-center justify-center font-bold text-sm shadow-md">
+          <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-blue-600 to-emerald-600 text-white flex items-center justify-center font-bold text-sm shadow-md">
             {currentUser?.name.split(' ').map((n) => n[0]).join('').slice(0, 2)}
           </div>
           <div>
@@ -86,7 +86,7 @@ export default function ClinicianDashboardPage() {
               <h2 className="text-lg font-bold text-slate-900 dark:text-white">
                 {currentUser?.name} {currentUser?.surgeonCode && `(${currentUser?.surgeonCode})`}
               </h2>
-              <Badge variant="outline" className="text-xs bg-teal-50 text-teal-800 border-teal-200 dark:bg-teal-950/50 dark:text-teal-300">
+              <Badge variant="outline" className="text-xs bg-blue-50 text-blue-800 border-blue-200 dark:bg-blue-950/50 dark:text-blue-300">
                 {currentUser?.role}
               </Badge>
             </div>
@@ -105,7 +105,7 @@ export default function ClinicianDashboardPage() {
                 onClick={() => setCaseloadScope('personal')}
                 className={`px-3 py-1.5 rounded-lg transition-all ${
                   caseloadScope === 'personal'
-                    ? 'bg-white dark:bg-slate-900 text-teal-700 dark:text-teal-300 font-bold shadow-sm'
+                    ? 'bg-white dark:bg-slate-900 text-blue-700 dark:text-blue-300 font-bold shadow-sm'
                     : 'text-slate-500 hover:text-slate-900'
                 }`}
               >
@@ -116,7 +116,7 @@ export default function ClinicianDashboardPage() {
                 onClick={() => setCaseloadScope('trust')}
                 className={`px-3 py-1.5 rounded-lg transition-all ${
                   caseloadScope === 'trust'
-                    ? 'bg-white dark:bg-slate-900 text-teal-700 dark:text-teal-300 font-bold shadow-sm'
+                    ? 'bg-white dark:bg-slate-900 text-blue-700 dark:text-blue-300 font-bold shadow-sm'
                     : 'text-slate-500 hover:text-slate-900'
                 }`}
               >
@@ -171,12 +171,12 @@ export default function ClinicianDashboardPage() {
 
       {/* KPI Top Stat Cards (Dynamically scoped to the logged-in user!) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="border-l-4 border-l-teal-600 shadow-sm">
+        <Card className="border-l-4 border-l-blue-600 shadow-sm">
           <CardHeader className="p-4 pb-1 flex flex-row items-center justify-between space-y-0">
             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
               {caseloadScope === 'personal' && targetSurgeonCode ? `${targetSurgeonCode} Patients` : 'Total Cohort'}
             </span>
-            <Users className="h-4 w-4 text-teal-600" />
+            <Users className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent className="p-4 pt-1">
             <div className="text-2xl font-bold text-slate-900 dark:text-white">{totalCohort}</div>
@@ -256,7 +256,7 @@ export default function ClinicianDashboardPage() {
                 displayOverdue.slice(0, 4).map((fu) => (
                   <div key={fu.id} className="p-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
                     <div>
-                      <Link href={`/patients/${fu.patient.id}`} className="font-bold text-sm text-slate-900 dark:text-slate-100 hover:text-teal-600">
+                      <Link href={`/patients/${fu.patient.id}`} className="font-bold text-sm text-slate-900 dark:text-slate-100 hover:text-blue-600">
                         {fu.patient.firstName} {fu.patient.surname}
                       </Link>
                       <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
@@ -285,11 +285,11 @@ export default function ClinicianDashboardPage() {
         {/* Sidebar Cards: Pending Ingestion & Fast Registration */}
         <div className="space-y-6">
           {/* Pending Ingestion Card */}
-          <Card className="border-teal-200 bg-teal-50/20 dark:border-teal-900/50 shadow-sm">
+          <Card className="border-blue-200 bg-blue-50/20 dark:border-blue-900/50 shadow-sm">
             <CardHeader className="p-5 pb-3">
-              <CardTitle className="text-sm font-bold text-teal-950 dark:text-teal-200 flex items-center justify-between">
+              <CardTitle className="text-sm font-bold text-blue-950 dark:text-blue-200 flex items-center justify-between">
                 <span className="flex items-center gap-2">
-                  <FileUp className="h-4 w-4 text-teal-600" />
+                  <FileUp className="h-4 w-4 text-blue-600" />
                   Document Ingestion
                 </span>
                 <Badge variant="warning">{pendingJobs.length} Pending</Badge>
@@ -300,7 +300,7 @@ export default function ClinicianDashboardPage() {
             </CardHeader>
             <CardContent className="p-5 pt-0 space-y-3">
               {pendingJobs.map((job) => (
-                <div key={job.id} className="p-3 bg-white dark:bg-slate-900 rounded-lg border border-teal-100 dark:border-teal-900 text-xs space-y-2">
+                <div key={job.id} className="p-3 bg-white dark:bg-slate-900 rounded-lg border border-blue-100 dark:border-blue-900 text-xs space-y-2">
                   <div className="font-semibold text-slate-900 dark:text-slate-100 truncate">
                     {job.documentTitle}
                   </div>
@@ -340,21 +340,21 @@ export default function ClinicianDashboardPage() {
                       }
                     }}
                     className={`p-2 rounded-lg transition-colors cursor-pointer ${
-                      isCurrentSurgeon ? 'bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800' : 'hover:bg-slate-50 dark:hover:bg-slate-800/40'
+                      isCurrentSurgeon ? 'bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800' : 'hover:bg-slate-50 dark:hover:bg-slate-800/40'
                     }`}
                   >
                     <div className="flex justify-between font-medium">
                       <span className="flex items-center gap-1.5">
                         <span className="font-bold">Surgeon {code}</span>
                         {isCurrentSurgeon && (
-                          <Badge className="bg-teal-600 text-white text-[9px] px-1.5 py-0 h-4">You</Badge>
+                          <Badge className="bg-blue-600 text-white text-[9px] px-1.5 py-0 h-4">You</Badge>
                         )}
                       </span>
                       <span className="font-mono text-slate-600 dark:text-slate-300">{count} cases ({percentage}%)</span>
                     </div>
                     <div className="w-full bg-slate-100 rounded-full h-1.5 mt-1.5 dark:bg-slate-800">
                       <div
-                        className={`h-1.5 rounded-full ${isCurrentSurgeon ? 'bg-teal-600' : 'bg-slate-400'}`}
+                        className={`h-1.5 rounded-full ${isCurrentSurgeon ? 'bg-blue-600' : 'bg-slate-400'}`}
                         style={{ width: `${percentage}%` }}
                       />
                     </div>

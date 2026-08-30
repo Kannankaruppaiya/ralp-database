@@ -19,17 +19,17 @@ import {
 
 export default function RootHomePage() {
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-gradient-to-b from-slate-50 via-teal-50/20 to-slate-100">
+    <div className="min-h-screen flex flex-col justify-between bg-gradient-to-b from-slate-50 via-blue-50/20 to-slate-100">
       {/* Navbar */}
       <header className="border-b border-slate-200/80 bg-white/80 backdrop-blur sticky top-0 z-20">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-600 text-white shadow-md shadow-teal-600/20">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md shadow-blue-600/20">
               <HeartPulse className="h-6 w-6" />
             </div>
             <div>
               <span className="font-bold text-slate-900 text-base leading-none block">RALP Database v2</span>
-              <span className="text-[11px] font-semibold text-teal-600 uppercase tracking-wider">Surgical Outcomes Platform</span>
+              <span className="text-[11px] font-semibold text-blue-600 uppercase tracking-wider">Surgical Outcomes Platform</span>
             </div>
           </div>
 
@@ -54,7 +54,7 @@ export default function RootHomePage() {
             Oxford Urology Robotic Surgery Quality Registry
           </Badge>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
-            Robot-Assisted Laparoscopic Prostatectomy <span className="text-teal-600">Outcomes Database</span>
+            Robot-Assisted Laparoscopic Prostatectomy <span className="text-blue-600">Outcomes Database</span>
           </h1>
           <p className="text-base text-slate-600 leading-relaxed">
             Standardized multi-surgeon clinical database tracking baseline oncology, theatre operative parameters, post-op histopathology, and longitudinal 3-year PROMs (IPSS, SHIM, Continence).
@@ -64,17 +64,17 @@ export default function RootHomePage() {
         {/* 3 Dedicated Portals Selection */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto w-full">
           {/* Clinician Portal Card */}
-          <Card className="hover:border-teal-500 hover:shadow-xl transition-all border-slate-200/80 bg-white group flex flex-col justify-between">
+          <Card className="hover:border-blue-500 hover:shadow-xl transition-all border-slate-200/80 bg-white group flex flex-col justify-between">
             <CardContent className="p-6 space-y-5">
               <div className="flex items-center justify-between">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-teal-50 text-teal-600 group-hover:bg-teal-600 group-hover:text-white transition-colors shadow-sm">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors shadow-sm">
                   <Stethoscope className="h-6 w-6" />
                 </div>
                 <Badge variant="outline" className="text-[10px]">Consultants & Surgeons</Badge>
               </div>
 
               <div>
-                <h2 className="text-lg font-bold text-slate-900 group-hover:text-teal-700 transition-colors">
+                <h2 className="text-lg font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
                   Clinician Registry Portal
                 </h2>
                 <p className="text-xs text-slate-500 mt-1.5 leading-relaxed">
@@ -84,15 +84,15 @@ export default function RootHomePage() {
 
               <div className="space-y-1.5 text-xs text-slate-600 pt-2 border-t">
                 <div className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-teal-500" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
                   <span>Pre-Op PSA & Gleason risk grading</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-teal-500" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
                   <span>RALP theatre nerve sparing (2/5 to 5/5)</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-teal-500" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
                   <span>7-Milestone longitudinal follow-ups</span>
                 </div>
               </div>

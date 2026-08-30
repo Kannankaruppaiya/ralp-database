@@ -93,7 +93,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
                           <span>•</span>
                           <span>MRN: {patient.hospitalNumber}</span>
                           <span>•</span>
-                          <span className="font-medium text-teal-600">Surgeon: {patient.primarySurgeon}</span>
+                          <span className="font-medium text-blue-600">Surgeon: {patient.primarySurgeon}</span>
                         </div>
                       </div>
                       <Badge variant="outline" className="text-[11px]">
@@ -111,7 +111,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
       {/* Action Header Items */}
       <div className="flex items-center gap-3">
         <div className="hidden lg:flex items-center gap-2 px-3 py-1 rounded-md bg-slate-100 text-xs text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-          <Hospital className="h-3.5 w-3.5 text-teal-600" />
+          <Hospital className="h-3.5 w-3.5 text-blue-600" />
           <span>Oxford Urology Centre</span>
         </div>
 

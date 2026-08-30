@@ -6,7 +6,7 @@ import { HeartPulse, ArrowLeft } from 'lucide-react';
 export default function NotFound() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 text-center p-4">
-      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-teal-100 text-teal-600 mb-4">
+      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-100 text-blue-600 mb-4">
         <HeartPulse className="h-8 w-8" />
       </div>
       <h1 className="text-3xl font-extrabold text-slate-900">404 — Record Not Found</h1>

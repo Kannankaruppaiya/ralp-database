@@ -25,12 +25,12 @@ export default function PatientLayout({ children }: { children: React.ReactNode 
       <header className="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/home" className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-600 text-white shadow-sm">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm">
               <HeartPulse className="h-5 w-5" />
             </div>
             <div>
               <span className="font-bold text-slate-900 text-base leading-none block">My Prostate Recovery</span>
-              <span className="text-[11px] text-teal-700 font-medium">RALP Patient Outcomes Portal</span>
+              <span className="text-[11px] text-blue-700 font-medium">RALP Patient Outcomes Portal</span>
             </div>
           </Link>
 
@@ -46,7 +46,7 @@ export default function PatientLayout({ children }: { children: React.ReactNode 
                   className={cn(
                     'flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-colors',
                     isActive
-                      ? 'bg-teal-50 text-teal-800 font-bold'
+                      ? 'bg-blue-50 text-blue-800 font-bold'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                   )}
                 >
@@ -60,7 +60,7 @@ export default function PatientLayout({ children }: { children: React.ReactNode 
           {/* Clinician Portal Link */}
           <Link
             href="/dashboard"
-            className="text-xs text-slate-500 hover:text-teal-700 flex items-center gap-1 border rounded-lg px-2.5 py-1"
+            className="text-xs text-slate-500 hover:text-blue-700 flex items-center gap-1 border rounded-lg px-2.5 py-1"
           >
             <span>Clinician Portal</span>
           </Link>

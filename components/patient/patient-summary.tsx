@@ -10,10 +10,10 @@ export function PatientSummary({ patient }: { patient: PatientFullRecord }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       {/* Pre-Op Cancer Summary */}
-      <Card className="border-l-4 border-l-cyan-500 shadow-sm">
+      <Card className="border-l-4 border-l-sky-500 shadow-sm">
         <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-            <Dna className="h-4 w-4 text-cyan-600" />
+            <Dna className="h-4 w-4 text-sky-600" />
             Baseline Cancer
           </CardTitle>
           <Badge variant="info" className="text-[10px]">Pre-op</Badge>
@@ -35,13 +35,13 @@ export function PatientSummary({ patient }: { patient: PatientFullRecord }) {
       </Card>
 
       {/* Operation Summary */}
-      <Card className="border-l-4 border-l-teal-500 shadow-sm">
+      <Card className="border-l-4 border-l-blue-500 shadow-sm">
         <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-            <Scissors className="h-4 w-4 text-teal-600" />
+            <Scissors className="h-4 w-4 text-blue-600" />
             RALP Procedure
           </CardTitle>
-          <Badge variant="default" className="text-[10px] bg-teal-600">{patient.primarySurgeon}</Badge>
+          <Badge variant="default" className="text-[10px] bg-blue-600">{patient.primarySurgeon}</Badge>
         </CardHeader>
         <CardContent className="p-4 pt-2 space-y-2 text-xs">
           <div className="flex justify-between py-1 border-b border-slate-100">

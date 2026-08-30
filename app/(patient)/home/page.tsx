@@ -59,7 +59,7 @@ export default function PatientHomePage() {
   return (
     <div className="space-y-6">
       {/* Personalized Welcome Banner */}
-      <div className="rounded-2xl border border-teal-100 bg-gradient-to-br from-teal-50 via-white to-teal-50/30 p-6 sm:p-8 shadow-sm">
+      <div className="rounded-2xl border border-blue-100 bg-gradient-to-br from-blue-50 via-white to-blue-50/30 p-6 sm:p-8 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-2">
@@ -72,12 +72,12 @@ export default function PatientHomePage() {
               Welcome back, {patient.firstName} {patient.surname}!
             </h1>
             <p className="text-sm text-slate-600 mt-1 max-w-xl leading-relaxed">
-              Personalized recovery portal for your robotic prostate surgery with <strong className="text-teal-900">{surgeonName}</strong> at Oxford Urology Centre.
+              Personalized recovery portal for your robotic prostate surgery with <strong className="text-blue-900">{surgeonName}</strong> at Oxford Urology Centre.
             </p>
           </div>
 
           <Link href="/assessment/ipss">
-            <Button size="lg" className="gap-2 shadow-md bg-teal-600 hover:bg-teal-700 text-white">
+            <Button size="lg" className="gap-2 shadow-md bg-blue-600 hover:bg-blue-700 text-white">
               <ClipboardList className="h-5 w-5" />
               <span>Start Questionnaire</span>
             </Button>
@@ -85,19 +85,19 @@ export default function PatientHomePage() {
         </div>
 
         {/* Patient Clinical Summary Badges */}
-        <div className="mt-5 pt-4 border-t border-teal-100/80 flex flex-wrap items-center gap-4 text-xs text-slate-600">
+        <div className="mt-5 pt-4 border-t border-blue-100/80 flex flex-wrap items-center gap-4 text-xs text-slate-600">
           <div className="flex items-center gap-1.5 font-medium">
-            <Calendar className="h-3.5 w-3.5 text-teal-600" />
+            <Calendar className="h-3.5 w-3.5 text-blue-600" />
             <span>Surgery Date: <strong>{opDate}</strong></span>
           </div>
           <span>•</span>
           <div className="flex items-center gap-1.5 font-medium">
-            <Award className="h-3.5 w-3.5 text-teal-600" />
+            <Award className="h-3.5 w-3.5 text-blue-600" />
             <span>Pathology: <strong>{stage} (Gleason {gleason})</strong></span>
           </div>
           <span>•</span>
           <div className="flex items-center gap-1.5 font-medium">
-            <User className="h-3.5 w-3.5 text-teal-600" />
+            <User className="h-3.5 w-3.5 text-blue-600" />
             <span>Consultant: <strong>{surgeonName}</strong></span>
           </div>
         </div>
@@ -106,10 +106,10 @@ export default function PatientHomePage() {
       {/* Actionable Questionnaires Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* IPSS */}
-        <Card className="hover:border-teal-500 transition-colors shadow-sm bg-white">
+        <Card className="hover:border-blue-500 transition-colors shadow-sm bg-white">
           <CardContent className="p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-teal-100 text-teal-700">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-700">
                 <Activity className="h-6 w-6" />
               </div>
               {hasIpss && (
@@ -127,7 +127,7 @@ export default function PatientHomePage() {
             </div>
 
             <Link href="/assessment/ipss" className="block">
-              <Button size="sm" className="w-full gap-1.5 text-xs bg-teal-600 hover:bg-teal-700">
+              <Button size="sm" className="w-full gap-1.5 text-xs bg-blue-600 hover:bg-blue-700">
                 <span>{hasIpss ? 'Update IPSS Review' : 'Complete IPSS'}</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </Button>
@@ -200,10 +200,10 @@ export default function PatientHomePage() {
       <Card className="shadow-sm bg-white">
         <CardHeader className="p-5 pb-3 border-b flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-sm font-bold text-slate-900 flex items-center gap-2">
-            <Calendar className="h-4 w-4 text-teal-600" />
-            <span>Your Surgical Milestones ({patient.firstName}'s Timeline)</span>
+            <Calendar className="h-4 w-4 text-blue-600" />
+            <span>Your Surgical Milestones ({patient.firstName}&apos;s Timeline)</span>
           </CardTitle>
-          <Link href="/follow-up" className="text-xs text-teal-700 hover:underline flex items-center gap-1">
+          <Link href="/follow-up" className="text-xs text-blue-700 hover:underline flex items-center gap-1">
             <span>View Full Schedule</span>
             <ArrowRight className="h-3 w-3" />
           </Link>

@@ -13,7 +13,7 @@ export function PatientTimeline({ patient }: { patient: PatientFullRecord }) {
       title: 'Baseline Prostate Cancer Diagnosis',
       category: 'Diagnostic',
       icon: Dna,
-      color: 'bg-cyan-500 text-white',
+      color: 'bg-sky-500 text-white',
       details: `Pre-op PSA ${formatPsa(patient.baseline?.psa)} | Gleason ${patient.baseline?.gleasonGrade || '—'} | Stage ${patient.baseline?.clinicalStage || '—'}`,
     },
     {
@@ -21,7 +21,7 @@ export function PatientTimeline({ patient }: { patient: PatientFullRecord }) {
       title: `RALP Robotic Operation (${patient.primarySurgeon})`,
       category: 'Surgical',
       icon: Scissors,
-      color: 'bg-teal-600 text-white',
+      color: 'bg-blue-600 text-white',
       details: `Nerve Sparing: ${patient.operation?.nerveSparing || '—'} | Bladder Neck: ${patient.operation?.bladderNeck || '—'} | EBL: ${patient.operation?.bloodLossMl || 0}ml`,
     },
     ...(patient.histology?.reportDate
@@ -51,7 +51,7 @@ export function PatientTimeline({ patient }: { patient: PatientFullRecord }) {
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
       <h2 className="text-base font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-        <CalendarClock className="h-5 w-5 text-teal-600" />
+        <CalendarClock className="h-5 w-5 text-blue-600" />
         <span>Longitudinal Clinical Care Pathway Timeline</span>
       </h2>
 

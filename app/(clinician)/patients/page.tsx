@@ -135,7 +135,7 @@ export default function PatientsRegistryPage() {
                   return (
                     <TableRow key={patient.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors">
                       <TableCell className="font-semibold text-slate-900 dark:text-slate-100 py-3">
-                        <Link href={`/patients/${patient.id}`} className="hover:text-teal-600 text-sm font-bold block transition-colors">
+                        <Link href={`/patients/${patient.id}`} className="hover:text-blue-600 text-sm font-bold block transition-colors">
                           {patient.firstName} {patient.surname}
                         </Link>
                         <div className="text-xs text-slate-400 font-normal mt-0.5 space-x-2 font-mono">
@@ -196,7 +196,7 @@ export default function PatientsRegistryPage() {
                         <div className="flex items-center gap-2">
                           <div className="w-16 bg-slate-100 rounded-full h-1.5 dark:bg-slate-800">
                             <div
-                              className="bg-teal-600 h-1.5 rounded-full"
+                              className="bg-blue-600 h-1.5 rounded-full"
                               style={{ width: `${patient.completeness.score}%` }}
                             />
                           </div>

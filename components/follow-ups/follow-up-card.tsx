@@ -68,7 +68,7 @@ export function FollowUpCard({
 
   if (isEditing) {
     return (
-      <Card className="border-teal-500 shadow-md">
+      <Card className="border-blue-500 shadow-md">
         <CardHeader className="p-4 pb-2 border-b flex flex-row items-center justify-between space-y-0">
           <CardTitle className="text-sm font-bold text-slate-900">
             Edit {followUp.milestone.toUpperCase()} Follow-up ({followUp.targetMonths} Months)
@@ -248,7 +248,7 @@ export function FollowUpTimeline({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h2 className="text-base font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-          <CalendarClock className="h-5 w-5 text-teal-600" />
+          <CalendarClock className="h-5 w-5 text-blue-600" />
           <span>7-Milestone Longitudinal Follow-up Protocol</span>
         </h2>
       </div>

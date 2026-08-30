@@ -45,10 +45,10 @@ export default function AssessmentHubPage() {
 
       <div className="space-y-4">
         {/* IPSS Card */}
-        <Card className="shadow-sm hover:border-teal-500 transition-colors bg-white">
+        <Card className="shadow-sm hover:border-blue-500 transition-colors bg-white">
           <CardContent className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-start gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-teal-100 text-teal-700 flex-shrink-0">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-700 flex-shrink-0">
                 <Activity className="h-6 w-6" />
               </div>
               <div>
@@ -67,7 +67,7 @@ export default function AssessmentHubPage() {
               </div>
             </div>
             <Link href="/assessment/ipss">
-              <Button className="gap-1.5 text-xs shadow-sm bg-teal-600 hover:bg-teal-700 text-white">
+              <Button className="gap-1.5 text-xs shadow-sm bg-blue-600 hover:bg-blue-700 text-white">
                 <span>{hasIpss ? 'Update IPSS' : 'Start IPSS'}</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </Button>

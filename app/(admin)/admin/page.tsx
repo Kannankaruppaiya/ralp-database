@@ -118,12 +118,12 @@ export default function AdminOverviewPage() {
               <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">
                 {isLoading ? '—' : totalPatients}
               </div>
-              <span className="text-[11px] text-teal-600 flex items-center gap-1 mt-1 font-medium">
+              <span className="text-[11px] text-blue-600 flex items-center gap-1 mt-1 font-medium">
                 <CheckCircle2 className="h-3 w-3" />
                 <span>Active RALP Records</span>
               </span>
             </div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-400">
               <Database className="h-6 w-6" />
             </div>
           </CardContent>
@@ -153,7 +153,7 @@ export default function AdminOverviewPage() {
               <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">
                 {mounted ? auditLogCount : '—'}
               </div>
-              <span className="text-[11px] text-teal-600 mt-1 block font-medium">
+              <span className="text-[11px] text-blue-600 mt-1 block font-medium">
                 Full Caldicott Logging
               </span>
             </div>
@@ -192,18 +192,18 @@ export default function AdminOverviewPage() {
             return (
               <Card
                 key={card.href}
-                className="border-slate-200 bg-white hover:border-teal-500 hover:shadow-md transition-all duration-200 shadow-sm group flex flex-col justify-between dark:border-slate-800 dark:bg-slate-900"
+                className="border-slate-200 bg-white hover:border-blue-500 hover:shadow-md transition-all duration-200 shadow-sm group flex flex-col justify-between dark:border-slate-800 dark:bg-slate-900"
               >
                 <CardHeader className="p-5 pb-3">
                   <div className="flex items-center justify-between">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-teal-50 text-teal-700 group-hover:bg-teal-600 group-hover:text-white transition-colors dark:bg-teal-950 dark:text-teal-400">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-50 text-blue-700 group-hover:bg-blue-600 group-hover:text-white transition-colors dark:bg-blue-950 dark:text-blue-400">
                       <Icon className="h-5 w-5" />
                     </div>
                     <Badge variant={card.badgeVariant} className="text-[10px]">
                       {card.badge}
                     </Badge>
                   </div>
-                  <CardTitle className="text-base font-bold text-slate-900 dark:text-white mt-3 group-hover:text-teal-700 transition-colors">
+                  <CardTitle className="text-base font-bold text-slate-900 dark:text-white mt-3 group-hover:text-blue-700 transition-colors">
                     {card.title}
                   </CardTitle>
                 </CardHeader>
@@ -217,7 +217,7 @@ export default function AdminOverviewPage() {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="w-full justify-between text-xs group-hover:bg-teal-50 group-hover:text-teal-900 group-hover:border-teal-300 transition-colors"
+                      className="w-full justify-between text-xs group-hover:bg-blue-50 group-hover:text-blue-900 group-hover:border-blue-300 transition-colors"
                     >
                       <span>Open Management</span>
                       <ArrowRight className="h-3.5 w-3.5" />

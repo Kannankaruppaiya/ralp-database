@@ -89,7 +89,7 @@ export default function PatientLoginPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/85 to-purple-950/60" />
           <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
         </div>
 
         {/* Top Header */}
@@ -135,7 +135,7 @@ export default function PatientLoginPage() {
           <div className="grid grid-cols-4 gap-3 pt-4">
             <div className="p-1 rounded-2xl bg-white/5 border border-white/10 shadow-lg backdrop-blur-md">
               <div className="p-3 rounded-xl bg-slate-900/80 border border-white/5 text-center space-y-1">
-                <div className="text-xs font-bold text-teal-400">6 Weeks</div>
+                <div className="text-xs font-bold text-blue-400">6 Weeks</div>
                 <div className="text-[10px] text-slate-400">Catheter TWOC</div>
               </div>
             </div>
@@ -185,7 +185,7 @@ export default function PatientLoginPage() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-widest text-purple-400">Patient Portal Sign In</span>
-              <Link href="/login" className="text-xs text-teal-400 hover:text-teal-300 transition-colors flex items-center gap-1">
+              <Link href="/login" className="text-xs text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1">
                 <span>Doctor Login</span>
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>

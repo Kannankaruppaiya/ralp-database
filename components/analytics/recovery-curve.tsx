@@ -65,7 +65,7 @@ export function RecoveryCurve({ curve }: { curve: RecoveryPoint[] }) {
                 <Legend wrapperStyle={{ fontSize: 11 }} />
                 <Line
                   type="monotone" dataKey="continent" name="Pad-free continence"
-                  stroke="#0d9488" strokeWidth={2.5} dot={{ r: 3 }} connectNulls
+                  stroke="#2563eb" strokeWidth={2.5} dot={{ r: 3 }} connectNulls
                 />
                 <Line
                   type="monotone" dataKey="potent" name="Potency (SHIM ≥ 17)"

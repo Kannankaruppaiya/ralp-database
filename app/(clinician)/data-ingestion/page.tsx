@@ -32,9 +32,9 @@ export default function DataIngestionPage() {
       {/* Quick Flow Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Link href="/data-ingestion/upload" className="group">
-          <Card className="h-full hover:border-teal-500 transition-colors shadow-sm">
+          <Card className="h-full hover:border-blue-500 transition-colors shadow-sm">
             <CardContent className="p-5 space-y-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-50 text-teal-600 dark:bg-teal-950 dark:text-teal-400 group-hover:scale-105 transition-transform">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400 group-hover:scale-105 transition-transform">
                 <FileUp className="h-5 w-5" />
               </div>
               <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100">1. Upload Documents</h3>
@@ -44,9 +44,9 @@ export default function DataIngestionPage() {
         </Link>
 
         <Link href="/data-ingestion/extraction-review" className="group">
-          <Card className="h-full hover:border-teal-500 transition-colors shadow-sm">
+          <Card className="h-full hover:border-blue-500 transition-colors shadow-sm">
             <CardContent className="p-5 space-y-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-50 text-cyan-600 dark:bg-cyan-950 dark:text-cyan-400 group-hover:scale-105 transition-transform">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-50 text-sky-600 dark:bg-sky-950 dark:text-sky-400 group-hover:scale-105 transition-transform">
                 <FileText className="h-5 w-5" />
               </div>
               <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100">2. Extraction Review</h3>
@@ -56,7 +56,7 @@ export default function DataIngestionPage() {
         </Link>
 
         <Link href="/data-ingestion/patient-matching" className="group">
-          <Card className="h-full hover:border-teal-500 transition-colors shadow-sm">
+          <Card className="h-full hover:border-blue-500 transition-colors shadow-sm">
             <CardContent className="p-5 space-y-2">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950 dark:text-purple-400 group-hover:scale-105 transition-transform">
                 <UserCheck className="h-5 w-5" />
@@ -68,7 +68,7 @@ export default function DataIngestionPage() {
         </Link>
 
         <Link href="/data-ingestion/conflicts" className="group">
-          <Card className="h-full hover:border-teal-500 transition-colors shadow-sm">
+          <Card className="h-full hover:border-blue-500 transition-colors shadow-sm">
             <CardContent className="p-5 space-y-2">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400 group-hover:scale-105 transition-transform">
                 <ShieldAlert className="h-5 w-5" />
@@ -94,7 +94,7 @@ export default function DataIngestionPage() {
           {jobs.map((job) => (
             <div key={job.id} className="p-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
               <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-50 text-teal-600 dark:bg-teal-950 dark:text-teal-400">
+                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400">
                   <FileText className="h-5 w-5" />
                 </div>
                 <div>
@@ -104,7 +104,7 @@ export default function DataIngestionPage() {
                     <span>•</span>
                     <span>{job.extractedFields.length} fields extracted</span>
                     <span>•</span>
-                    <span className="font-medium text-teal-600">Patient: {job.matchedPatient?.fullName || 'Auto-matching'}</span>
+                    <span className="font-medium text-blue-600">Patient: {job.matchedPatient?.fullName || 'Auto-matching'}</span>
                   </div>
                 </div>
               </div>

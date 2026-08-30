@@ -48,18 +48,18 @@ export default function ReviewQueuePage() {
           onClick={() => setActiveTab('extractions')}
           className={`p-4 rounded-xl border text-left transition-all ${
             activeTab === 'extractions'
-              ? 'border-teal-500 bg-teal-50/50 dark:bg-teal-950/30 ring-2 ring-teal-500/30'
+              ? 'border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-2 ring-blue-500/30'
               : 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
           }`}
         >
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-slate-500">Extraction Review</span>
-            <FileText className="h-4 w-4 text-teal-600" />
+            <FileText className="h-4 w-4 text-blue-600" />
           </div>
           <div className="text-2xl font-bold text-slate-900 dark:text-white mt-1">
             {pendingExtractions.length}
           </div>
-          <span className="text-[11px] text-teal-600 font-medium">Awaiting sign-off</span>
+          <span className="text-[11px] text-blue-600 font-medium">Awaiting sign-off</span>
         </button>
 
         <button
@@ -170,14 +170,14 @@ export default function ReviewQueuePage() {
         {(activeTab === 'all' || activeTab === 'extractions') && pendingExtractions.length > 0 && (
           <div className="space-y-3">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-              <FileText className="h-4 w-4 text-teal-600" />
+              <FileText className="h-4 w-4 text-blue-600" />
               <span>Pending Document Extractions ({pendingExtractions.length})</span>
             </h3>
             {pendingExtractions.map((job) => (
-              <Card key={job.id} className="shadow-sm hover:border-teal-400 transition-colors">
+              <Card key={job.id} className="shadow-sm hover:border-blue-400 transition-colors">
                 <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-50 text-teal-600 dark:bg-teal-950 dark:text-teal-400 flex-shrink-0">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400 flex-shrink-0">
                       <ClipboardCheck className="h-5 w-5" />
                     </div>
                     <div>
@@ -189,7 +189,7 @@ export default function ReviewQueuePage() {
                         <span>•</span>
                         <span>{job.extractedFields.length} extracted fields</span>
                         <span>•</span>
-                        <span className="text-teal-600 font-semibold">{job.sourceType.replace('_', ' ')}</span>
+                        <span className="text-blue-600 font-semibold">{job.sourceType.replace('_', ' ')}</span>
                       </div>
                     </div>
                   </div>

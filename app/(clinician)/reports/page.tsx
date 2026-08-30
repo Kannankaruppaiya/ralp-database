@@ -20,9 +20,9 @@ export default function ReportsHubPage() {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="shadow-sm hover:border-teal-500 transition-colors">
+        <Card className="shadow-sm hover:border-blue-500 transition-colors">
           <CardContent className="p-6 space-y-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-teal-50 text-teal-600 dark:bg-teal-950 dark:text-teal-400">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400">
               <Printer className="h-6 w-6" />
             </div>
             <div>
@@ -40,9 +40,9 @@ export default function ReportsHubPage() {
           </CardContent>
         </Card>
 
-        <Card className="shadow-sm hover:border-cyan-500 transition-colors">
+        <Card className="shadow-sm hover:border-sky-500 transition-colors">
           <CardContent className="p-6 space-y-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-50 text-cyan-600 dark:bg-cyan-950 dark:text-cyan-400">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-sky-50 text-sky-600 dark:bg-sky-950 dark:text-sky-400">
               <BarChart3 className="h-6 w-6" />
             </div>
             <div>

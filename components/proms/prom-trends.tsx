@@ -64,12 +64,12 @@ export function PromTrends({ patient }: { patient: PatientFullRecord }) {
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                  <XAxis dataKey="milestone" tickLine={false} tick={{ fontSize: 11, fontFamily: 'Plus Jakarta Sans, sans-serif', fill: '#64748b' }} />
-                  <YAxis domain={[0, 25]} tickLine={false} tick={{ fontSize: 11, fontFamily: 'Plus Jakarta Sans, sans-serif', fill: '#64748b' }} />
+                  <XAxis dataKey="milestone" tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: '#64748b' }} />
+                  <YAxis domain={[0, 25]} tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: '#64748b' }} />
                   <Tooltip
-                    contentStyle={{ borderRadius: 8, fontSize: 12, fontFamily: 'Plus Jakarta Sans, sans-serif', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                    contentStyle={{ borderRadius: 8, fontSize: 12, fontFamily: 'Hanken Grotesk, sans-serif', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                   />
-                  <Legend wrapperStyle={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: 12 }} />
+                  <Legend wrapperStyle={{ fontFamily: 'Hanken Grotesk, sans-serif', fontSize: 12 }} />
                   <Line
                     type="monotone"
                     dataKey="shim"
@@ -98,19 +98,19 @@ export function PromTrends({ patient }: { patient: PatientFullRecord }) {
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                  <XAxis dataKey="milestone" tickLine={false} tick={{ fontSize: 11, fontFamily: 'Plus Jakarta Sans, sans-serif', fill: '#64748b' }} />
-                  <YAxis domain={[0, 35]} tickLine={false} tick={{ fontSize: 11, fontFamily: 'Plus Jakarta Sans, sans-serif', fill: '#64748b' }} />
+                  <XAxis dataKey="milestone" tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: '#64748b' }} />
+                  <YAxis domain={[0, 35]} tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: '#64748b' }} />
                   <Tooltip
-                    contentStyle={{ borderRadius: 8, fontSize: 12, fontFamily: 'Plus Jakarta Sans, sans-serif', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                    contentStyle={{ borderRadius: 8, fontSize: 12, fontFamily: 'Hanken Grotesk, sans-serif', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                   />
-                  <Legend wrapperStyle={{ fontFamily: 'Plus Jakarta Sans, sans-serif', fontSize: 12 }} />
+                  <Legend wrapperStyle={{ fontFamily: 'Hanken Grotesk, sans-serif', fontSize: 12 }} />
                   <Line
                     type="monotone"
                     dataKey="ipss"
                     name="IPSS Score (Lower is better)"
-                    stroke="#0d9488"
+                    stroke="#2563eb"
                     strokeWidth={3}
-                    dot={{ r: 5, fill: '#0d9488' }}
+                    dot={{ r: 5, fill: '#2563eb' }}
                     activeDot={{ r: 7 }}
                   />
                 </LineChart>
@@ -121,9 +121,9 @@ export function PromTrends({ patient }: { patient: PatientFullRecord }) {
       </div>
 
       {/* Longitudinal PSA Surveillance Curve */}
-      <Card className="shadow-sm border-cyan-100 dark:border-cyan-900/50">
+      <Card className="shadow-sm border-sky-100 dark:border-sky-900/50">
         <CardHeader className="p-5 pb-2">
-          <CardTitle className="text-sm font-bold text-cyan-950 dark:text-cyan-200">
+          <CardTitle className="text-sm font-bold text-sky-950 dark:text-sky-200">
             Longitudinal Serum PSA Surveillance (ng/mL)
           </CardTitle>
           <p className="text-xs text-slate-500">Biochemical recurrence threshold: PSA ≥ 0.20 ng/mL</p>
@@ -133,10 +133,10 @@ export function PromTrends({ patient }: { patient: PatientFullRecord }) {
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                <XAxis dataKey="milestone" tickLine={false} tick={{ fontSize: 11, fontFamily: 'Plus Jakarta Sans, sans-serif', fill: '#64748b' }} />
-                <YAxis tickLine={false} tick={{ fontSize: 11, fontFamily: 'Plus Jakarta Sans, sans-serif', fill: '#64748b' }} />
+                <XAxis dataKey="milestone" tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: '#64748b' }} />
+                <YAxis tickLine={false} tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: '#64748b' }} />
                 <Tooltip
-                  contentStyle={{ borderRadius: 8, fontSize: 12, fontFamily: 'Plus Jakarta Sans, sans-serif', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                  contentStyle={{ borderRadius: 8, fontSize: 12, fontFamily: 'Hanken Grotesk, sans-serif', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                 />
                 <Area
                   type="monotone"

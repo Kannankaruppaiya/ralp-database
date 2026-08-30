@@ -24,13 +24,13 @@ export default function PatientMatchingPage() {
       />
 
       {/* Matching Rules Info Banner */}
-      <div className="p-4 rounded-xl border border-teal-200 bg-teal-50/50 dark:border-teal-900/40 dark:bg-teal-950/20 text-xs text-teal-900 dark:text-teal-300 flex items-start gap-3">
-        <ShieldCheck className="h-5 w-5 text-teal-600 flex-shrink-0 mt-0.5" />
+      <div className="p-4 rounded-xl border border-blue-200 bg-blue-50/50 dark:border-blue-900/40 dark:bg-blue-950/20 text-xs text-blue-900 dark:text-blue-300 flex items-start gap-3">
+        <ShieldCheck className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
         <div>
-          <strong className="font-semibold block text-teal-950 dark:text-teal-200">
+          <strong className="font-semibold block text-blue-950 dark:text-blue-200">
             NHS Digital Safe Identity Matching Protocol
           </strong>
-          <p className="mt-0.5 text-teal-800/90 dark:text-teal-400">
+          <p className="mt-0.5 text-blue-800/90 dark:text-blue-400">
             Documents are deterministically mapped via 10-digit NHS numbers and Hospital MRNs. Per clinical governance, <strong>patient name alone is never permitted</strong> for high-confidence clinical record linking.
           </p>
         </div>
@@ -69,7 +69,7 @@ export default function PatientMatchingPage() {
                     </div>
                     <div className="flex justify-between py-1 border-b border-slate-200/60">
                       <span className="text-slate-500">NHS Number:</span>
-                      <strong className="font-mono text-teal-700 dark:text-teal-400">{job.matchedPatient?.nhsNumber || '456 789 0123'}</strong>
+                      <strong className="font-mono text-blue-700 dark:text-blue-400">{job.matchedPatient?.nhsNumber || '456 789 0123'}</strong>
                     </div>
                     <div className="flex justify-between py-1 border-b border-slate-200/60">
                       <span className="text-slate-500">Hospital Number (MRN):</span>
@@ -106,10 +106,10 @@ export default function PatientMatchingPage() {
 
                       <div className="flex items-center justify-between p-2 rounded-md bg-slate-50 text-slate-700 dark:bg-slate-800/40 dark:text-slate-300 border border-slate-200">
                         <span className="flex items-center gap-1.5 font-medium">
-                          <CheckCircle2 className="h-4 w-4 text-teal-600" />
+                          <CheckCircle2 className="h-4 w-4 text-blue-600" />
                           DOB & Surname Verification
                         </span>
-                        <strong className="font-mono text-teal-700">Verified</strong>
+                        <strong className="font-mono text-blue-700">Verified</strong>
                       </div>
                     </div>
 

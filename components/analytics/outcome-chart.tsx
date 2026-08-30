@@ -59,13 +59,13 @@ export function OutcomeChart() {
                 <XAxis
                   dataKey="surgeon"
                   tickLine={false}
-                  tick={{ fontSize: 12, fontFamily: 'Plus Jakarta Sans, sans-serif', fill: '#64748b' }}
+                  tick={{ fontSize: 12, fontFamily: 'Hanken Grotesk, sans-serif', fill: '#64748b' }}
                 />
                 <YAxis
                   domain={[0, 100]}
                   tickLine={false}
                   unit="%"
-                  tick={{ fontSize: 11, fontFamily: 'Plus Jakarta Sans, sans-serif', fill: '#64748b' }}
+                  tick={{ fontSize: 11, fontFamily: 'Hanken Grotesk, sans-serif', fill: '#64748b' }}
                 />
                 <Tooltip
                   contentStyle={{ fontSize: 12, borderRadius: 12, border: '1px solid #e2e8f0' }}
@@ -78,7 +78,7 @@ export function OutcomeChart() {
                   }}
                 />
                 <Legend wrapperStyle={{ fontSize: 11 }} />
-                <Bar dataKey="continenceRate" name="Pad-free continence" fill="#0d9488" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="continenceRate" name="Pad-free continence" fill="#2563eb" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="potencyRate" name="Potency (SHIM ≥ 17)" fill="#7c3aed" radius={[4, 4, 0, 0]} />
                 <Bar dataKey="marginPositiveRate" name="Positive margins" fill="#e11d48" radius={[4, 4, 0, 0]}>
                   {data.map((d) => (

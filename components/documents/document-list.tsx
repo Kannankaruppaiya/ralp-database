@@ -17,7 +17,7 @@ export function DocumentList({ documents }: { documents: ClinicalDocument[] }) {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-          <FileText className="h-4 w-4 text-teal-600" />
+          <FileText className="h-4 w-4 text-blue-600" />
           <span>Uploaded Clinical Notes & Letters</span>
         </h3>
         <Link href="/data-ingestion/upload">
@@ -83,7 +83,7 @@ export function DocumentList({ documents }: { documents: ClinicalDocument[] }) {
         <Dialog open={!!selectedDoc} onOpenChange={(open) => !open && setSelectedDoc(null)}>
           <DialogHeader>
             <DialogTitle className="text-base flex items-center gap-2">
-              <FileText className="h-4 w-4 text-teal-600" />
+              <FileText className="h-4 w-4 text-blue-600" />
               <span>{selectedDoc.title}</span>
             </DialogTitle>
           </DialogHeader>

@@ -12,7 +12,7 @@ export function AdminTopbar() {
       {/* Left side info */}
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="border-teal-300 bg-teal-50 text-teal-800 text-xs font-mono">
+          <Badge variant="outline" className="border-blue-300 bg-blue-50 text-blue-800 text-xs font-mono">
             ADMIN CONSOLE
           </Badge>
           <span className="text-xs text-slate-500 hidden sm:inline">

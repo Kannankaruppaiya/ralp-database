@@ -5,12 +5,12 @@ export default function PatientLoading() {
   return (
     <div className="max-w-2xl mx-auto space-y-6 animate-pulse p-4">
       {/* Patient Greeting Skeleton */}
-      <div className="p-6 rounded-2xl bg-teal-50/70 dark:bg-teal-950/20 border border-teal-200 dark:border-teal-900/40 flex items-center justify-between">
+      <div className="p-6 rounded-2xl bg-blue-50/70 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/40 flex items-center justify-between">
         <div className="space-y-2">
-          <div className="h-6 w-56 bg-teal-200/60 dark:bg-teal-900/40 rounded-lg" />
-          <div className="h-4 w-72 bg-teal-100/80 dark:bg-teal-900/30 rounded" />
+          <div className="h-6 w-56 bg-blue-200/60 dark:bg-blue-900/40 rounded-lg" />
+          <div className="h-4 w-72 bg-blue-100/80 dark:bg-blue-900/30 rounded" />
         </div>
-        <HeartPulse className="h-8 w-8 text-teal-600 dark:text-teal-400 opacity-60 animate-bounce" />
+        <HeartPulse className="h-8 w-8 text-blue-600 dark:text-blue-400 opacity-60 animate-bounce" />
       </div>
 
       {/* Patient Questionnaire Card Skeleton */}
@@ -26,7 +26,7 @@ export default function PatientLoading() {
         </div>
         <div className="flex justify-between pt-4">
           <div className="h-10 w-24 bg-slate-200 dark:bg-slate-800 rounded-lg" />
-          <div className="h-10 w-36 bg-teal-200 dark:bg-teal-900/50 rounded-lg" />
+          <div className="h-10 w-36 bg-blue-200 dark:bg-blue-900/50 rounded-lg" />
         </div>
       </div>
     </div>

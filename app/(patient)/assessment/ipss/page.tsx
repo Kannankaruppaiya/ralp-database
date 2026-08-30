@@ -27,7 +27,7 @@ export default function PatientIpssPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <span className="text-xs font-semibold text-teal-700 uppercase tracking-wider">Step 1 of 3</span>
+          <span className="text-xs font-semibold text-blue-700 uppercase tracking-wider">Step 1 of 3</span>
           <h1 className="text-2xl font-extrabold text-slate-900">Urinary Symptom Questionnaire (IPSS)</h1>
         </div>
         <Link href="/assessment">
@@ -49,7 +49,7 @@ export default function PatientIpssPage() {
         <Link href="/assessment">
           <Button variant="outline">Back</Button>
         </Link>
-        <Button onClick={handleNext} className="gap-2 bg-teal-600 hover:bg-teal-700 text-white">
+        <Button onClick={handleNext} className="gap-2 bg-blue-600 hover:bg-blue-700 text-white">
           <span>Continue to SHIM (Step 2)</span>
           <ArrowRight className="h-4 w-4" />
         </Button>

@@ -161,7 +161,7 @@ export default function ConflictsPage() {
                                 onClick={() => setChoices((c) => ({ ...c, [`${job.id}:${f.fieldKey}`]: key }))}
                                 className={`rounded-lg border p-3 text-left transition-colors ${
                                   chosen === key
-                                    ? 'border-teal-500 bg-teal-50 dark:bg-teal-950/40'
+                                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/40'
                                     : 'border-slate-200 hover:border-slate-300 dark:border-slate-800'
                                 }`}
                               >
@@ -187,7 +187,7 @@ export default function ConflictsPage() {
                 <div className="flex items-center justify-between gap-3 pt-1">
                   <Link
                     href={`/data-ingestion/extraction-review?jobId=${job.id}`}
-                    className="text-xs font-semibold text-teal-700 hover:underline"
+                    className="text-xs font-semibold text-blue-700 hover:underline"
                   >
                     View all extracted fields <ArrowRight className="inline h-3 w-3" />
                   </Link>

@@ -71,7 +71,7 @@ export default function PatientFollowUpSchedulePage() {
                     </p>
                     {fu.status === 'completed' && (
                       <div className="text-xs text-slate-600 mt-1">
-                        PSA: <strong className="text-teal-700">{fu.psa !== undefined ? `${fu.psa} ng/mL` : 'Undetectable (<0.01)'}</strong> • Continence: {fu.continence?.dayStatus || 'Dry'}
+                        PSA: <strong className="text-blue-700">{fu.psa !== undefined ? `${fu.psa} ng/mL` : 'Undetectable (<0.01)'}</strong> • Continence: {fu.continence?.dayStatus || 'Dry'}
                       </div>
                     )}
                   </div>
@@ -79,7 +79,7 @@ export default function PatientFollowUpSchedulePage() {
 
                 {fu.status !== 'completed' && (
                   <Link href="/assessment">
-                    <Button size="sm" variant="outline" className="gap-1.5 text-xs border-teal-300 text-teal-800 hover:bg-teal-50">
+                    <Button size="sm" variant="outline" className="gap-1.5 text-xs border-blue-300 text-blue-800 hover:bg-blue-50">
                       <span>Fill Questionnaire</span>
                       <ArrowRight className="h-3.5 w-3.5" />
                     </Button>

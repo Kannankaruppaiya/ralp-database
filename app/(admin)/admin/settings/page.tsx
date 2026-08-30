@@ -47,7 +47,7 @@ export default function AdminSettingsPage() {
         <Card className="border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <CardHeader className="p-5 pb-3 border-b">
             <CardTitle className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <Hospital className="h-4 w-4 text-teal-600" />
+              <Hospital className="h-4 w-4 text-blue-600" />
               <span>NHS Trust & Centre Details</span>
             </CardTitle>
           </CardHeader>
@@ -88,7 +88,7 @@ export default function AdminSettingsPage() {
         <Card className="border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <CardHeader className="p-5 pb-3 border-b">
             <CardTitle className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <Bell className="h-4 w-4 text-teal-600" />
+              <Bell className="h-4 w-4 text-blue-600" />
               <span>NHS Notify & PROMs Automation</span>
             </CardTitle>
           </CardHeader>
@@ -113,7 +113,7 @@ export default function AdminSettingsPage() {
                   type="checkbox"
                   checked={autoDispatchProms}
                   onChange={(e) => setAutoDispatchProms(e.target.checked)}
-                  className="mt-1 h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500"
+                  className="mt-1 h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                 />
                 <div>
                   <span className="text-xs font-semibold text-slate-900 dark:text-white block">

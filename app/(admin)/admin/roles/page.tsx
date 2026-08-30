@@ -26,7 +26,7 @@ export default function AdminRolesPage() {
           <Card key={roleName} className="border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
             <CardHeader className="p-4 pb-3 border-b flex flex-row items-center justify-between space-y-0">
               <CardTitle className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-teal-600" />
+                <ShieldCheck className="h-4 w-4 text-blue-600" />
                 <span>{roleName}</span>
               </CardTitle>
               <Badge variant="outline" className="text-[10px]">

@@ -228,15 +228,15 @@ export function BaselineCancerCard({
 
 export function PSACard({ psa, psaDate }: { psa?: number; psaDate?: string }) {
   return (
-    <div className="rounded-xl border border-cyan-100 bg-cyan-50/50 p-4 dark:border-cyan-900/40 dark:bg-cyan-950/20">
+    <div className="rounded-xl border border-sky-100 bg-sky-50/50 p-4 dark:border-sky-900/40 dark:bg-sky-950/20">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-cyan-800 dark:text-cyan-300">Pre-Op PSA</span>
-        <Dna className="h-4 w-4 text-cyan-600" />
+        <span className="text-xs font-semibold text-sky-800 dark:text-sky-300">Pre-Op PSA</span>
+        <Dna className="h-4 w-4 text-sky-600" />
       </div>
-      <div className="text-2xl font-bold text-cyan-950 dark:text-cyan-100 mt-1">
+      <div className="text-2xl font-bold text-sky-950 dark:text-sky-100 mt-1">
         {formatPsa(psa)}
       </div>
-      {psaDate && <div className="text-[11px] text-cyan-700 mt-1">{formatDate(psaDate)}</div>}
+      {psaDate && <div className="text-[11px] text-sky-700 mt-1">{formatDate(psaDate)}</div>}
     </div>
   );
 }

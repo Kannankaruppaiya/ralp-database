@@ -41,7 +41,7 @@ export function ClinicSummary({ patient }: { patient: PatientFullRecord }) {
         <div className="flex items-start justify-between border-b-2 border-slate-900 pb-6 mb-6">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900 text-white">
-              <HeartPulse className="h-7 w-7 text-teal-400" />
+              <HeartPulse className="h-7 w-7 text-blue-400" />
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight uppercase text-slate-900">

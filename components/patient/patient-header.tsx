@@ -20,7 +20,7 @@ export function PatientHeader({ patient }: { patient: PatientFullRecord }) {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         {/* Patient Identity */}
         <div className="flex items-start gap-4">
-          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-teal-50 text-teal-700 font-bold text-xl border border-teal-200 dark:bg-teal-950 dark:text-teal-300 dark:border-teal-800">
+          <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-50 text-blue-700 font-bold text-xl border border-blue-200 dark:bg-blue-950 dark:text-blue-300 dark:border-blue-800">
             {patient.firstName[0]}{patient.surname[0]}
           </div>
           <div>
@@ -50,7 +50,7 @@ export function PatientHeader({ patient }: { patient: PatientFullRecord }) {
                 <Calendar className="h-3.5 w-3.5 text-slate-400" />
                 DOB: {formatDate(patient.dateOfBirth)} ({patient.age || '—'} yrs)
               </span>
-              <span className="flex items-center gap-1.5 text-teal-700 dark:text-teal-400 font-medium">
+              <span className="flex items-center gap-1.5 text-blue-700 dark:text-blue-400 font-medium">
                 <Stethoscope className="h-3.5 w-3.5" />
                 Lead Surgeon: <strong>{patient.primarySurgeon}</strong>
               </span>

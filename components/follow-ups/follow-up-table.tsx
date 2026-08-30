@@ -113,9 +113,9 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
   const getSortIcon = (field: SortField) => {
     if (sortField !== field) return <ArrowUpDown className="h-3 w-3 text-slate-400" />;
     return sortOrder === 'asc' ? (
-      <ArrowUp className="h-3 w-3 text-teal-600" />
+      <ArrowUp className="h-3 w-3 text-blue-600" />
     ) : (
-      <ArrowDown className="h-3 w-3 text-teal-600" />
+      <ArrowDown className="h-3 w-3 text-blue-600" />
     );
   };
 
@@ -200,7 +200,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
             <TableHeader className="sticky top-0 z-10 bg-slate-50/95 backdrop-blur-sm dark:bg-slate-900/95 shadow-sm">
               <TableRow className="border-b border-slate-200 dark:border-slate-800">
                 <TableHead
-                  className="cursor-pointer select-none hover:text-teal-600 transition-colors"
+                  className="cursor-pointer select-none hover:text-blue-600 transition-colors"
                   onClick={() => toggleSort('patient')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -209,7 +209,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
                   </div>
                 </TableHead>
                 <TableHead
-                  className="cursor-pointer select-none hover:text-teal-600 transition-colors"
+                  className="cursor-pointer select-none hover:text-blue-600 transition-colors"
                   onClick={() => toggleSort('milestone')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -218,7 +218,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
                   </div>
                 </TableHead>
                 <TableHead
-                  className="cursor-pointer select-none hover:text-teal-600 transition-colors"
+                  className="cursor-pointer select-none hover:text-blue-600 transition-colors"
                   onClick={() => toggleSort('surgeon')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -227,7 +227,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
                   </div>
                 </TableHead>
                 <TableHead
-                  className="cursor-pointer select-none hover:text-teal-600 transition-colors"
+                  className="cursor-pointer select-none hover:text-blue-600 transition-colors"
                   onClick={() => toggleSort('dueDate')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -236,7 +236,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
                   </div>
                 </TableHead>
                 <TableHead
-                  className="cursor-pointer select-none hover:text-teal-600 transition-colors"
+                  className="cursor-pointer select-none hover:text-blue-600 transition-colors"
                   onClick={() => toggleSort('psa')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -246,7 +246,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
                 </TableHead>
                 <TableHead>PROM Checklist</TableHead>
                 <TableHead
-                  className="cursor-pointer select-none hover:text-teal-600 transition-colors"
+                  className="cursor-pointer select-none hover:text-blue-600 transition-colors"
                   onClick={() => toggleSort('status')}
                 >
                   <div className="flex items-center gap-1.5">
@@ -276,7 +276,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
                   return (
                     <TableRow key={fu.id} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors">
                       <TableCell className="font-semibold text-slate-900 dark:text-slate-100 py-3">
-                        <Link href={`/patients/${fu.patient.id}`} className="hover:text-teal-600 transition-colors">
+                        <Link href={`/patients/${fu.patient.id}`} className="hover:text-blue-600 transition-colors">
                           {fu.patient.firstName} {fu.patient.surname}
                         </Link>
                         <span className="block text-[11px] font-normal text-slate-400 font-mono mt-0.5">
@@ -297,7 +297,7 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
                       </TableCell>
                       <TableCell className="text-xs font-mono font-medium">
                         {hasPsa ? (
-                          <span className={fu.biochemicalRecurrence ? 'text-red-600 font-bold' : 'text-teal-700 dark:text-teal-400 font-bold'}>
+                          <span className={fu.biochemicalRecurrence ? 'text-red-600 font-bold' : 'text-blue-700 dark:text-blue-400 font-bold'}>
                             {formatPsa(fu.psa)} {fu.biochemicalRecurrence && '⚠️'}
                           </span>
                         ) : (

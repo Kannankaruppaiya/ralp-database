@@ -20,7 +20,6 @@ import {
   Building2,
   HeartPulse,
   ArrowUpRight,
-  UserCheck,
   Terminal,
   ShieldAlert,
 } from 'lucide-react';
@@ -31,7 +30,7 @@ export default function AdminLoginPage() {
   const router = useRouter();
   const { toast } = useToast();
 
-  const [adminEmail, setAdminEmail] = useState('admin.ralp@nhs.net');
+  const [adminEmail, setAdminEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
@@ -63,10 +62,6 @@ export default function AdminLoginPage() {
         variant: 'destructive',
       });
     }
-  };
-
-  const handleAutofillAdmin = (type: 'admin' | 'caldicott') => {
-    setAdminEmail(type === 'admin' ? 'admin.ralp@nhs.net' : 'm.roberts@nhs.net');
   };
 
   return (
@@ -110,7 +105,7 @@ export default function AdminLoginPage() {
 
           <h1 className="text-4xl xl:text-5xl font-black text-white tracking-tight leading-[1.15]">
             Information Governance. <br />
-            <span className="bg-gradient-to-r from-indigo-300 via-blue-300 to-cyan-200 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-indigo-300 via-blue-300 to-sky-200 bg-clip-text text-transparent">
               Caldicott 256-Bit Audit Security.
             </span>
           </h1>
@@ -165,7 +160,7 @@ export default function AdminLoginPage() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-widest text-indigo-400">Admin Authentication</span>
-              <Link href="/login" className="text-xs text-teal-400 hover:text-teal-300 transition-colors flex items-center gap-1">
+              <Link href="/login" className="text-xs text-blue-400 hover:text-blue-300 transition-colors flex items-center gap-1">
                 <span>Doctor Login</span>
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
@@ -187,7 +182,7 @@ export default function AdminLoginPage() {
                       type="email"
                       value={adminEmail}
                       onChange={(e) => setAdminEmail(e.target.value)}
-                      placeholder="e.g. admin.ralp@nhs.net"
+                      placeholder="admin@nhs.net"
                       className="pl-10 bg-slate-950 border-slate-800 text-xs text-white h-11 rounded-xl focus:border-indigo-500"
                       required
                     />
@@ -214,29 +209,6 @@ export default function AdminLoginPage() {
                     </button>
                   </div>
                 </FormField>
-
-                <div className="pt-1">
-                  <div className="text-[11px] text-slate-500 mb-1.5 flex items-center gap-1">
-                    <UserCheck className="h-3 w-3 text-indigo-400" />
-                    <span>Quick Fill Admin Credentials:</span>
-                  </div>
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => handleAutofillAdmin('admin')}
-                      className="px-2.5 py-1 text-[10px] font-semibold rounded-lg bg-slate-800/80 hover:bg-indigo-950 hover:border-indigo-500/50 border border-slate-700 text-slate-300 transition-colors"
-                    >
-                      System Admin (Alex Ward)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleAutofillAdmin('caldicott')}
-                      className="px-2.5 py-1 text-[10px] font-semibold rounded-lg bg-slate-800/80 hover:bg-indigo-950 hover:border-indigo-500/50 border border-slate-700 text-slate-300 transition-colors"
-                    >
-                      Caldicott Lead (Dr. Roberts)
-                    </button>
-                  </div>
-                </div>
 
                 <Button
                   type="submit"

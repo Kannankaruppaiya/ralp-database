@@ -39,20 +39,20 @@ export function IPSSQuestionnaire({ initialAnswers, onComplete, isReadOnly = fal
   return (
     <div className="space-y-6">
       {/* Live Scoring Banner */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl border border-teal-200 bg-teal-50/60 dark:border-teal-900 dark:bg-teal-950/30">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 p-4 rounded-xl border border-blue-200 bg-blue-50/60 dark:border-blue-900 dark:bg-blue-950/30">
         <div>
-          <h3 className="text-sm font-bold text-teal-950 dark:text-teal-200 flex items-center gap-2">
-            <Activity className="h-4 w-4 text-teal-600" />
+          <h3 className="text-sm font-bold text-blue-950 dark:text-blue-200 flex items-center gap-2">
+            <Activity className="h-4 w-4 text-blue-600" />
             International Prostate Symptom Score (IPSS)
           </h3>
-          <p className="text-xs text-teal-800/80 dark:text-teal-400 mt-0.5">
+          <p className="text-xs text-blue-800/80 dark:text-blue-400 mt-0.5">
             Urinary function assessment (Past 1 month)
           </p>
         </div>
         <div className="flex items-center gap-3">
           <div className="text-right">
             <span className="text-xs text-slate-500 block">Total Score:</span>
-            <span className="text-xl font-extrabold text-teal-900 dark:text-teal-100 font-mono">
+            <span className="text-xl font-extrabold text-blue-900 dark:text-blue-100 font-mono">
               {score.totalScore} / 35
             </span>
           </div>
@@ -90,7 +90,7 @@ export function IPSSQuestionnaire({ initialAnswers, onComplete, isReadOnly = fal
                         className={cn(
                           'flex flex-col items-center justify-center p-2.5 rounded-lg border text-center transition-all',
                           isSelected
-                            ? 'border-teal-600 bg-teal-600 text-white font-bold shadow-sm ring-2 ring-teal-600/30'
+                            ? 'border-blue-600 bg-blue-600 text-white font-bold shadow-sm ring-2 ring-blue-600/30'
                             : 'border-slate-200 bg-slate-50/60 text-slate-700 hover:bg-slate-100 hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300'
                         )}
                       >
@@ -105,9 +105,9 @@ export function IPSSQuestionnaire({ initialAnswers, onComplete, isReadOnly = fal
         })}
 
         {/* Question 8: Quality of life */}
-        <Card className="border-cyan-200 bg-cyan-50/30 dark:border-cyan-900 dark:bg-cyan-950/10 shadow-sm">
+        <Card className="border-sky-200 bg-sky-50/30 dark:border-sky-900 dark:bg-sky-950/10 shadow-sm">
           <CardHeader className="p-4 pb-2">
-            <CardTitle className="text-sm font-semibold text-cyan-950 dark:text-cyan-200">
+            <CardTitle className="text-sm font-semibold text-sky-950 dark:text-sky-200">
               8. Quality of Life Due to Urinary Symptoms (Bother Score)
             </CardTitle>
             <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
@@ -127,7 +127,7 @@ export function IPSSQuestionnaire({ initialAnswers, onComplete, isReadOnly = fal
                     className={cn(
                       'flex flex-col items-center justify-center p-2.5 rounded-lg border text-center transition-all',
                       isSelected
-                        ? 'border-cyan-600 bg-cyan-600 text-white font-bold shadow-sm ring-2 ring-cyan-600/30'
+                        ? 'border-sky-600 bg-sky-600 text-white font-bold shadow-sm ring-2 ring-sky-600/30'
                         : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300'
                     )}
                   >

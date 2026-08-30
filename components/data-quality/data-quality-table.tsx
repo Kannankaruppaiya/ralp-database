@@ -28,7 +28,7 @@ export function DataQualityTable({ patients }: { patients: PatientFullRecord[] }
           {patients.map((p) => (
             <TableRow key={p.id}>
               <TableCell className="font-semibold text-xs text-slate-900 dark:text-slate-100">
-                <Link href={`/patients/${p.id}`} className="hover:text-teal-600">
+                <Link href={`/patients/${p.id}`} className="hover:text-blue-600">
                   {p.firstName} {p.surname}
                 </Link>
                 <span className="block text-xs font-normal text-slate-400 font-mono">

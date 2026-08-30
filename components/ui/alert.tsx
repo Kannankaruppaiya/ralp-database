@@ -13,7 +13,7 @@ const alertVariants = cva(
         warning:
           'border-amber-500/50 text-amber-900 bg-amber-50 dark:bg-amber-950/20 dark:text-amber-200 [&>svg]:text-amber-600',
         info:
-          'border-teal-500/50 text-teal-900 bg-teal-50 dark:bg-teal-950/20 dark:text-teal-200 [&>svg]:text-teal-600',
+          'border-blue-500/50 text-blue-900 bg-blue-50 dark:bg-blue-950/20 dark:text-blue-200 [&>svg]:text-blue-600',
         success:
           'border-emerald-500/50 text-emerald-900 bg-emerald-50 dark:bg-emerald-950/20 dark:text-emerald-200 [&>svg]:text-emerald-600',
       },

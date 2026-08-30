@@ -10,7 +10,7 @@ export default function VerifyAuthPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
       <div className="max-w-md w-full text-center space-y-6">
-        <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-teal-100 text-teal-600 shadow-sm">
+        <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-blue-100 text-blue-600 shadow-sm">
           <ShieldCheck className="h-9 w-9" />
         </div>
         <div className="space-y-2">

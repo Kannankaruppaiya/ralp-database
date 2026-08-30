@@ -142,7 +142,7 @@ export default function AdminUsersPage() {
                 <TableCell className="text-xs">
                   <Badge variant="outline">{u.role}</Badge>
                 </TableCell>
-                <TableCell className="text-xs font-mono font-bold text-teal-700 dark:text-teal-400">
+                <TableCell className="text-xs font-mono font-bold text-blue-700 dark:text-blue-400">
                   {u.surgeonCode}
                 </TableCell>
                 <TableCell className="text-xs font-mono text-slate-500">
@@ -162,7 +162,7 @@ export default function AdminUsersPage() {
         <Dialog open={isInviteOpen} onOpenChange={setIsInviteOpen}>
           <DialogHeader>
             <DialogTitle className="text-base flex items-center gap-2">
-              <Mail className="h-4 w-4 text-teal-600" />
+              <Mail className="h-4 w-4 text-blue-600" />
               <span>Invite New Clinical Staff Member</span>
             </DialogTitle>
           </DialogHeader>

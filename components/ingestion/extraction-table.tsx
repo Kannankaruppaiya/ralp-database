@@ -74,10 +74,10 @@ export function ExtractionTable({ job }: { job: IngestionJob }) {
     <div className="space-y-6">
       {/* Patient Match Card */}
       {job.matchedPatient && (
-        <Card className="border-teal-200 bg-teal-50/40 dark:border-teal-900 dark:bg-teal-950/20">
+        <Card className="border-blue-200 bg-blue-50/40 dark:border-blue-900 dark:bg-blue-950/20">
           <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-600 text-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white">
                 <UserCheck className="h-5 w-5" />
               </div>
               <div>
@@ -166,7 +166,7 @@ export function ExtractionTable({ job }: { job: IngestionJob }) {
                 <TableCell className="text-xs">
                   <Badge variant="outline">{field.category}</Badge>
                 </TableCell>
-                <TableCell className="text-xs font-mono font-bold text-teal-700 dark:text-teal-400">
+                <TableCell className="text-xs font-mono font-bold text-blue-700 dark:text-blue-400">
                   {String(field.normalizedValue)}
                 </TableCell>
                 <TableCell className="text-xs text-slate-500 max-w-xs truncate italic">

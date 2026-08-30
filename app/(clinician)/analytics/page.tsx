@@ -54,7 +54,7 @@ export default function AnalyticsHubPage() {
       )}
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-6">
-        <Stat label="Patients" value={isLoading ? null : summary?.patients ?? null} icon={Users} tone="border-l-teal-600" />
+        <Stat label="Patients" value={isLoading ? null : summary?.patients ?? null} icon={Users} tone="border-l-blue-600" />
         <Stat label="Operations" value={isLoading ? null : summary?.operations ?? null} icon={Scissors} tone="border-l-indigo-600" />
         <Stat label="Assessments" value={isLoading ? null : summary?.completedFollowUps ?? null} icon={CheckCircle2} tone="border-l-emerald-600" />
         <Stat label="Overdue" value={isLoading ? null : summary?.overdueFollowUps ?? null} icon={AlertCircle} tone="border-l-amber-600" />

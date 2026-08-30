@@ -78,10 +78,10 @@ export default function AdminDataQualityPage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="border-l-4 border-l-teal-600 shadow-sm">
+        <Card className="border-l-4 border-l-blue-600 shadow-sm">
           <CardHeader className="p-4 pb-1 flex flex-row items-center justify-between space-y-0">
             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">NPCA Compliant</span>
-            <CheckCircle2 className="h-4 w-4 text-teal-600" />
+            <CheckCircle2 className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent className="p-4 pt-1">
             <div className="text-2xl font-bold text-slate-900 dark:text-white">
@@ -202,13 +202,13 @@ export default function AdminDataQualityPage() {
                 paginatedPatients.map((patient) => (
                   <TableRow key={patient.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors">
                     <TableCell className="font-semibold text-xs text-slate-900 dark:text-slate-100 py-3">
-                      <Link href={`/patients/${patient.id}`} className="hover:text-teal-600 transition-colors font-bold">
+                      <Link href={`/patients/${patient.id}`} className="hover:text-blue-600 transition-colors font-bold">
                         {patient.firstName} {patient.surname}
                       </Link>
                       <div className="text-[10px] font-mono text-slate-400 mt-0.5">NHS: {patient.nhsNumber} • MRN: {patient.hospitalNumber}</div>
                     </TableCell>
 
-                    <TableCell className="text-xs font-mono font-bold text-teal-700 dark:text-teal-400">
+                    <TableCell className="text-xs font-mono font-bold text-blue-700 dark:text-blue-400">
                       {patient.primarySurgeon}
                     </TableCell>
 
@@ -234,7 +234,7 @@ export default function AdminDataQualityPage() {
                       <div className="flex items-center gap-2">
                         <div className="w-16 bg-slate-100 rounded-full h-1.5 dark:bg-slate-800">
                           <div
-                            className="bg-teal-600 h-1.5 rounded-full"
+                            className="bg-blue-600 h-1.5 rounded-full"
                             style={{ width: `${patient.completeness.score}%` }}
                           />
                         </div>

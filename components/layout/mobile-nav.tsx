@@ -17,7 +17,7 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
       <div className="relative flex w-4/5 max-w-xs flex-1 flex-col bg-white p-6 dark:bg-slate-900">
         <div className="flex items-center justify-between pb-6 border-b">
           <div className="flex items-center gap-2">
-            <HeartPulse className="h-6 w-6 text-teal-600" />
+            <HeartPulse className="h-6 w-6 text-blue-600" />
             <span className="font-bold text-slate-900 dark:text-white">RALP Registry</span>
           </div>
           <button onClick={onClose} className="p-1 text-slate-500 hover:text-slate-900">
@@ -35,7 +35,7 @@ export function MobileNav({ open, onClose }: { open: boolean; onClose: () => voi
                 className={cn(
                   'flex items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-colors',
                   isActive
-                    ? 'bg-teal-50 text-teal-900 dark:bg-teal-950 font-semibold'
+                    ? 'bg-blue-50 text-blue-900 dark:bg-blue-950 font-semibold'
                     : 'text-slate-600 hover:bg-slate-50'
                 )}
               >
