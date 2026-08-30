@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
   Users,
@@ -14,12 +14,19 @@ import {
   ShieldCheck,
   Activity,
   HeartPulse,
-  ChevronRight,
   ExternalLink,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { CLINICIAN_NAVIGATION } from '@/config/navigation';
 import { Badge } from '@/components/ui/badge';
+import { useSession, signOut } from '@/lib/auth';
+
+/** First letters of the first two words, e.g. "Mr. V. Kannan" -> "VK". */
+function initialsFrom(name: string): string {
+  const parts = name.replace(/\b(mr|mrs|ms|dr|miss|prof|sister)\.?\b/gi, '').trim().split(/\s+/).filter(Boolean);
+  const letters = parts.map((p) => p[0]).join('');
+  return (letters.slice(0, 2) || name.slice(0, 2)).toUpperCase();
+}
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   LayoutDashboard: <LayoutDashboard className="h-4 w-4" />,
@@ -34,6 +41,13 @@ const ICON_MAP: Record<string, React.ReactNode> = {
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user } = useSession();
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push('/login');
+  };
 
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950 md:flex">
@@ -121,7 +135,7 @@ export function Sidebar() {
               <ShieldCheck className="h-4 w-4 text-indigo-600" />
               <span>Admin Portal (Separate)</span>
             </div>
-            <Badge variant="outline" className="border-indigo-300 text-indigo-700 text-[9px] font-mono">
+            <Badge variant="outline" className="border-indigo-300 text-indigo-700 dark:border-indigo-800 dark:text-indigo-300 text-[9px] font-mono">
               RBAC
             </Badge>
           </div>
@@ -139,23 +153,30 @@ export function Sidebar() {
 
       {/* User Session Footer */}
       <div className="border-t border-slate-200 p-3.5 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2.5 overflow-hidden">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600 font-bold text-xs text-white shadow-sm">
-              VK
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-600 font-bold text-xs text-white shadow-sm">
+              {user ? initialsFrom(user.name) : '··'}
             </div>
             <div className="flex-1 overflow-hidden">
-              <p className="truncate text-xs font-bold text-slate-900 dark:text-slate-100">Mr. V. Kannan</p>
-              <p className="truncate text-[10px] text-slate-500 font-medium">Consultant Surgeon (VK)</p>
+              <p className="truncate text-xs font-bold text-slate-900 dark:text-slate-100">
+                {user ? user.name : 'Signed out'}
+              </p>
+              <p className="truncate text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+                {user
+                  ? `${user.role}${user.surgeonCode ? ` (${user.surgeonCode})` : ''}`
+                  : 'No active session'}
+              </p>
             </div>
           </div>
-          <Link
-            href="/login"
-            className="text-[11px] font-semibold text-blue-600 hover:text-blue-800 dark:text-blue-400 p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-colors"
-            title="Switch User / Sign Out"
+          <button
+            type="button"
+            onClick={handleSignOut}
+            className="shrink-0 text-[11px] font-semibold text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            title="Sign out"
           >
-            Switch
-          </Link>
+            Sign out
+          </button>
         </div>
       </div>
     </aside>
