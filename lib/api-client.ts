@@ -120,7 +120,11 @@ export const db = {
       .eq('id', id)
       .maybeSingle();
     if (error) throw new Error(error.message);
-    return data ? toPatient(data) : null;
+    if (!data) return null;
+    // Caldicott Principle 7: record who opened a clinical record. A SELECT cannot
+    // fire a database trigger, so this read-access entry has to be written here.
+    await db.audit('PATIENT_VIEWED', id);
+    return toPatient(data);
   },
 
   async createPatient(d: Partial<PatientDemographics>): Promise<PatientFullRecord> {
@@ -143,7 +147,9 @@ export const db = {
         .select(FULL_PATIENT)
         .single()
     );
-    await db.audit('PATIENT_CREATED', row.id, `Registered ${d.firstName} ${d.surname}`);
+    // PATIENTS_INSERT is now written by the audit_patient_change() trigger
+    // (0009), so the record cannot be created without a trail even off a direct
+    // PostgREST call — no redundant client-side audit needed here.
     return toPatient(row);
   },
 
@@ -162,7 +168,7 @@ export const db = {
 
     const { error } = await supabase().from('patients').update(patch).eq('id', id);
     if (error) throw new Error(error.message);
-    await db.audit('PATIENT_UPDATED', id, 'Demographics amended');
+    // PATIENTS_UPDATE is written by the audit_patient_change() trigger (0009).
   },
 
   // ------------------------------------------------------------- clinical sections
@@ -380,6 +386,10 @@ export const db = {
       p_patient: patientId ?? null,
       p_details: details ?? null,
     });
-    if (error) console.warn('audit write failed:', error.message);
+    // A failed audit write on a sensitive action is a governance event in its own
+    // right — surface it as an error, not a swallowed warning. Mutation trails are
+    // additionally guaranteed by database triggers (0002, 0009); this call covers
+    // the read/export/session actions no trigger can see.
+    if (error) console.error('audit write failed:', action, error.message);
   },
 };
