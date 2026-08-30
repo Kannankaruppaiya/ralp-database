@@ -25,7 +25,7 @@ export default function PatientIncontinencePage() {
       <div className="flex items-center justify-between">
         <div>
           <span className="text-xs font-semibold text-blue-700 uppercase tracking-wider">Step 3 of 3</span>
-          <h1 className="text-2xl font-extrabold text-slate-900">Pad Usage & Continence Assessment</h1>
+          <h1 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Pad Usage & Continence Assessment</h1>
         </div>
         <Link href="/assessment/shim">
           <Button variant="ghost" size="sm" className="gap-1 text-xs">

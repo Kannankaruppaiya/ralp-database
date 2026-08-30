@@ -27,7 +27,7 @@ export default function AssessmentSubmittedPage() {
       </div>
 
       <div className="space-y-2">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100">
           Assessment Submitted Successfully!
         </h1>
         <p className="text-xs text-slate-600 max-w-md mx-auto">
@@ -35,9 +35,9 @@ export default function AssessmentSubmittedPage() {
         </p>
       </div>
 
-      <Card className="shadow-sm border-blue-200 bg-blue-50/40 text-left">
+      <Card className="shadow-sm border-blue-200 dark:border-blue-900 bg-blue-50/40 dark:bg-blue-950/20 text-left">
         <CardHeader className="p-4 pb-2">
-          <CardTitle className="text-xs font-bold text-blue-900 uppercase tracking-wider flex items-center gap-2">
+          <CardTitle className="text-xs font-bold text-blue-900 dark:text-blue-300 uppercase tracking-wider flex items-center gap-2">
             <HeartPulse className="h-4 w-4 text-blue-600" />
             Personalized Post-Operative Guidance
           </CardTitle>

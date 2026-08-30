@@ -33,7 +33,7 @@ export default function AssessmentHubPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Post-Operative Outcome Questionnaires</h1>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Post-Operative Outcome Questionnaires</h1>
           <p className="text-xs text-slate-500 mt-1">
             Questionnaires for <strong>{patient.firstName} {patient.surname}</strong> (Surgeon: {patient.primarySurgeon}).
           </p>
@@ -45,7 +45,7 @@ export default function AssessmentHubPage() {
 
       <div className="space-y-4">
         {/* IPSS Card */}
-        <Card className="shadow-sm hover:border-blue-500 transition-colors bg-white">
+        <Card className="shadow-sm hover:border-blue-500 transition-colors bg-white dark:bg-slate-900">
           <CardContent className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-start gap-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-700 flex-shrink-0">
@@ -53,7 +53,7 @@ export default function AssessmentHubPage() {
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="font-bold text-base text-slate-900">International Prostate Symptom Score (IPSS)</h3>
+                  <h3 className="font-bold text-base text-slate-900 dark:text-slate-100">International Prostate Symptom Score (IPSS)</h3>
                   <Badge variant="info">Urinary Stream</Badge>
                   {hasIpss && (
                     <Badge variant="success" className="text-[10px]">
@@ -76,7 +76,7 @@ export default function AssessmentHubPage() {
         </Card>
 
         {/* SHIM Card */}
-        <Card className="shadow-sm hover:border-purple-500 transition-colors bg-white">
+        <Card className="shadow-sm hover:border-purple-500 transition-colors bg-white dark:bg-slate-900">
           <CardContent className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-start gap-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-100 text-purple-700 flex-shrink-0">
@@ -84,7 +84,7 @@ export default function AssessmentHubPage() {
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="font-bold text-base text-slate-900">Sexual Health Inventory for Men (SHIM / IIEF-5)</h3>
+                  <h3 className="font-bold text-base text-slate-900 dark:text-slate-100">Sexual Health Inventory for Men (SHIM / IIEF-5)</h3>
                   <Badge variant="purple">Potency</Badge>
                   {hasShim && (
                     <Badge variant="success" className="text-[10px]">
@@ -107,7 +107,7 @@ export default function AssessmentHubPage() {
         </Card>
 
         {/* Incontinence Card */}
-        <Card className="shadow-sm hover:border-blue-500 transition-colors bg-white">
+        <Card className="shadow-sm hover:border-blue-500 transition-colors bg-white dark:bg-slate-900">
           <CardContent className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-start gap-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-700 flex-shrink-0">
@@ -115,7 +115,7 @@ export default function AssessmentHubPage() {
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="font-bold text-base text-slate-900">24-Hour Pad Usage & Continence Log</h3>
+                  <h3 className="font-bold text-base text-slate-900 dark:text-slate-100">24-Hour Pad Usage & Continence Log</h3>
                   <Badge variant="outline">Continence</Badge>
                   {hasIncontinence && (
                     <Badge variant="success" className="text-[10px]">

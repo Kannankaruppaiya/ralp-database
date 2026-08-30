@@ -128,7 +128,7 @@ export function IPSSQuestionnaire({ initialAnswers, onComplete, isReadOnly = fal
                       'flex flex-col items-center justify-center p-2.5 rounded-lg border text-center transition-all',
                       isSelected
                         ? 'border-sky-600 bg-sky-600 text-white font-bold shadow-sm ring-2 ring-sky-600/30'
-                        : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300'
+                        : 'border-slate-200 bg-white dark:bg-slate-900 text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300'
                     )}
                   >
                     <span className="text-xs leading-tight">{opt.label}</span>

@@ -65,16 +65,16 @@ export default function AssessmentReviewPage() {
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
       <div>
-        <h1 className="text-2xl font-extrabold text-slate-900">Review Your Assessment Answers</h1>
+        <h1 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Review Your Assessment Answers</h1>
         <p className="text-xs text-slate-500 mt-1">
           Reviewing responses for <strong>{patient.firstName} {patient.surname}</strong> (NHS: {patient.nhsNumber}) before transmitting to your surgical care team.
         </p>
       </div>
 
       <div className="space-y-4">
-        <Card className="shadow-sm border-blue-200 bg-white">
+        <Card className="shadow-sm border-blue-200 bg-white dark:bg-slate-900">
           <CardHeader className="p-4 pb-2">
-            <CardTitle className="text-sm font-bold text-blue-900 flex items-center gap-2">
+            <CardTitle className="text-sm font-bold text-blue-900 dark:text-blue-300 flex items-center gap-2">
               <Activity className="h-4 w-4 text-blue-600" />
               <span>1. Urinary Symptoms (IPSS)</span>
             </CardTitle>
@@ -97,9 +97,9 @@ export default function AssessmentReviewPage() {
           </CardContent>
         </Card>
 
-        <Card className="shadow-sm border-purple-200 bg-white">
+        <Card className="shadow-sm border-purple-200 bg-white dark:bg-slate-900">
           <CardHeader className="p-4 pb-2">
-            <CardTitle className="text-sm font-bold text-purple-900 flex items-center gap-2">
+            <CardTitle className="text-sm font-bold text-purple-900 dark:text-purple-300 flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-purple-600" />
               <span>2. Erectile Health (SHIM)</span>
             </CardTitle>
@@ -116,9 +116,9 @@ export default function AssessmentReviewPage() {
           </CardContent>
         </Card>
 
-        <Card className="shadow-sm border-blue-200 bg-white">
+        <Card className="shadow-sm border-blue-200 bg-white dark:bg-slate-900">
           <CardHeader className="p-4 pb-2">
-            <CardTitle className="text-sm font-bold text-blue-900 flex items-center gap-2">
+            <CardTitle className="text-sm font-bold text-blue-900 dark:text-blue-300 flex items-center gap-2">
               <Droplet className="h-4 w-4 text-blue-600" />
               <span>3. Pad Usage & Continence</span>
             </CardTitle>
@@ -138,7 +138,7 @@ export default function AssessmentReviewPage() {
         </Card>
       </div>
 
-      <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-emerald-900 flex items-start gap-3">
+      <div className="p-4 bg-emerald-50 dark:bg-emerald-950/40 rounded-xl border border-emerald-200 dark:border-emerald-900 text-xs text-emerald-900 dark:text-emerald-300 flex items-start gap-3">
         <ShieldCheck className="h-5 w-5 text-emerald-700 flex-shrink-0 mt-0.5" />
         <div>
           <strong className="block">Data Security and Direct Clinical Sync</strong>

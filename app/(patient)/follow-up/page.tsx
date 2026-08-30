@@ -30,7 +30,7 @@ export default function PatientFollowUpSchedulePage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Your 3-Year Follow-up Care Pathway</h1>
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100">Your 3-Year Follow-up Care Pathway</h1>
           <p className="text-xs text-slate-500 mt-1">
             Personalized recovery milestone schedule for <strong>{patient.firstName} {patient.surname}</strong> (Surgeon: {patient.primarySurgeon}).
           </p>
@@ -49,7 +49,7 @@ export default function PatientFollowUpSchedulePage() {
           </Card>
         ) : (
           patient?.followUps?.map((fu) => (
-            <Card key={fu.id} className="shadow-sm bg-white">
+            <Card key={fu.id} className="shadow-sm bg-white dark:bg-slate-900">
               <CardContent className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-start gap-4">
                   <div className={`flex h-10 w-10 items-center justify-center rounded-xl font-bold text-sm ${
@@ -59,7 +59,7 @@ export default function PatientFollowUpSchedulePage() {
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <h4 className="font-bold text-sm text-slate-900">
+                      <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">
                         {fu.targetMonths}-Month Milestone Review
                       </h4>
                       <Badge variant={fu.status === 'completed' ? 'success' : 'warning'} className="text-[10px]">

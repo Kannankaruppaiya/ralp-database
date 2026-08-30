@@ -28,7 +28,7 @@ export default function PatientShimPage() {
       <div className="flex items-center justify-between">
         <div>
           <span className="text-xs font-semibold text-purple-700 uppercase tracking-wider">Step 2 of 3</span>
-          <h1 className="text-2xl font-extrabold text-slate-900">Erectile Function Recovery (SHIM / IIEF-5)</h1>
+          <h1 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100">Erectile Function Recovery (SHIM / IIEF-5)</h1>
         </div>
         <Link href="/assessment/ipss">
           <Button variant="ghost" size="sm" className="gap-1 text-xs">
