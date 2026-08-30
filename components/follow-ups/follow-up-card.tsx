@@ -70,7 +70,7 @@ export function FollowUpCard({
     return (
       <Card className="border-blue-500 shadow-md">
         <CardHeader className="p-4 pb-2 border-b flex flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-sm font-bold text-slate-900">
+          <CardTitle className="text-sm font-bold text-slate-900 dark:text-slate-100">
             Edit {followUp.milestone.toUpperCase()} Follow-up ({followUp.targetMonths} Months)
           </CardTitle>
           <div className="flex items-center gap-1.5">
@@ -84,7 +84,7 @@ export function FollowUpCard({
         </CardHeader>
         <CardContent className="p-4 space-y-4 text-xs">
           {saveError && (
-            <div className="rounded-lg border border-rose-200 bg-rose-50 p-2.5 text-[11px] text-rose-700">
+            <div className="rounded-lg border border-rose-200 bg-rose-50 p-2.5 text-[11px] text-rose-700 dark:border-rose-900 dark:bg-rose-950/40 dark:text-rose-300">
               {saveError}
             </div>
           )}

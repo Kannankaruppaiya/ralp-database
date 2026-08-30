@@ -2,9 +2,10 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Hospital } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/layout/theme-toggle';
 
 export function AdminTopbar() {
   return (
@@ -12,7 +13,7 @@ export function AdminTopbar() {
       {/* Left side info */}
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="border-blue-300 bg-blue-50 text-blue-800 text-xs font-mono">
+          <Badge variant="outline" className="border-blue-300 bg-blue-50 text-blue-800 dark:border-blue-900 dark:bg-blue-950/40 dark:text-blue-300 text-xs font-mono">
             ADMIN CONSOLE
           </Badge>
           <span className="text-xs text-slate-500 hidden sm:inline">
@@ -23,10 +24,12 @@ export function AdminTopbar() {
 
       {/* Right side status & portal switcher */}
       <div className="flex items-center gap-3">
-        <div className="hidden md:flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs">
+        <div className="hidden md:flex items-center gap-2 px-2.5 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs dark:bg-emerald-950/40 dark:border-emerald-900 dark:text-emerald-300">
           <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
           <span className="font-mono">Audit Logging: ACTIVE</span>
         </div>
+
+        <ThemeToggle />
 
         <Link href="/dashboard">
           <Button variant="outline" size="sm" className="gap-1.5 text-xs">

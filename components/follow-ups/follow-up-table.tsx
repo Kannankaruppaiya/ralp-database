@@ -167,12 +167,12 @@ export function FollowUpTable({ followUps }: { followUps: EnrichedFollowUp[] }) 
             className="w-32 h-9 text-xs"
           >
             <option value="ALL">All Milestones</option>
-            <option value="6w">6 Weeks (6W)</option>
             <option value="2m">2 Months (2M)</option>
             <option value="6m">6 Months (6M)</option>
             <option value="12m">12 Months (12M)</option>
             <option value="18m">18 Months (18M)</option>
             <option value="24m">24 Months (24M)</option>
+            <option value="30m">30 Months (30M)</option>
             <option value="36m">36 Months (36M)</option>
           </Select>
 

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   Users,
   ShieldCheck,
@@ -14,9 +14,11 @@ import {
   Server,
   Lock,
   HeartPulse,
+  LogOut,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, initialsFrom } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
+import { useSession, signOut } from '@/lib/auth';
 
 export const ADMIN_NAV_ITEMS = [
   {
@@ -65,6 +67,13 @@ export const ADMIN_NAV_ITEMS = [
 
 export function AdminSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user } = useSession();
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push('/admin-login');
+  };
 
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950 md:flex">
@@ -79,7 +88,7 @@ export function AdminSidebar() {
             <span className="text-[10px] font-semibold tracking-wider text-blue-600 uppercase">Trust Governance</span>
           </div>
         </Link>
-        <Badge variant="outline" className="border-blue-300 text-blue-700 text-[10px] font-mono">
+        <Badge variant="outline" className="border-blue-300 text-blue-700 dark:border-blue-900 dark:text-blue-300 text-[10px] font-mono">
           ROOT
         </Badge>
       </div>
@@ -135,15 +144,30 @@ export function AdminSidebar() {
       </div>
 
       {/* Admin User Footer */}
-      <div className="border-t border-slate-200 p-4 dark:border-slate-800">
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-            DE
+      <div className="border-t border-slate-200 p-4 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-3 overflow-hidden">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+              {user ? initialsFrom(user.name) : '··'}
+            </div>
+            <div className="flex-1 overflow-hidden">
+              <p className="truncate text-xs font-semibold text-slate-900 dark:text-slate-100">
+                {user ? user.name : 'Signed out'}
+              </p>
+              <p className="truncate text-[11px] text-slate-500 dark:text-slate-400">
+                {user ? user.role : 'No active session'}
+              </p>
+            </div>
           </div>
-          <div className="flex-1 overflow-hidden">
-            <p className="truncate text-xs font-semibold text-slate-900 dark:text-slate-100">David Evans</p>
-            <p className="truncate text-[11px] text-slate-500">Caldicott Guardian / Admin</p>
-          </div>
+          <button
+            type="button"
+            onClick={handleSignOut}
+            title="Sign out"
+            aria-label="Sign out"
+            className="shrink-0 rounded-md p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <LogOut className="h-4 w-4" />
+          </button>
         </div>
       </div>
     </aside>

@@ -16,17 +16,10 @@ import {
   HeartPulse,
   ExternalLink,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn, initialsFrom } from '@/lib/utils';
 import { CLINICIAN_NAVIGATION } from '@/config/navigation';
 import { Badge } from '@/components/ui/badge';
 import { useSession, signOut } from '@/lib/auth';
-
-/** First letters of the first two words, e.g. "Mr. V. Kannan" -> "VK". */
-function initialsFrom(name: string): string {
-  const parts = name.replace(/\b(mr|mrs|ms|dr|miss|prof|sister)\.?\b/gi, '').trim().split(/\s+/).filter(Boolean);
-  const letters = parts.map((p) => p[0]).join('');
-  return (letters.slice(0, 2) || name.slice(0, 2)).toUpperCase();
-}
 
 const ICON_MAP: Record<string, React.ReactNode> = {
   LayoutDashboard: <LayoutDashboard className="h-4 w-4" />,
