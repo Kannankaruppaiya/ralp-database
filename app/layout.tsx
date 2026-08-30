@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 
 import { PerformanceHud } from '@/components/performance/performance-hud';
 import { EnvBanner } from '@/components/layout/env-banner';
+import { ThemeProvider } from '@/components/theme-provider';
 
 export default function RootLayout({
   children,
@@ -25,10 +26,12 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-blue-500 selection:text-white font-sans">
-        <EnvBanner />
-        {children}
-        <PerformanceHud />
+      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-blue-500 selection:text-white font-sans dark:bg-slate-950 dark:text-slate-100">
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+          <EnvBanner />
+          {children}
+          <PerformanceHud />
+        </ThemeProvider>
       </body>
     </html>
   );

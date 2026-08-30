@@ -6,17 +6,14 @@ import { useRouter } from 'next/navigation';
 import {
   Search,
   Plus,
-  Bell,
   Shield,
   Hospital,
-  ChevronDown,
-  Moon,
-  Sun,
   Menu,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { ThemeToggle } from '@/components/layout/theme-toggle';
 import { usePatients } from '@/hooks/use-patients';
 import { SURGEON_OPTIONS } from '@/config/clinical-options';
 
@@ -42,7 +39,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
       <div className="flex items-center gap-3 flex-1 max-w-lg">
         <button
           onClick={onMenuClick}
-          className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 md:hidden"
+          className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 md:hidden"
         >
           <Menu className="h-5 w-5" />
         </button>
@@ -62,7 +59,7 @@ export function Topbar({ onMenuClick }: TopbarProps) {
               onFocus={() => {
                 if (search.length > 0) setIsSearchOpen(true);
               }}
-              className="pl-9 pr-4 h-9 bg-slate-50/80 border-slate-200 focus:bg-white text-sm"
+              className="pl-9 pr-4 h-9 bg-slate-50/80 border-slate-200 focus:bg-white text-sm dark:bg-slate-900/60 dark:border-slate-800 dark:focus:bg-slate-900"
             />
           </div>
 
@@ -114,6 +111,9 @@ export function Topbar({ onMenuClick }: TopbarProps) {
           <Hospital className="h-3.5 w-3.5 text-blue-600" />
           <span>Oxford Urology Centre</span>
         </div>
+
+        {/* Light / dark theme */}
+        <ThemeToggle />
 
         {/* Quick Admin Portal */}
         <Link href="/admin">
