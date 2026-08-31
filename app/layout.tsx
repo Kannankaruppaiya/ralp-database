@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 
 import { PerformanceHud } from '@/components/performance/performance-hud';
 import { EnvBanner } from '@/components/layout/env-banner';
+import { APP_CONFIG } from '@/config/environment';
 
 export default function RootLayout({
   children,
@@ -28,7 +29,10 @@ export default function RootLayout({
       <body className="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-teal-500 selection:text-white font-sans">
         <EnvBanner />
         {children}
-        <PerformanceHud />
+        {/* Developer telemetry (Live Speed HUD) — non-production only. It renders
+            a floating widget and a synthetic-data benchmark that must never reach
+            real clinical users. */}
+        {!APP_CONFIG.isProduction && <PerformanceHud />}
       </body>
     </html>
   );

@@ -30,6 +30,7 @@ import { signIn } from '@/lib/auth';
 import { Role } from '@/config/permissions';
 import { SurgeonCode } from '@/types/common';
 import { useToast } from '@/hooks/use-toast';
+import { APP_CONFIG } from '@/config/environment';
 
 interface DemoUser {
   name: string;
@@ -344,25 +345,29 @@ export default function ClinicianLoginPage() {
                     </div>
                   </FormField>
 
-                  {/* Discrete Quick Preset Autofill for Testing */}
-                  <div className="pt-1">
-                    <div className="text-[11px] text-slate-500 mb-1.5 flex items-center gap-1">
-                      <UserCheck className="h-3 w-3 text-teal-500" />
-                      <span>Quick Autofill Test Account:</span>
+                  {/* Discrete Quick Preset Autofill for Testing — non-production
+                      only. These are seeded test staff; their emails must not be
+                      exposed on a real NHS deployment. */}
+                  {!APP_CONFIG.isProduction && (
+                    <div className="pt-1">
+                      <div className="text-[11px] text-slate-500 mb-1.5 flex items-center gap-1">
+                        <UserCheck className="h-3 w-3 text-teal-500" />
+                        <span>Quick Autofill Test Account:</span>
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {PRESET_ACCOUNTS.map((acc) => (
+                          <button
+                            key={acc.email}
+                            type="button"
+                            onClick={() => handleAutofill(acc)}
+                            className="px-2.5 py-1 text-[10px] font-semibold rounded-lg bg-slate-800/80 hover:bg-teal-950 hover:border-teal-500/50 border border-slate-700 text-slate-300 transition-colors"
+                          >
+                            {acc.name} ({acc.surgeonCode || acc.initials})
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {PRESET_ACCOUNTS.map((acc) => (
-                        <button
-                          key={acc.email}
-                          type="button"
-                          onClick={() => handleAutofill(acc)}
-                          className="px-2.5 py-1 text-[10px] font-semibold rounded-lg bg-slate-800/80 hover:bg-teal-950 hover:border-teal-500/50 border border-slate-700 text-slate-300 transition-colors"
-                        >
-                          {acc.name} ({acc.surgeonCode || acc.initials})
-                        </button>
-                      ))}
-                    </div>
-                  </div>
+                  )}
 
                   <Button
                     type="submit"
