@@ -9,19 +9,19 @@ export interface BreadcrumbItem {
 
 export function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
   return (
-    <nav className="flex items-center gap-1.5 text-xs text-slate-500 mb-3" aria-label="Breadcrumb">
-      <Link href="/dashboard" className="hover:text-slate-800 dark:hover:text-slate-200 transition-colors">
-        <Home className="h-3.5 w-3.5" />
+    <nav className="flex items-center gap-1.5 text-xs text-muted-foreground mb-3" aria-label="Breadcrumb">
+      <Link href="/dashboard" aria-label="Dashboard" className="hover:text-foreground dark:hover:text-slate-200 transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        <Home className="h-3.5 w-3.5" aria-hidden="true" />
       </Link>
       {items.map((item, idx) => (
         <React.Fragment key={idx}>
-          <ChevronRight className="h-3 w-3 text-slate-400" />
+          <ChevronRight className="h-3 w-3 text-muted-foreground" aria-hidden="true" />
           {item.href ? (
-            <Link href={item.href} className="hover:text-slate-800 dark:hover:text-slate-200 transition-colors font-medium">
+            <Link href={item.href} className="hover:text-foreground dark:hover:text-slate-200 transition-colors font-medium">
               {item.label}
             </Link>
           ) : (
-            <span className="text-slate-900 dark:text-slate-100 font-semibold truncate max-w-xs">{item.label}</span>
+            <span aria-current="page" className="text-foreground dark:text-slate-100 font-semibold truncate max-w-xs">{item.label}</span>
           )}
         </React.Fragment>
       ))}
@@ -45,8 +45,8 @@ export function PageHeader({
       {breadcrumbs && <Breadcrumbs items={breadcrumbs} />}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-100">{title}</h1>
-          {description && <p className="text-sm text-slate-500 mt-1">{description}</p>}
+          <h1 className="text-2xl font-bold tracking-tight text-foreground dark:text-slate-100">{title}</h1>
+          {description && <p className="text-sm text-muted-foreground mt-1">{description}</p>}
         </div>
         {action && <div className="flex items-center gap-2 flex-wrap">{action}</div>}
       </div>

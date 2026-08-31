@@ -28,20 +28,20 @@ export function RecoveryCurve({ curve }: { curve: RecoveryPoint[] }) {
   return (
     <Card className="shadow-sm">
       <CardHeader className="p-5 pb-2">
-        <CardTitle className="text-sm font-bold text-slate-900 dark:text-white">
+        <CardTitle className="text-sm font-bold text-foreground dark:text-white">
           Functional Recovery Curve
         </CardTitle>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-muted-foreground">
           Pad-free continence and potency (SHIM ≥ 17) by milestone, completed assessments only
         </p>
       </CardHeader>
       <CardContent className="p-5 pt-2">
         {data.length === 0 ? (
           <div className="flex h-72 flex-col items-center justify-center gap-1 text-center">
-            <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+            <p className="text-sm font-semibold text-foreground dark:text-slate-300">
               No completed assessments yet
             </p>
-            <p className="text-xs text-slate-500 max-w-xs">
+            <p className="text-xs text-muted-foreground max-w-xs">
               The curve builds as patients return their milestone questionnaires.
             </p>
           </div>
@@ -49,11 +49,11 @@ export function RecoveryCurve({ curve }: { curve: RecoveryPoint[] }) {
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={data}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                <XAxis dataKey="label" tickLine={false} tick={{ fontSize: 12, fill: '#64748b' }} />
-                <YAxis domain={[0, 100]} unit="%" tickLine={false} tick={{ fontSize: 11, fill: '#64748b' }} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+                <XAxis dataKey="label" tickLine={false} tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }} />
+                <YAxis domain={[0, 100]} unit="%" tickLine={false} tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} />
                 <Tooltip
-                  contentStyle={{ fontSize: 12, borderRadius: 12, border: '1px solid #e2e8f0' }}
+                  contentStyle={{ background: 'hsl(var(--card))', color: 'hsl(var(--card-foreground))', fontSize: 12, borderRadius: 12, border: '1px solid hsl(var(--border))' }}
                   formatter={(v, name) =>
                     (v === null || v === undefined ? ['no data', String(name)] : [`${v}%`, String(name)]) as [string, string]
                   }
@@ -65,11 +65,11 @@ export function RecoveryCurve({ curve }: { curve: RecoveryPoint[] }) {
                 <Legend wrapperStyle={{ fontSize: 11 }} />
                 <Line
                   type="monotone" dataKey="continent" name="Pad-free continence"
-                  stroke="#0d9488" strokeWidth={2.5} dot={{ r: 3 }} connectNulls
+                  stroke="hsl(var(--chart-1))" strokeWidth={2.5} dot={{ r: 3 }} connectNulls
                 />
                 <Line
                   type="monotone" dataKey="potent" name="Potency (SHIM ≥ 17)"
-                  stroke="#7c3aed" strokeWidth={2.5} dot={{ r: 3 }} connectNulls
+                  stroke="hsl(var(--chart-3))" strokeWidth={2.5} dot={{ r: 3 }} connectNulls
                 />
               </LineChart>
             </ResponsiveContainer>

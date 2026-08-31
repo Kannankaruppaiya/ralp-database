@@ -111,70 +111,70 @@ export default function AdminOverviewPage() {
 
       {/* System KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <Card className="border-border bg-card shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <CardContent className="p-5 flex items-center justify-between">
             <div>
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Cohort</span>
-              <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Total Cohort</span>
+              <div className="text-2xl font-bold text-foreground dark:text-slate-100 mt-1">
                 {isLoading ? '—' : totalPatients}
               </div>
-              <span className="text-[11px] text-teal-600 flex items-center gap-1 mt-1 font-medium">
+              <span className="text-[11px] text-primary flex items-center gap-1 mt-1 font-medium">
                 <CheckCircle2 className="h-3 w-3" />
                 <span>Active RALP Records</span>
               </span>
             </div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-400">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-teal-950 dark:text-teal-400">
               <Database className="h-6 w-6" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <Card className="border-border bg-card shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <CardContent className="p-5 flex items-center justify-between">
             <div>
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Avg Completeness</span>
-              <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Avg Completeness</span>
+              <div className="text-2xl font-bold text-foreground dark:text-slate-100 mt-1">
                 {isLoading ? '—' : `${averageCompleteness}%`}
               </div>
-              <span className="text-[11px] text-slate-500 mt-1 block">
+              <span className="text-[11px] text-muted-foreground mt-1 block">
                 {completeRecords} of {totalPatients} high quality
               </span>
             </div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-success-muted text-success-muted-foreground dark:bg-emerald-950 dark:text-emerald-400">
               <FileCheck2 className="h-6 w-6" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <Card className="border-border bg-card shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <CardContent className="p-5 flex items-center justify-between">
             <div>
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Audit Trail Entries</span>
-              <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Audit Trail Entries</span>
+              <div className="text-2xl font-bold text-foreground dark:text-slate-100 mt-1">
                 {mounted ? auditLogCount : '—'}
               </div>
-              <span className="text-[11px] text-teal-600 mt-1 block font-medium">
+              <span className="text-[11px] text-primary mt-1 block font-medium">
                 Full Caldicott Logging
               </span>
             </div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-muted text-foreground dark:bg-slate-800 dark:text-slate-300">
               <History className="h-6 w-6" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <Card className="border-border bg-card shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <CardContent className="p-5 flex items-center justify-between">
             <div>
-              <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Pending OCR Jobs</span>
-              <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">
+              <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Pending OCR Jobs</span>
+              <div className="text-2xl font-bold text-foreground dark:text-slate-100 mt-1">
                 {mounted ? pendingJobsCount : '—'}
               </div>
-              <span className="text-[11px] text-amber-600 mt-1 block font-medium">
+              <span className="text-[11px] text-warning-muted-foreground mt-1 block font-medium">
                 Requires clinical review
               </span>
             </div>
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-700 dark:bg-amber-950 dark:text-amber-400">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-warning-muted text-warning-muted-foreground dark:bg-amber-950 dark:text-amber-400">
               <FileUp className="h-6 w-6" />
             </div>
           </CardContent>
@@ -183,7 +183,7 @@ export default function AdminOverviewPage() {
 
       {/* Admin Modules Grid */}
       <div>
-        <h2 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-4">
+        <h2 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-4">
           Administrative Modules & Tools
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -192,24 +192,24 @@ export default function AdminOverviewPage() {
             return (
               <Card
                 key={card.href}
-                className="border-slate-200 bg-white hover:border-teal-500 hover:shadow-md transition-all duration-200 shadow-sm group flex flex-col justify-between dark:border-slate-800 dark:bg-slate-900"
+                className="border-border bg-card hover:border-teal-500 hover:shadow-md transition-all duration-200 shadow-sm group flex flex-col justify-between dark:border-slate-800 dark:bg-slate-900"
               >
                 <CardHeader className="p-5 pb-3">
                   <div className="flex items-center justify-between">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-teal-50 text-teal-700 group-hover:bg-teal-600 group-hover:text-white transition-colors dark:bg-teal-950 dark:text-teal-400">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-teal-600 group-hover:text-white transition-colors dark:bg-teal-950 dark:text-teal-400">
                       <Icon className="h-5 w-5" />
                     </div>
                     <Badge variant={card.badgeVariant} className="text-[10px]">
                       {card.badge}
                     </Badge>
                   </div>
-                  <CardTitle className="text-base font-bold text-slate-900 dark:text-white mt-3 group-hover:text-teal-700 transition-colors">
+                  <CardTitle className="text-base font-bold text-foreground dark:text-white mt-3 group-hover:text-teal-700 transition-colors">
                     {card.title}
                   </CardTitle>
                 </CardHeader>
 
                 <CardContent className="p-5 pt-0 space-y-4">
-                  <p className="text-xs text-slate-500 leading-relaxed min-h-[36px]">
+                  <p className="text-xs text-muted-foreground leading-relaxed min-h-[36px]">
                     {card.description}
                   </p>
 

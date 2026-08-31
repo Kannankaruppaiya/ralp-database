@@ -21,7 +21,7 @@ export default function OutcomesPage() {
       />
 
       {error && (
-        <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-xs text-rose-700">{error}</div>
+        <div className="rounded-xl border border-destructive/20 bg-destructive/10 p-4 text-xs text-destructive">{error}</div>
       )}
 
       <RecoveryCurve curve={curve} />
@@ -42,13 +42,13 @@ export default function OutcomesPage() {
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="py-8 text-center text-xs text-slate-500">
+                  <TableCell colSpan={6} className="py-8 text-center text-xs text-muted-foreground">
                     Loading outcomes…
                   </TableCell>
                 </TableRow>
               ) : curve.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="py-8 text-center text-xs text-slate-500">
+                  <TableCell colSpan={6} className="py-8 text-center text-xs text-muted-foreground">
                     No completed assessments yet.
                   </TableCell>
                 </TableRow>
@@ -60,7 +60,7 @@ export default function OutcomesPage() {
                     <TableCell>{pct(p.continentPct)}</TableCell>
                     <TableCell>{pct(p.potentPct)}</TableCell>
                     <TableCell>{p.meanPsa === null ? '—' : `${p.meanPsa} ng/mL`}</TableCell>
-                    <TableCell className={p.bcrCount > 0 ? 'font-semibold text-rose-600' : ''}>
+                    <TableCell className={p.bcrCount > 0 ? 'font-semibold text-destructive' : ''}>
                       {p.bcrCount}
                     </TableCell>
                   </TableRow>

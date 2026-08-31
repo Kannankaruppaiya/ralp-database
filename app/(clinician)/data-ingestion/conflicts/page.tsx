@@ -76,22 +76,22 @@ export default function ConflictsPage() {
       />
 
       {(error || saveError) && (
-        <div className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-xs text-rose-700">
+        <div className="rounded-xl border border-destructive/20 bg-destructive/10 p-4 text-xs text-destructive">
           {error ?? saveError}
         </div>
       )}
 
       {isLoading ? (
-        <Card className="p-12 text-center text-sm text-slate-500">Loading conflicts…</Card>
+        <Card className="p-12 text-center text-sm text-muted-foreground">Loading conflicts…</Card>
       ) : conflicted.length === 0 ? (
-        <Card className="bg-white p-8 text-center dark:bg-slate-900">
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+        <Card className="bg-card p-8 text-center dark:bg-slate-900">
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-success-muted text-success-muted-foreground">
             <CheckCircle2 className="h-6 w-6" />
           </div>
-          <h3 className="text-base font-bold text-slate-900 dark:text-white">
+          <h3 className="text-base font-bold text-foreground dark:text-white">
             No outstanding discrepancies
           </h3>
-          <p className="mt-1 text-xs text-slate-500">
+          <p className="mt-1 text-xs text-muted-foreground">
             Documents whose values agree with the record go straight to extraction review.
           </p>
         </Card>
@@ -101,14 +101,14 @@ export default function ConflictsPage() {
           const identityIssue = job.matchedPatient?.matchReasons.find((r) => r.startsWith('NAME MISMATCH'));
 
           return (
-            <Card key={job.id} className="overflow-hidden border-rose-200 shadow-sm">
-              <CardHeader className="flex flex-col gap-2 border-b bg-rose-50/60 p-5 sm:flex-row sm:items-center sm:justify-between">
+            <Card key={job.id} className="overflow-hidden border-destructive/20 shadow-sm">
+              <CardHeader className="flex flex-col gap-2 border-b bg-destructive/10/60 p-5 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <CardTitle className="flex items-center gap-2 text-sm font-bold">
-                    <ShieldAlert className="h-4 w-4 text-rose-600" />
+                    <ShieldAlert className="h-4 w-4 text-destructive" />
                     <span>{job.documentTitle}</span>
                   </CardTitle>
-                  <p className="mt-0.5 text-xs text-slate-600">
+                  <p className="mt-0.5 text-xs text-muted-foreground">
                     {job.matchedPatient
                       ? `Matched to ${job.matchedPatient.fullName} (NHS ${job.matchedPatient.nhsNumber})`
                       : 'No patient matched'}
@@ -121,7 +121,7 @@ export default function ConflictsPage() {
 
               <CardContent className="space-y-4 p-5">
                 {identityIssue && (
-                  <div className="flex items-start gap-2 rounded-lg border border-rose-300 bg-rose-50 p-3 text-xs text-rose-800">
+                  <div className="flex items-start gap-2 rounded-lg border border-destructive/20 bg-destructive/10 p-3 text-xs text-destructive">
                     <UserX className="mt-0.5 h-4 w-4 shrink-0" />
                     <div>
                       <div className="font-bold">Identity conflict</div>
@@ -135,7 +135,7 @@ export default function ConflictsPage() {
                 )}
 
                 {fieldConflicts.length === 0 ? (
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-muted-foreground">
                     No field-level disagreements; the only issue is the identity match above.
                   </p>
                 ) : (
@@ -144,10 +144,10 @@ export default function ConflictsPage() {
                     return (
                       <div key={f.fieldKey} className="rounded-xl border p-4">
                         <div className="mb-3 flex items-center justify-between">
-                          <span className="text-xs font-bold text-slate-900 dark:text-slate-100">
+                          <span className="text-xs font-bold text-foreground dark:text-slate-100">
                             {f.fieldLabel}
                           </span>
-                          <span className="text-[11px] text-slate-400">{f.category}</span>
+                          <span className="text-[11px] text-muted-foreground">{f.category}</span>
                         </div>
                         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                           {([
@@ -161,19 +161,19 @@ export default function ConflictsPage() {
                                 onClick={() => setChoices((c) => ({ ...c, [`${job.id}:${f.fieldKey}`]: key }))}
                                 className={`rounded-lg border p-3 text-left transition-colors ${
                                   chosen === key
-                                    ? 'border-teal-500 bg-teal-50 dark:bg-teal-950/40'
-                                    : 'border-slate-200 hover:border-slate-300 dark:border-slate-800'
+                                    ? 'border-primary bg-primary/10 dark:bg-teal-950/40'
+                                    : 'border-border hover:border-slate-300 dark:border-slate-800'
                                 }`}
                               >
-                                <div className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-500">
+                                <div className="mb-1 flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
                                   {key === 'extracted' && <FileText className="h-3 w-3" />}
                                   <span>{title}</span>
                                 </div>
-                                <div className="font-mono text-sm font-bold text-slate-900 dark:text-slate-100">
+                                <div className="font-mono text-sm font-bold text-foreground dark:text-slate-100">
                                   {String(value ?? '—')}
                                 </div>
                                 {raw && (
-                                  <div className="mt-1 text-[11px] italic text-slate-400">“{raw}”</div>
+                                  <div className="mt-1 text-[11px] italic text-muted-foreground">“{raw}”</div>
                                 )}
                               </button>
                             )
@@ -187,7 +187,7 @@ export default function ConflictsPage() {
                 <div className="flex items-center justify-between gap-3 pt-1">
                   <Link
                     href={`/data-ingestion/extraction-review?jobId=${job.id}`}
-                    className="text-xs font-semibold text-teal-700 hover:underline"
+                    className="text-xs font-semibold text-primary hover:underline"
                   >
                     View all extracted fields <ArrowRight className="inline h-3 w-3" />
                   </Link>

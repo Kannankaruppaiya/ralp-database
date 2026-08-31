@@ -48,18 +48,18 @@ export default function ReviewQueuePage() {
           onClick={() => setActiveTab('extractions')}
           className={`p-4 rounded-xl border text-left transition-all ${
             activeTab === 'extractions'
-              ? 'border-teal-500 bg-teal-50/50 dark:bg-teal-950/30 ring-2 ring-teal-500/30'
-              : 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
+              ? 'border-primary bg-primary/10/50 dark:bg-teal-950/30 ring-2 ring-ring/30'
+              : 'border-border bg-card hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500">Extraction Review</span>
-            <FileText className="h-4 w-4 text-teal-600" />
+            <span className="text-xs font-semibold text-muted-foreground">Extraction Review</span>
+            <FileText className="h-4 w-4 text-primary" />
           </div>
-          <div className="text-2xl font-bold text-slate-900 dark:text-white mt-1">
+          <div className="text-2xl font-bold text-foreground dark:text-white mt-1">
             {pendingExtractions.length}
           </div>
-          <span className="text-[11px] text-teal-600 font-medium">Awaiting sign-off</span>
+          <span className="text-[11px] text-primary font-medium">Awaiting sign-off</span>
         </button>
 
         <button
@@ -67,18 +67,18 @@ export default function ReviewQueuePage() {
           onClick={() => setActiveTab('unmatched')}
           className={`p-4 rounded-xl border text-left transition-all ${
             activeTab === 'unmatched'
-              ? 'border-purple-500 bg-purple-50/50 dark:bg-purple-950/30 ring-2 ring-purple-500/30'
-              : 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
+              ? 'border-category bg-category-muted/50 dark:bg-purple-950/30 ring-2 ring-category/30'
+              : 'border-border bg-card hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500">Unmatched Docs</span>
-            <UserX className="h-4 w-4 text-purple-600" />
+            <span className="text-xs font-semibold text-muted-foreground">Unmatched Docs</span>
+            <UserX className="h-4 w-4 text-category-muted-foreground" />
           </div>
-          <div className="text-2xl font-bold text-slate-900 dark:text-white mt-1">
+          <div className="text-2xl font-bold text-foreground dark:text-white mt-1">
             {unmatchedDocs.length}
           </div>
-          <span className="text-[11px] text-purple-600 font-medium">Needs patient link</span>
+          <span className="text-[11px] text-category-muted-foreground font-medium">Needs patient link</span>
         </button>
 
         <button
@@ -86,18 +86,18 @@ export default function ReviewQueuePage() {
           onClick={() => setActiveTab('conflicts')}
           className={`p-4 rounded-xl border text-left transition-all ${
             activeTab === 'conflicts'
-              ? 'border-amber-500 bg-amber-50/50 dark:bg-amber-950/30 ring-2 ring-amber-500/30'
-              : 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
+              ? 'border-warning bg-warning-muted/50 dark:bg-amber-950/30 ring-2 ring-warning/30'
+              : 'border-border bg-card hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500">Conflicts</span>
-            <ShieldAlert className="h-4 w-4 text-amber-600" />
+            <span className="text-xs font-semibold text-muted-foreground">Conflicts</span>
+            <ShieldAlert className="h-4 w-4 text-warning-muted-foreground" />
           </div>
-          <div className="text-2xl font-bold text-slate-900 dark:text-white mt-1">
+          <div className="text-2xl font-bold text-foreground dark:text-white mt-1">
             {conflictingJobs.length}
           </div>
-          <span className="text-[11px] text-amber-600 font-medium">Data discrepancies</span>
+          <span className="text-[11px] text-warning-muted-foreground font-medium">Data discrepancies</span>
         </button>
 
         <button
@@ -105,23 +105,23 @@ export default function ReviewQueuePage() {
           onClick={() => setActiveTab('missing')}
           className={`p-4 rounded-xl border text-left transition-all ${
             activeTab === 'missing'
-              ? 'border-rose-500 bg-rose-50/50 dark:bg-rose-950/30 ring-2 ring-rose-500/30'
-              : 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
+              ? 'border-destructive bg-destructive/10/50 dark:bg-rose-950/30 ring-2 ring-destructive/30'
+              : 'border-border bg-card hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900'
           }`}
         >
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500">Missing Data</span>
-            <AlertCircle className="h-4 w-4 text-rose-500" />
+            <span className="text-xs font-semibold text-muted-foreground">Missing Data</span>
+            <AlertCircle className="h-4 w-4 text-destructive" />
           </div>
-          <div className="text-2xl font-bold text-slate-900 dark:text-white mt-1">
+          <div className="text-2xl font-bold text-foreground dark:text-white mt-1">
             {missingDataPatients.length}
           </div>
-          <span className="text-[11px] text-rose-600 font-medium">Incomplete records</span>
+          <span className="text-[11px] text-destructive font-medium">Incomplete records</span>
         </button>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2">
+      <div className="flex items-center gap-2 border-b border-border dark:border-slate-800 pb-2">
         <Button
           variant={activeTab === 'all' ? 'default' : 'ghost'}
           size="sm"
@@ -169,27 +169,27 @@ export default function ReviewQueuePage() {
         {/* Extractions List */}
         {(activeTab === 'all' || activeTab === 'extractions') && pendingExtractions.length > 0 && (
           <div className="space-y-3">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-              <FileText className="h-4 w-4 text-teal-600" />
+            <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+              <FileText className="h-4 w-4 text-primary" />
               <span>Pending Document Extractions ({pendingExtractions.length})</span>
             </h3>
             {pendingExtractions.map((job) => (
               <Card key={job.id} className="shadow-sm hover:border-teal-400 transition-colors">
                 <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-50 text-teal-600 dark:bg-teal-950 dark:text-teal-400 flex-shrink-0">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary dark:bg-teal-950 dark:text-teal-400 flex-shrink-0">
                       <ClipboardCheck className="h-5 w-5" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                      <h4 className="text-sm font-bold text-foreground dark:text-slate-100">
                         {job.documentTitle}
                       </h4>
-                      <div className="text-xs text-slate-500 flex flex-wrap items-center gap-x-3 gap-y-1 mt-0.5">
+                      <div className="text-xs text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1 mt-0.5">
                         <span>Matched: <strong>{job.matchedPatient?.fullName || 'Auto-matching'}</strong></span>
                         <span>•</span>
                         <span>{job.extractedFields.length} extracted fields</span>
                         <span>•</span>
-                        <span className="text-teal-600 font-semibold">{job.sourceType.replace('_', ' ')}</span>
+                        <span className="text-primary font-semibold">{job.sourceType.replace('_', ' ')}</span>
                       </div>
                     </div>
                   </div>
@@ -209,29 +209,29 @@ export default function ReviewQueuePage() {
         {/* Conflicts List */}
         {(activeTab === 'all' || activeTab === 'conflicts') && conflictingJobs.length > 0 && (
           <div className="space-y-3 pt-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-              <ShieldAlert className="h-4 w-4 text-amber-600" />
+            <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+              <ShieldAlert className="h-4 w-4 text-warning-muted-foreground" />
               <span>Conflicting Clinical Data Points ({conflictingJobs.length})</span>
             </h3>
             {conflictingJobs.map((job) => (
-              <Card key={`conflict-${job.id}`} className="border-amber-200 bg-amber-50/20 shadow-sm dark:border-amber-900/40">
+              <Card key={`conflict-${job.id}`} className="border-warning/20 bg-warning-muted/20 shadow-sm dark:border-amber-900/40">
                 <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300 flex-shrink-0">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-warning-muted text-warning-muted-foreground dark:bg-amber-950 dark:text-amber-300 flex-shrink-0">
                       <ShieldAlert className="h-5 w-5" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-amber-950 dark:text-amber-200">
+                      <h4 className="text-sm font-bold text-warning-muted-foreground dark:text-amber-200">
                         {job.documentTitle} — Discrepancy in Blood Loss / Duration
                       </h4>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">
+                      <p className="text-xs text-muted-foreground dark:text-slate-400 mt-0.5">
                         Patient: <strong>{job.matchedPatient?.fullName}</strong> • Extracted value differs from current database record
                       </p>
                     </div>
                   </div>
 
                   <Link href="/data-ingestion/conflicts">
-                    <Button size="sm" variant="default" className="text-xs gap-1.5 bg-amber-600 hover:bg-amber-700">
+                    <Button size="sm" variant="default" className="text-xs gap-1.5 bg-warning hover:bg-amber-700">
                       <span>Reconcile Conflict</span>
                       <ArrowRight className="h-3.5 w-3.5" />
                     </Button>
@@ -245,22 +245,22 @@ export default function ReviewQueuePage() {
         {/* Missing Data Patients */}
         {(activeTab === 'all' || activeTab === 'missing') && missingDataPatients.length > 0 && (
           <div className="space-y-3 pt-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-2">
-              <AlertCircle className="h-4 w-4 text-rose-500" />
+            <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+              <AlertCircle className="h-4 w-4 text-destructive" />
               <span>Missing Clinical Datasets in Cohort ({missingDataPatients.length})</span>
             </h3>
             {missingDataPatients.map((patient) => (
-              <Card key={`missing-${patient.id}`} className="border-rose-100 shadow-sm">
+              <Card key={`missing-${patient.id}`} className="border-destructive/20 shadow-sm">
                 <CardContent className="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-50 text-rose-600 dark:bg-rose-950 dark:text-rose-400 flex-shrink-0">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-destructive/10 text-destructive dark:bg-rose-950 dark:text-rose-400 flex-shrink-0">
                       <AlertCircle className="h-5 w-5" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                      <h4 className="text-sm font-bold text-foreground dark:text-slate-100">
                         {patient.firstName} {patient.surname} (NHS: {patient.nhsNumber}, MRN: {patient.hospitalNumber})
                       </h4>
-                      <div className="text-xs text-rose-600 flex items-center gap-2 mt-0.5">
+                      <div className="text-xs text-destructive flex items-center gap-2 mt-0.5">
                         <span>Missing: {patient.completeness.missingFields.join(' • ')}</span>
                         <span>•</span>
                         <span>Completeness: {patient.completeness.score}%</span>

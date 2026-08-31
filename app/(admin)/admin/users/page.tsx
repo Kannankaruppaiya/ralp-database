@@ -102,9 +102,9 @@ export default function AdminUsersPage() {
       />
 
       {/* Filter Bar */}
-      <div className="flex items-center gap-3 p-4 rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div className="flex items-center gap-3 p-4 rounded-xl border border-border bg-card shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search staff by name, email, role, or surgeon code..."
             value={search}
@@ -115,7 +115,7 @@ export default function AdminUsersPage() {
       </div>
 
       {/* Staff Table */}
-      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
+      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
         <Table>
           <TableHeader>
             <TableRow>
@@ -129,26 +129,26 @@ export default function AdminUsersPage() {
           </TableHeader>
           <TableBody>
             {filteredStaff.map((u) => (
-              <TableRow key={u.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50">
-                <TableCell className="font-semibold text-xs text-slate-900 dark:text-slate-100">
+              <TableRow key={u.id} className="hover:bg-muted/80 dark:hover:bg-slate-800/50">
+                <TableCell className="font-semibold text-xs text-foreground dark:text-slate-100">
                   <div>{u.name}</div>
                   {u.gmcNumber && (
-                    <span className="text-[10px] font-mono text-slate-400">GMC: {u.gmcNumber}</span>
+                    <span className="text-[10px] font-mono text-muted-foreground">GMC: {u.gmcNumber}</span>
                   )}
                 </TableCell>
-                <TableCell className="text-xs text-slate-500 font-mono">
+                <TableCell className="text-xs text-muted-foreground font-mono">
                   {u.email}
                 </TableCell>
                 <TableCell className="text-xs">
                   <Badge variant="outline">{u.role}</Badge>
                 </TableCell>
-                <TableCell className="text-xs font-mono font-bold text-teal-700 dark:text-teal-400">
+                <TableCell className="text-xs font-mono font-bold text-primary dark:text-teal-400">
                   {u.surgeonCode}
                 </TableCell>
-                <TableCell className="text-xs font-mono text-slate-500">
+                <TableCell className="text-xs font-mono text-muted-foreground">
                   {u.gmcNumber ?? '—'}
                 </TableCell>
-                <TableCell className="text-xs text-slate-500">
+                <TableCell className="text-xs text-muted-foreground">
                   {new Date(u.createdAt).toLocaleDateString('en-GB')}
                 </TableCell>
               </TableRow>
@@ -162,13 +162,13 @@ export default function AdminUsersPage() {
         <Dialog open={isInviteOpen} onOpenChange={setIsInviteOpen}>
           <DialogHeader>
             <DialogTitle className="text-base flex items-center gap-2">
-              <Mail className="h-4 w-4 text-teal-600" />
+              <Mail className="h-4 w-4 text-primary" />
               <span>Invite New Clinical Staff Member</span>
             </DialogTitle>
           </DialogHeader>
           <form onSubmit={handleInviteUser} className="space-y-4 pt-2">
             <div>
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Full Name with Title</label>
+              <label className="text-xs font-semibold text-foreground dark:text-slate-300">Full Name with Title</label>
               <Input
                 placeholder="e.g. Mr. John Doe (FRCS Urol)"
                 value={newUser.name}
@@ -179,7 +179,7 @@ export default function AdminUsersPage() {
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">NHS Trust Email (@nhs.net)</label>
+              <label className="text-xs font-semibold text-foreground dark:text-slate-300">NHS Trust Email (@nhs.net)</label>
               <Input
                 type="email"
                 placeholder="e.g. john.doe@nhs.net"
@@ -192,11 +192,11 @@ export default function AdminUsersPage() {
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Role</label>
+                <label className="text-xs font-semibold text-foreground dark:text-slate-300">Role</label>
                 <select
                   value={newUser.role}
                   onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-                  className="mt-1 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-xs text-slate-900 shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-white"
+                  className="mt-1 w-full rounded-md border border-border bg-card px-3 py-2 text-xs text-foreground shadow-sm dark:border-slate-800 dark:bg-slate-900 dark:text-white"
                 >
                   <option value="Consultant Surgeon">Consultant Surgeon</option>
                   <option value="Surgical Fellow / Registrar">Surgical Fellow / Registrar</option>
@@ -207,7 +207,7 @@ export default function AdminUsersPage() {
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Surgeon Code (if applicable)</label>
+                <label className="text-xs font-semibold text-foreground dark:text-slate-300">Surgeon Code (if applicable)</label>
                 <Input
                   placeholder="e.g. JD"
                   value={newUser.surgeonCode}

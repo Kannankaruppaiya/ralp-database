@@ -13,7 +13,7 @@ export function PatientTimeline({ patient }: { patient: PatientFullRecord }) {
       title: 'Baseline Prostate Cancer Diagnosis',
       category: 'Diagnostic',
       icon: Dna,
-      color: 'bg-cyan-500 text-white',
+      color: 'bg-info text-white',
       details: `Pre-op PSA ${formatPsa(patient.baseline?.psa)} | Gleason ${patient.baseline?.gleasonGrade || '—'} | Stage ${patient.baseline?.clinicalStage || '—'}`,
     },
     {
@@ -21,7 +21,7 @@ export function PatientTimeline({ patient }: { patient: PatientFullRecord }) {
       title: `RALP Robotic Operation (${patient.primarySurgeon})`,
       category: 'Surgical',
       icon: Scissors,
-      color: 'bg-teal-600 text-white',
+      color: 'bg-primary text-white',
       details: `Nerve Sparing: ${patient.operation?.nerveSparing || '—'} | Bladder Neck: ${patient.operation?.bladderNeck || '—'} | EBL: ${patient.operation?.bloodLossMl || 0}ml`,
     },
     ...(patient.histology?.reportDate
@@ -31,7 +31,7 @@ export function PatientTimeline({ patient }: { patient: PatientFullRecord }) {
             title: 'Post-Op Histopathology Report',
             category: 'Pathology',
             icon: Microscope,
-            color: 'bg-purple-600 text-white',
+            color: 'bg-category text-white',
             details: `Gleason ${patient.histology.gleasonGrade} (GG${patient.histology.gradeGroup}) | pT${patient.histology.pathologicalStage} | Margins: ${patient.histology.surgicalMargins}`,
           },
         ]
@@ -43,15 +43,15 @@ export function PatientTimeline({ patient }: { patient: PatientFullRecord }) {
         title: `${f.milestone.toUpperCase()} Follow-up Milestone (${f.targetMonths} Months)`,
         category: 'Follow-up',
         icon: CalendarClock,
-        color: 'bg-emerald-600 text-white',
+        color: 'bg-success text-white',
         details: `PSA: ${formatPsa(f.psa)} | Continence: ${f.continence?.dayStatus || '—'} | SHIM: ${f.shimScore?.totalScore ? `${f.shimScore.totalScore}/25` : '—'} | IPSS: ${f.ipssScore?.totalScore ? `${f.ipssScore.totalScore}/35` : '—'}`,
       })),
   ];
 
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-      <h2 className="text-base font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-        <CalendarClock className="h-5 w-5 text-teal-600" />
+    <div className="rounded-xl border border-border bg-card p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <h2 className="text-base font-bold text-foreground dark:text-white mb-6 flex items-center gap-2">
+        <CalendarClock className="h-5 w-5 text-primary" />
         <span>Longitudinal Clinical Care Pathway Timeline</span>
       </h2>
 
@@ -68,11 +68,11 @@ export function PatientTimeline({ patient }: { patient: PatientFullRecord }) {
               {/* Event Content */}
               <div className="pl-4">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-semibold text-slate-500">{formatDate(evt.date)}</span>
+                  <span className="text-xs font-semibold text-muted-foreground">{formatDate(evt.date)}</span>
                   <Badge variant="outline" className="text-[10px]">{evt.category}</Badge>
                 </div>
-                <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 mt-1">{evt.title}</h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">{evt.details}</p>
+                <h4 className="text-sm font-bold text-foreground dark:text-slate-100 mt-1">{evt.title}</h4>
+                <p className="text-xs text-muted-foreground dark:text-slate-400 mt-0.5">{evt.details}</p>
               </div>
             </div>
           );

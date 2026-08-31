@@ -25,7 +25,7 @@ export default function PatientOverviewPage({
   const { documents: patientDocs } = useDocuments(resolvedParams.patientId);
 
   if (isLoading || !patient) {
-    return <div className="p-8 text-center text-sm text-slate-500">Loading patient record...</div>;
+    return <div className="p-8 text-center text-sm text-muted-foreground">Loading patient record...</div>;
   }
 
 

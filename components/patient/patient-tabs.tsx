@@ -34,7 +34,7 @@ export function PatientTabs({ patientId }: PatientTabsProps) {
   ];
 
   return (
-    <div className="border-b border-slate-200 dark:border-slate-800 mb-6 overflow-x-auto">
+    <div className="border-b border-border dark:border-slate-800 mb-6 overflow-x-auto">
       <nav className="flex space-x-2 min-w-max pb-px">
         {tabs.map((tab) => {
           const isActive = tab.exact ? pathname === tab.href : pathname.startsWith(tab.href);
@@ -46,8 +46,8 @@ export function PatientTabs({ patientId }: PatientTabsProps) {
               className={cn(
                 'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-all',
                 isActive
-                  ? 'border-teal-600 text-teal-600 dark:border-teal-400 dark:text-teal-400 font-semibold'
-                  : 'border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300 dark:text-slate-400 dark:hover:text-slate-100'
+                  ? 'border-primary text-primary dark:border-teal-400 dark:text-teal-400 font-semibold'
+                  : 'border-transparent text-muted-foreground hover:text-foreground hover:border-slate-300 dark:text-slate-400 dark:hover:text-slate-100'
               )}
             >
               <Icon className="h-4 w-4" />

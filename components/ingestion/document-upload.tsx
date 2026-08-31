@@ -207,8 +207,8 @@ export function DocumentUpload() {
       <div
         className={`rounded-2xl border-2 border-dashed p-8 text-center transition-colors ${
           dragActive
-            ? 'border-teal-500 bg-teal-50/40'
-            : 'border-slate-300 bg-slate-50/70 hover:border-teal-500 hover:bg-teal-50/20 dark:border-slate-800 dark:bg-slate-900/50'
+            ? 'border-primary bg-primary/10/40'
+            : 'border-border bg-muted/70 hover:border-teal-500 hover:bg-teal-50/20 dark:border-slate-800 dark:bg-slate-900/50'
         }`}
         onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
         onDragLeave={() => setDragActive(false)}
@@ -219,13 +219,13 @@ export function DocumentUpload() {
           if (file) void handleFile(file);
         }}
       >
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-100 text-teal-700 shadow-sm dark:bg-teal-950 dark:text-teal-300">
+        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/15 text-primary shadow-sm dark:bg-teal-950 dark:text-teal-300">
           {isProcessing ? <RefreshCw className="h-7 w-7 animate-spin" /> : <UploadCloud className="h-7 w-7" />}
         </div>
-        <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
+        <h3 className="text-base font-bold text-foreground dark:text-slate-100">
           {isProcessing ? 'Reading document…' : 'Drop a theatre note or clinic letter'}
         </h3>
-        <p className="mx-auto mb-5 mt-1 max-w-md text-xs text-slate-500">
+        <p className="mx-auto mb-5 mt-1 max-w-md text-xs text-muted-foreground">
           Word (.docx), plain text or Google Form CSV export. Scanned PDFs and legacy .doc files
           must be converted first — nothing is read by OCR.
         </p>
@@ -242,8 +242,8 @@ export function DocumentUpload() {
               onClick={() => setDocType(value)}
               className={`rounded-lg border px-3 py-1.5 text-[11px] font-semibold transition-colors ${
                 docType === value
-                  ? 'border-teal-500 bg-teal-50 text-teal-800 dark:bg-teal-950 dark:text-teal-200'
-                  : 'border-slate-300 text-slate-600 hover:border-teal-400 dark:border-slate-700 dark:text-slate-400'
+                  ? 'border-primary bg-primary/10 text-primary dark:bg-teal-950 dark:text-teal-200'
+                  : 'border-border text-muted-foreground hover:border-teal-400 dark:border-slate-700 dark:text-slate-400'
               }`}
             >
               {label}
@@ -268,7 +268,7 @@ export function DocumentUpload() {
       </div>
 
       {error && (
-        <div className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-800">
+        <div className="flex items-start gap-2 rounded-xl border border-warning/20 bg-warning-muted p-4 text-xs text-warning-muted-foreground">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
           <span>{error}</span>
         </div>
@@ -278,10 +278,10 @@ export function DocumentUpload() {
         <Card className="shadow-sm">
           <CardHeader className="p-5 pb-2">
             <CardTitle className="flex items-center gap-2 text-sm font-bold">
-              <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+              <CheckCircle2 className="h-4 w-4 text-success-muted-foreground" />
               <span>{preview.name}</span>
             </CardTitle>
-            <p className={`text-xs ${preview.nameMismatch ? 'font-semibold text-rose-600' : 'text-slate-500'}`}>
+            <p className={`text-xs ${preview.nameMismatch ? 'font-semibold text-destructive' : 'text-muted-foreground'}`}>
               {preview.nameMismatch
                 ? `Identifiers matched ${preview.matched}, but the document names someone else — do not commit without verifying`
                 : preview.matched

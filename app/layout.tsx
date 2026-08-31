@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 
 import { PerformanceHud } from '@/components/performance/performance-hud';
 import { EnvBanner } from '@/components/layout/env-banner';
+import { APP_CONFIG } from '@/config/environment';
 
 export default function RootLayout({
   children,
@@ -25,10 +26,16 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased selection:bg-teal-500 selection:text-white font-sans">
+      <body className="min-h-screen bg-muted text-foreground antialiased selection:bg-primary selection:text-primary-foreground font-sans">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-primary-foreground focus:shadow-lg"
+        >
+          Skip to main content
+        </a>
         <EnvBanner />
         {children}
-        <PerformanceHud />
+        {!APP_CONFIG.isProduction && <PerformanceHud />}
       </body>
     </html>
   );

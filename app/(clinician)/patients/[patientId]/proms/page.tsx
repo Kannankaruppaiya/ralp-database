@@ -21,7 +21,7 @@ export default function PatientPromsPage({
   const { patient, isLoading, refresh } = usePatient(resolvedParams.patientId);
 
   if (isLoading || !patient) {
-    return <div className="p-8 text-center text-sm text-slate-500">Loading PROMs...</div>;
+    return <div className="p-8 text-center text-sm text-muted-foreground">Loading PROMs...</div>;
   }
 
   return (

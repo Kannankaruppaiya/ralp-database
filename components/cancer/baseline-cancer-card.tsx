@@ -218,7 +218,7 @@ export function BaselineCancerCard({
       </div>
 
       {data?.notes && (
-        <div className="mt-4 p-3 bg-slate-50 dark:bg-slate-800/40 rounded-lg text-xs text-slate-600 dark:text-slate-300">
+        <div className="mt-4 p-3 bg-muted dark:bg-slate-800/40 rounded-lg text-xs text-muted-foreground dark:text-slate-300">
           <strong>Biopsy / MDT Notes:</strong> {data.notes}
         </div>
       )}
@@ -228,15 +228,15 @@ export function BaselineCancerCard({
 
 export function PSACard({ psa, psaDate }: { psa?: number; psaDate?: string }) {
   return (
-    <div className="rounded-xl border border-cyan-100 bg-cyan-50/50 p-4 dark:border-cyan-900/40 dark:bg-cyan-950/20">
+    <div className="rounded-xl border border-info/20 bg-info-muted/50 p-4 dark:border-cyan-900/40 dark:bg-cyan-950/20">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold text-cyan-800 dark:text-cyan-300">Pre-Op PSA</span>
-        <Dna className="h-4 w-4 text-cyan-600" />
+        <span className="text-xs font-semibold text-info-muted-foreground dark:text-cyan-300">Pre-Op PSA</span>
+        <Dna className="h-4 w-4 text-info-muted-foreground" />
       </div>
-      <div className="text-2xl font-bold text-cyan-950 dark:text-cyan-100 mt-1">
+      <div className="text-2xl font-bold text-info-muted-foreground dark:text-cyan-100 mt-1">
         {formatPsa(psa)}
       </div>
-      {psaDate && <div className="text-[11px] text-cyan-700 mt-1">{formatDate(psaDate)}</div>}
+      {psaDate && <div className="text-[11px] text-info-muted-foreground mt-1">{formatDate(psaDate)}</div>}
     </div>
   );
 }

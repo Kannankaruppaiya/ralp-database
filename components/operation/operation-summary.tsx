@@ -167,7 +167,7 @@ export function OperationSummary({
           )}
 
           {formData.nerveSparing === 'None' && (
-            <div className="flex items-center p-3 bg-slate-50 dark:bg-slate-800/40 rounded-lg text-xs text-slate-500 italic">
+            <div className="flex items-center p-3 bg-muted dark:bg-slate-800/40 rounded-lg text-xs text-muted-foreground italic">
               Non-nerve sparing procedure selected (Nerve sparing grade: N/A)
             </div>
           )}
@@ -368,7 +368,7 @@ export function OperationSummary({
       </div>
 
       {data?.notes && (
-        <div className="mt-4 p-3 bg-slate-50 dark:bg-slate-800/40 rounded-lg text-xs text-slate-600 dark:text-slate-300">
+        <div className="mt-4 p-3 bg-muted dark:bg-slate-800/40 rounded-lg text-xs text-muted-foreground dark:text-slate-300">
           <strong>Intra-operative Notes:</strong> {data.notes}
         </div>
       )}

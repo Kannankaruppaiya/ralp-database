@@ -48,9 +48,9 @@ export default function PatientsRegistryPage() {
       />
 
       {/* Industry Standard Filter & Controls Toolbar */}
-      <div className="flex flex-col md:flex-row items-center gap-3 p-3.5 rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div className="flex flex-col md:flex-row items-center gap-3 p-3.5 rounded-xl border border-border bg-card shadow-sm dark:border-slate-800 dark:bg-slate-900">
         <div className="relative flex-1 w-full">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Search by name, NHS number, MRN… (min. 2 characters)"
             value={search}
@@ -60,7 +60,7 @@ export default function PatientsRegistryPage() {
         </div>
 
         <div className="flex items-center gap-2.5 w-full md:w-auto">
-          <div className="flex items-center gap-1 text-xs text-slate-500 whitespace-nowrap">
+          <div className="flex items-center gap-1 text-xs text-muted-foreground whitespace-nowrap">
             <Filter className="h-3.5 w-3.5" />
             <span>Filters:</span>
           </div>
@@ -105,11 +105,11 @@ export default function PatientsRegistryPage() {
       </div>
 
       {/* Contained Viewport Table with Sticky Header */}
-      <div className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
+      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden dark:border-slate-800 dark:bg-slate-900">
         <div className="max-h-[580px] overflow-y-auto">
           <Table>
-            <TableHeader className="sticky top-0 z-10 bg-slate-50/95 backdrop-blur-sm dark:bg-slate-900/95 shadow-sm">
-              <TableRow className="border-b border-slate-200 dark:border-slate-800">
+            <TableHeader className="sticky top-0 z-10 bg-muted/95 backdrop-blur-sm dark:bg-slate-900/95 shadow-sm">
+              <TableRow className="border-b border-border dark:border-slate-800">
                 <TableHead>Patient Details</TableHead>
                 <TableHead>Surgeon</TableHead>
                 <TableHead>Pre-Op Baseline</TableHead>
@@ -122,7 +122,7 @@ export default function PatientsRegistryPage() {
             <TableBody>
               {patients.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center py-12 text-sm text-slate-500">
+                  <TableCell colSpan={7} className="text-center py-12 text-sm text-muted-foreground">
                     {isLoading
                       ? 'Loading patients…'
                       : search.length > 0 && search.length < 2
@@ -133,12 +133,12 @@ export default function PatientsRegistryPage() {
               ) : (
                 patients.map((patient) => {
                   return (
-                    <TableRow key={patient.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors">
-                      <TableCell className="font-semibold text-slate-900 dark:text-slate-100 py-3">
-                        <Link href={`/patients/${patient.id}`} className="hover:text-teal-600 text-sm font-bold block transition-colors">
+                    <TableRow key={patient.id} className="hover:bg-muted/80 dark:hover:bg-slate-800/50 transition-colors">
+                      <TableCell className="font-semibold text-foreground dark:text-slate-100 py-3">
+                        <Link href={`/patients/${patient.id}`} className="hover:text-primary text-sm font-bold block transition-colors">
                           {patient.firstName} {patient.surname}
                         </Link>
-                        <div className="text-xs text-slate-400 font-normal mt-0.5 space-x-2 font-mono">
+                        <div className="text-xs text-muted-foreground font-normal mt-0.5 space-x-2 font-mono">
                           <span>NHS: {formatNhsNumber(patient.nhsNumber)}</span>
                           <span>•</span>
                           <span>MRN: {patient.hospitalNumber}</span>
@@ -154,13 +154,13 @@ export default function PatientsRegistryPage() {
                       <TableCell className="text-xs font-mono">
                         {patient.baseline ? (
                           <div>
-                            <span className="font-bold text-slate-900 dark:text-slate-100">{formatPsa(patient.baseline.psa)}</span>
-                            <span className="block text-slate-500 text-[11px]">
+                            <span className="font-bold text-foreground dark:text-slate-100">{formatPsa(patient.baseline.psa)}</span>
+                            <span className="block text-muted-foreground text-[11px]">
                               {patient.baseline.gleasonGrade} (cStage {patient.baseline.clinicalStage})
                             </span>
                           </div>
                         ) : (
-                          <span className="text-slate-400 italic">Pending</span>
+                          <span className="text-muted-foreground italic">Pending</span>
                         )}
                       </TableCell>
 
@@ -168,39 +168,39 @@ export default function PatientsRegistryPage() {
                         {patient.operation ? (
                           <div>
                             <span className="font-semibold font-mono">{formatDate(patient.operation.operationDate)}</span>
-                            <span className="block text-slate-500 text-[11px]">
+                            <span className="block text-muted-foreground text-[11px]">
                               NS: {patient.operation.nerveSparing}
                             </span>
                           </div>
                         ) : (
-                          <span className="text-slate-400 italic">Not logged</span>
+                          <span className="text-muted-foreground italic">Not logged</span>
                         )}
                       </TableCell>
 
                       <TableCell className="text-xs">
                         {patient.histology ? (
                           <div>
-                            <span className="font-bold text-slate-900 dark:text-slate-100 font-mono">
+                            <span className="font-bold text-foreground dark:text-slate-100 font-mono">
                               pT{patient.histology.pathologicalStage}
                             </span>
-                            <span className="block text-slate-500 text-[11px]">
+                            <span className="block text-muted-foreground text-[11px]">
                               {patient.histology.gleasonGrade} ({patient.histology.surgicalMargins?.includes('Positive') ? 'R1' : 'R0'})
                             </span>
                           </div>
                         ) : (
-                          <span className="text-slate-400 italic">Awaiting lab</span>
+                          <span className="text-muted-foreground italic">Awaiting lab</span>
                         )}
                       </TableCell>
 
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <div className="w-16 bg-slate-100 rounded-full h-1.5 dark:bg-slate-800">
+                          <div className="w-16 bg-muted rounded-full h-1.5 dark:bg-slate-800">
                             <div
-                              className="bg-teal-600 h-1.5 rounded-full"
+                              className="bg-primary h-1.5 rounded-full"
                               style={{ width: `${patient.completeness.score}%` }}
                             />
                           </div>
-                          <span className="text-xs font-mono font-semibold text-slate-700 dark:text-slate-300">
+                          <span className="text-xs font-mono font-semibold text-foreground dark:text-slate-300">
                             {patient.completeness.score}%
                           </span>
                         </div>
@@ -223,12 +223,12 @@ export default function PatientsRegistryPage() {
         </div>
 
         {/* Industry Standard Pagination Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3.5 bg-slate-50/75 dark:bg-slate-900/75 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3.5 bg-muted/75 dark:bg-slate-900/75 border-t border-border dark:border-slate-800 text-xs text-muted-foreground">
           <div>
             <span>
-              Showing <strong className="text-slate-900 dark:text-white">{filteredCount === 0 ? 0 : ((page - 1) * pageSize) + 1}</strong> to{' '}
-              <strong className="text-slate-900 dark:text-white">{Math.min(page * pageSize, filteredCount)}</strong> of{' '}
-              <strong className="text-slate-900 dark:text-white">{filteredCount.toLocaleString()}</strong> patients
+              Showing <strong className="text-foreground dark:text-white">{filteredCount === 0 ? 0 : ((page - 1) * pageSize) + 1}</strong> to{' '}
+              <strong className="text-foreground dark:text-white">{Math.min(page * pageSize, filteredCount)}</strong> of{' '}
+              <strong className="text-foreground dark:text-white">{filteredCount.toLocaleString()}</strong> patients
             </span>
           </div>
 
@@ -254,7 +254,7 @@ export default function PatientsRegistryPage() {
               <ChevronLeft className="h-3.5 w-3.5" />
             </Button>
 
-            <span className="px-2 text-xs font-mono font-medium text-slate-700 dark:text-slate-300">
+            <span className="px-2 text-xs font-mono font-medium text-foreground dark:text-slate-300">
               Page {page} of {totalPages}
             </span>
 

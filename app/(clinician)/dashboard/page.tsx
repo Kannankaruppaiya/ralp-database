@@ -36,7 +36,7 @@ const OutcomeChart = dynamic(
   () => import('@/components/analytics/outcome-chart').then((m) => ({ default: m.OutcomeChart })),
   {
     loading: () => (
-      <div className="rounded-xl border border-slate-200 bg-white shadow-sm h-72 animate-pulse dark:border-slate-800 dark:bg-slate-900" />
+      <div className="rounded-xl border border-border bg-card shadow-sm h-72 animate-pulse dark:border-slate-800 dark:bg-slate-900" />
     ),
     ssr: false,
   }
@@ -76,21 +76,21 @@ export default function ClinicianDashboardPage() {
   return (
     <div className="space-y-6">
       {/* Personalized Clinician Welcome & Caseload Scope Header */}
-      <div className="p-4 sm:p-5 rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-4 sm:p-5 rounded-2xl border border-border bg-card dark:border-slate-800 dark:bg-slate-900 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
-          <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-teal-600 to-emerald-600 text-white flex items-center justify-center font-bold text-sm shadow-md">
+          <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-primary to-emerald-600 text-white flex items-center justify-center font-bold text-sm shadow-md">
             {currentUser?.name.split(' ').map((n) => n[0]).join('').slice(0, 2)}
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+              <h2 className="text-lg font-bold text-foreground dark:text-white">
                 {currentUser?.name} {currentUser?.surgeonCode && `(${currentUser?.surgeonCode})`}
               </h2>
-              <Badge variant="outline" className="text-xs bg-teal-50 text-teal-800 border-teal-200 dark:bg-teal-950/50 dark:text-teal-300">
+              <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/30 dark:bg-teal-950/50 dark:text-teal-300">
                 {currentUser?.role}
               </Badge>
             </div>
-            <p className="text-xs text-slate-500 mt-0.5">
+            <p className="text-xs text-muted-foreground mt-0.5">
               {currentUser?.hospital} • {caseloadScope === 'personal' && targetSurgeonCode ? `Showing your personal caseload (${targetSurgeonCode})` : 'Showing full hospital registry (All Surgeons)'}
             </p>
           </div>
@@ -99,14 +99,14 @@ export default function ClinicianDashboardPage() {
         {/* Caseload Toggle */}
         <div className="flex items-center gap-2">
           {targetSurgeonCode && (
-            <div className="p-1 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center text-xs font-semibold">
+            <div className="p-1 rounded-xl bg-muted dark:bg-slate-800 border border-border dark:border-slate-700 flex items-center text-xs font-semibold">
               <button
                 type="button"
                 onClick={() => setCaseloadScope('personal')}
                 className={`px-3 py-1.5 rounded-lg transition-all ${
                   caseloadScope === 'personal'
-                    ? 'bg-white dark:bg-slate-900 text-teal-700 dark:text-teal-300 font-bold shadow-sm'
-                    : 'text-slate-500 hover:text-slate-900'
+                    ? 'bg-card dark:bg-slate-900 text-primary dark:text-teal-300 font-bold shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 My Caseload ({targetSurgeonCode})
@@ -116,8 +116,8 @@ export default function ClinicianDashboardPage() {
                 onClick={() => setCaseloadScope('trust')}
                 className={`px-3 py-1.5 rounded-lg transition-all ${
                   caseloadScope === 'trust'
-                    ? 'bg-white dark:bg-slate-900 text-teal-700 dark:text-teal-300 font-bold shadow-sm'
-                    : 'text-slate-500 hover:text-slate-900'
+                    ? 'bg-card dark:bg-slate-900 text-primary dark:text-teal-300 font-bold shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 Whole Trust ({allPatients.length.toLocaleString()})
@@ -136,16 +136,16 @@ export default function ClinicianDashboardPage() {
 
       {/* Role-Specific Smart Banners */}
       {currentUser?.role === 'Clinical Nurse Specialist' && (
-        <div className="p-4 rounded-xl border border-purple-200 bg-purple-50/50 dark:border-purple-900/40 dark:bg-purple-950/20 flex items-center justify-between">
+        <div className="p-4 rounded-xl border border-category/20 bg-category-muted/50 dark:border-purple-900/40 dark:bg-purple-950/20 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <HeartPulse className="h-5 w-5 text-purple-600" />
+            <HeartPulse className="h-5 w-5 text-category-muted-foreground" />
             <div>
-              <div className="text-xs font-bold text-purple-950 dark:text-purple-200">Specialist Nursing Triage Dashboard Active</div>
-              <div className="text-[11px] text-purple-700 dark:text-purple-400">Highlighting TWOC catheter removals, incontinence rehabilitation, and PROM non-responder triage.</div>
+              <div className="text-xs font-bold text-category-muted-foreground dark:text-purple-200">Specialist Nursing Triage Dashboard Active</div>
+              <div className="text-[11px] text-category-muted-foreground dark:text-purple-400">Highlighting TWOC catheter removals, incontinence rehabilitation, and PROM non-responder triage.</div>
             </div>
           </div>
           <Link href="/follow-ups/overdue">
-            <Button size="sm" variant="outline" className="text-xs border-purple-300 text-purple-800 hover:bg-purple-100">
+            <Button size="sm" variant="outline" className="text-xs border-category/20 text-category-muted-foreground hover:bg-category-muted">
               Review Nurse Triage Queue
             </Button>
           </Link>
@@ -173,14 +173,14 @@ export default function ClinicianDashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="border-l-4 border-l-teal-600 shadow-sm">
           <CardHeader className="p-4 pb-1 flex flex-row items-center justify-between space-y-0">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               {caseloadScope === 'personal' && targetSurgeonCode ? `${targetSurgeonCode} Patients` : 'Total Cohort'}
             </span>
-            <Users className="h-4 w-4 text-teal-600" />
+            <Users className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent className="p-4 pt-1">
-            <div className="text-2xl font-bold text-slate-900 dark:text-white">{totalCohort}</div>
-            <p className="text-[11px] text-slate-500 mt-1">
+            <div className="text-2xl font-bold text-foreground dark:text-white">{totalCohort}</div>
+            <p className="text-[11px] text-muted-foreground mt-1">
               {caseloadScope === 'personal' && targetSurgeonCode ? `Managed by ${currentUser?.name}` : 'RALP surgical cohort'}
             </p>
           </CardContent>
@@ -188,34 +188,34 @@ export default function ClinicianDashboardPage() {
 
         <Card className="border-l-4 border-l-amber-500 shadow-sm">
           <CardHeader className="p-4 pb-1 flex flex-row items-center justify-between space-y-0">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Due Follow-ups</span>
-            <CalendarClock className="h-4 w-4 text-amber-600" />
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Due Follow-ups</span>
+            <CalendarClock className="h-4 w-4 text-warning-muted-foreground" />
           </CardHeader>
           <CardContent className="p-4 pt-1">
-            <div className="text-2xl font-bold text-slate-900 dark:text-white">{displayDue.length}</div>
-            <p className="text-[11px] text-slate-500 mt-1">Scheduled in next 30 days</p>
+            <div className="text-2xl font-bold text-foreground dark:text-white">{displayDue.length}</div>
+            <p className="text-[11px] text-muted-foreground mt-1">Scheduled in next 30 days</p>
           </CardContent>
         </Card>
 
         <Card className="border-l-4 border-l-rose-500 shadow-sm">
           <CardHeader className="p-4 pb-1 flex flex-row items-center justify-between space-y-0">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Overdue Alerts</span>
-            <AlertCircle className="h-4 w-4 text-rose-500" />
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Overdue Alerts</span>
+            <AlertCircle className="h-4 w-4 text-destructive" />
           </CardHeader>
           <CardContent className="p-4 pt-1">
-            <div className="text-2xl font-bold text-rose-600">{displayOverdue.length}</div>
-            <p className="text-[11px] text-slate-500 mt-1">Missing PSA / PROM data</p>
+            <div className="text-2xl font-bold text-destructive">{displayOverdue.length}</div>
+            <p className="text-[11px] text-muted-foreground mt-1">Missing PSA / PROM data</p>
           </CardContent>
         </Card>
 
         <Card className="border-l-4 border-l-purple-500 shadow-sm">
           <CardHeader className="p-4 pb-1 flex flex-row items-center justify-between space-y-0">
-            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Registry Completeness</span>
-            <ShieldCheck className="h-4 w-4 text-purple-600" />
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Registry Completeness</span>
+            <ShieldCheck className="h-4 w-4 text-category-muted-foreground" />
           </CardHeader>
           <CardContent className="p-4 pt-1">
-            <div className="text-2xl font-bold text-slate-900 dark:text-white">{avgCompleteness}%</div>
-            <p className="text-[11px] text-slate-500 mt-1">Caseload quality score</p>
+            <div className="text-2xl font-bold text-foreground dark:text-white">{avgCompleteness}%</div>
+            <p className="text-[11px] text-muted-foreground mt-1">Caseload quality score</p>
           </CardContent>
         </Card>
       </div>
@@ -227,13 +227,13 @@ export default function ClinicianDashboardPage() {
           <Card className="shadow-sm">
             <CardHeader className="p-5 pb-3 border-b flex flex-row items-center justify-between space-y-0">
               <div>
-                <CardTitle className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-                  <AlertCircle className="h-4 w-4 text-rose-500" />
+                <CardTitle className="text-sm font-bold text-foreground dark:text-white flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4 text-destructive" />
                   <span>
                     Action Required: Overdue Follow-ups ({displayOverdue.length})
                   </span>
                 </CardTitle>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-muted-foreground mt-0.5">
                   {caseloadScope === 'personal' && targetSurgeonCode
                     ? `Patients under ${currentUser?.name} pending review`
                     : 'Patients pending milestone review across all surgeons'}
@@ -246,20 +246,20 @@ export default function ClinicianDashboardPage() {
                 </Button>
               </Link>
             </CardHeader>
-            <CardContent className="p-0 divide-y divide-slate-100 dark:divide-slate-800">
+            <CardContent className="p-0 divide-y divide-border dark:divide-slate-800">
               {displayOverdue.length === 0 ? (
-                <div className="p-8 text-center text-xs text-slate-500">
-                  <CheckCircle2 className="h-8 w-8 text-emerald-500 mx-auto mb-2" />
+                <div className="p-8 text-center text-xs text-muted-foreground">
+                  <CheckCircle2 className="h-8 w-8 text-success mx-auto mb-2" />
                   No overdue follow-up milestones for this caseload.
                 </div>
               ) : (
                 displayOverdue.slice(0, 4).map((fu) => (
-                  <div key={fu.id} className="p-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                  <div key={fu.id} className="p-4 flex items-center justify-between hover:bg-muted dark:hover:bg-slate-800/40 transition-colors">
                     <div>
-                      <Link href={`/patients/${fu.patient.id}`} className="font-bold text-sm text-slate-900 dark:text-slate-100 hover:text-teal-600">
+                      <Link href={`/patients/${fu.patient.id}`} className="font-bold text-sm text-foreground dark:text-slate-100 hover:text-primary">
                         {fu.patient.firstName} {fu.patient.surname}
                       </Link>
-                      <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
                         <span className="font-mono">MRN: {fu.patient.hospitalNumber}</span>
                         <span>•</span>
                         <Badge variant="outline" className="text-[10px]">{fu.milestone.toUpperCase()} ({fu.targetMonths}m)</Badge>
@@ -285,28 +285,28 @@ export default function ClinicianDashboardPage() {
         {/* Sidebar Cards: Pending Ingestion & Fast Registration */}
         <div className="space-y-6">
           {/* Pending Ingestion Card */}
-          <Card className="border-teal-200 bg-teal-50/20 dark:border-teal-900/50 shadow-sm">
+          <Card className="border-primary/30 bg-primary/10/20 dark:border-teal-900/50 shadow-sm">
             <CardHeader className="p-5 pb-3">
               <CardTitle className="text-sm font-bold text-teal-950 dark:text-teal-200 flex items-center justify-between">
                 <span className="flex items-center gap-2">
-                  <FileUp className="h-4 w-4 text-teal-600" />
+                  <FileUp className="h-4 w-4 text-primary" />
                   Document Ingestion
                 </span>
                 <Badge variant="warning">{pendingJobs.length} Pending</Badge>
               </CardTitle>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-muted-foreground">
                 Theatre notes & clinic letters awaiting review
               </p>
             </CardHeader>
             <CardContent className="p-5 pt-0 space-y-3">
               {pendingJobs.map((job) => (
-                <div key={job.id} className="p-3 bg-white dark:bg-slate-900 rounded-lg border border-teal-100 dark:border-teal-900 text-xs space-y-2">
-                  <div className="font-semibold text-slate-900 dark:text-slate-100 truncate">
+                <div key={job.id} className="p-3 bg-card dark:bg-slate-900 rounded-lg border border-primary/20 dark:border-teal-900 text-xs space-y-2">
+                  <div className="font-semibold text-foreground dark:text-slate-100 truncate">
                     {job.documentTitle}
                   </div>
-                  <div className="flex items-center justify-between text-slate-500">
+                  <div className="flex items-center justify-between text-muted-foreground">
                     <span>{job.extractedFields.length} fields extracted</span>
-                    <span className="text-amber-600 font-semibold">{job.conflictCount} conflict</span>
+                    <span className="text-warning-muted-foreground font-semibold">{job.conflictCount} conflict</span>
                   </div>
                   <Link href="/data-ingestion/extraction-review" className="block">
                     <Button size="sm" className="w-full text-xs h-7">
@@ -321,7 +321,7 @@ export default function ClinicianDashboardPage() {
           {/* Active Surgeons Cohort Breakdown */}
           <Card className="shadow-sm">
             <CardHeader className="p-5 pb-3">
-              <CardTitle className="text-sm font-bold text-slate-900 dark:text-slate-100">
+              <CardTitle className="text-sm font-bold text-foreground dark:text-slate-100">
                 Surgeon Caseload Breakdown
               </CardTitle>
             </CardHeader>
@@ -340,21 +340,21 @@ export default function ClinicianDashboardPage() {
                       }
                     }}
                     className={`p-2 rounded-lg transition-colors cursor-pointer ${
-                      isCurrentSurgeon ? 'bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800' : 'hover:bg-slate-50 dark:hover:bg-slate-800/40'
+                      isCurrentSurgeon ? 'bg-primary/10 dark:bg-teal-950/40 border border-primary/30 dark:border-teal-800' : 'hover:bg-muted dark:hover:bg-slate-800/40'
                     }`}
                   >
                     <div className="flex justify-between font-medium">
                       <span className="flex items-center gap-1.5">
                         <span className="font-bold">Surgeon {code}</span>
                         {isCurrentSurgeon && (
-                          <Badge className="bg-teal-600 text-white text-[9px] px-1.5 py-0 h-4">You</Badge>
+                          <Badge className="bg-primary text-white text-[9px] px-1.5 py-0 h-4">You</Badge>
                         )}
                       </span>
-                      <span className="font-mono text-slate-600 dark:text-slate-300">{count} cases ({percentage}%)</span>
+                      <span className="font-mono text-muted-foreground dark:text-slate-300">{count} cases ({percentage}%)</span>
                     </div>
-                    <div className="w-full bg-slate-100 rounded-full h-1.5 mt-1.5 dark:bg-slate-800">
+                    <div className="w-full bg-muted rounded-full h-1.5 mt-1.5 dark:bg-slate-800">
                       <div
-                        className={`h-1.5 rounded-full ${isCurrentSurgeon ? 'bg-teal-600' : 'bg-slate-400'}`}
+                        className={`h-1.5 rounded-full ${isCurrentSurgeon ? 'bg-primary' : 'bg-slate-400'}`}
                         style={{ width: `${percentage}%` }}
                       />
                     </div>

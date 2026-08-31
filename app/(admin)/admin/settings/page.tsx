@@ -44,16 +44,16 @@ export default function AdminSettingsPage() {
 
       <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Trust Profile */}
-        <Card className="border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <Card className="border-border bg-card shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <CardHeader className="p-5 pb-3 border-b">
-            <CardTitle className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <Hospital className="h-4 w-4 text-teal-600" />
+            <CardTitle className="text-sm font-bold text-foreground dark:text-white flex items-center gap-2">
+              <Hospital className="h-4 w-4 text-primary" />
               <span>NHS Trust & Centre Details</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="p-5 space-y-4">
             <div>
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">NHS Trust Name</label>
+              <label className="text-xs font-semibold text-foreground dark:text-slate-300">NHS Trust Name</label>
               <Input
                 value={trustName}
                 onChange={(e) => setTrustName(e.target.value)}
@@ -62,19 +62,19 @@ export default function AdminSettingsPage() {
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Hospital Medical Record Number (MRN) Prefix</label>
+              <label className="text-xs font-semibold text-foreground dark:text-slate-300">Hospital Medical Record Number (MRN) Prefix</label>
               <Input
                 value={hospitalPrefix}
                 onChange={(e) => setHospitalPrefix(e.target.value)}
                 className="mt-1 text-xs font-mono"
               />
-              <span className="text-[11px] text-slate-500 mt-1 block">
+              <span className="text-[11px] text-muted-foreground mt-1 block">
                 Auto-assigned to new registered RALP patients (e.g. {hospitalPrefix}78205)
               </span>
             </div>
 
             <div>
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Lead Registry Consultant</label>
+              <label className="text-xs font-semibold text-foreground dark:text-slate-300">Lead Registry Consultant</label>
               <Input
                 value={leadSurgeonCode}
                 onChange={(e) => setLeadSurgeonCode(e.target.value)}
@@ -85,23 +85,23 @@ export default function AdminSettingsPage() {
         </Card>
 
         {/* Digital PROM Dispatch Settings */}
-        <Card className="border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <Card className="border-border bg-card shadow-sm dark:border-slate-800 dark:bg-slate-900">
           <CardHeader className="p-5 pb-3 border-b">
-            <CardTitle className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <Bell className="h-4 w-4 text-teal-600" />
+            <CardTitle className="text-sm font-bold text-foreground dark:text-white flex items-center gap-2">
+              <Bell className="h-4 w-4 text-primary" />
               <span>NHS Notify & PROMs Automation</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="p-5 space-y-4">
             <div>
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">NHS Notify API Key (Encrypted)</label>
+              <label className="text-xs font-semibold text-foreground dark:text-slate-300">NHS Notify API Key (Encrypted)</label>
               <Input
                 type="password"
                 value={notifyApiKey}
                 onChange={(e) => setNotifyApiKey(e.target.value)}
                 className="mt-1 text-xs font-mono"
               />
-              <span className="text-[11px] text-emerald-600 flex items-center gap-1 mt-1 font-medium">
+              <span className="text-[11px] text-success-muted-foreground flex items-center gap-1 mt-1 font-medium">
                 <CheckCircle2 className="h-3 w-3" />
                 <span>Connected to NHS Notify Gateway</span>
               </span>
@@ -113,13 +113,13 @@ export default function AdminSettingsPage() {
                   type="checkbox"
                   checked={autoDispatchProms}
                   onChange={(e) => setAutoDispatchProms(e.target.checked)}
-                  className="mt-1 h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500"
+                  className="mt-1 h-4 w-4 rounded border-border text-primary focus:ring-teal-500"
                 />
                 <div>
-                  <span className="text-xs font-semibold text-slate-900 dark:text-white block">
+                  <span className="text-xs font-semibold text-foreground dark:text-white block">
                     Automated 14-Day Advance PROM Questionnaire Dispatch
                   </span>
-                  <span className="text-[11px] text-slate-500 block mt-0.5">
+                  <span className="text-[11px] text-muted-foreground block mt-0.5">
                     Automatically sends secure SMS/Email notification link to patient 14 days before 2m, 6m, 12m, 18m, 24m milestones.
                   </span>
                 </div>

@@ -16,7 +16,7 @@ export default function PatientOperationPage({
   const { patient, isLoading, refresh } = usePatient(resolvedParams.patientId);
 
   if (isLoading || !patient) {
-    return <div className="p-8 text-center text-sm text-slate-500">Loading operation record...</div>;
+    return <div className="p-8 text-center text-sm text-muted-foreground">Loading operation record...</div>;
   }
 
   return (

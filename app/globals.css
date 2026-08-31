@@ -33,9 +33,51 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
+    /* Semantic status tokens (F-04) */
+    --success: 160 84% 30%;
+    --success-foreground: 0 0% 100%;
+    --success-muted: 152 76% 96%;
+    --success-muted-foreground: 161 84% 25%;
+
+    --warning: 32 95% 44%;
+    --warning-foreground: 0 0% 100%;
+    --warning-muted: 48 100% 96%;
+    --warning-muted-foreground: 26 84% 33%;
+
+    --info: 199 89% 42%;
+    --info-foreground: 0 0% 100%;
+    --info-muted: 204 94% 96%;
+    --info-muted-foreground: 201 90% 30%;
+
+    /* Category identity tokens: admin portal (indigo) + clinical category (violet) */
+    --admin: 243 75% 59%;
+    --admin-foreground: 0 0% 100%;
+    --admin-muted: 226 100% 97%;
+    --admin-muted-foreground: 243 54% 41%;
+
+    --category: 262 83% 58%;
+    --category-foreground: 0 0% 100%;
+    --category-muted: 270 100% 98%;
+    --category-muted-foreground: 263 70% 42%;
+
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 173 80% 32%;
+
+    /* Chart tokens — clinical palette (F-04) */
+    --chart-1: 173 80% 36%;
+    --chart-2: 199 89% 42%;
+    --chart-3: 262 83% 58%;
+    --chart-4: 32 95% 44%;
+    --chart-5: 345 82% 51%;
+    --chart-6: 160 84% 39%;
+
+    /* Sidebar surface tokens */
+    --sidebar: 0 0% 100%;
+    --sidebar-foreground: 222.2 84% 4.9%;
+    --sidebar-border: 214.3 31.8% 91.4%;
+    --sidebar-accent: 173 70% 96%;
+    --sidebar-accent-foreground: 173 80% 22%;
 
     --radius: 0.625rem;
   }
@@ -65,9 +107,51 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
+    /* Semantic status tokens — dark */
+    --success: 160 70% 42%;
+    --success-foreground: 155 90% 8%;
+    --success-muted: 161 74% 10%;
+    --success-muted-foreground: 158 70% 68%;
+
+    --warning: 36 90% 52%;
+    --warning-foreground: 30 90% 8%;
+    --warning-muted: 30 60% 12%;
+    --warning-muted-foreground: 40 90% 70%;
+
+    --info: 199 89% 55%;
+    --info-foreground: 202 90% 10%;
+    --info-muted: 201 80% 12%;
+    --info-muted-foreground: 200 90% 72%;
+
+    /* Category identity tokens — dark */
+    --admin: 243 75% 70%;
+    --admin-foreground: 243 60% 12%;
+    --admin-muted: 243 47% 18%;
+    --admin-muted-foreground: 240 90% 85%;
+
+    --category: 262 83% 72%;
+    --category-foreground: 263 60% 12%;
+    --category-muted: 263 45% 20%;
+    --category-muted-foreground: 269 90% 86%;
+
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 173 70% 40%;
+
+    /* Chart tokens — dark */
+    --chart-1: 173 70% 45%;
+    --chart-2: 199 89% 58%;
+    --chart-3: 262 83% 68%;
+    --chart-4: 36 90% 55%;
+    --chart-5: 345 82% 62%;
+    --chart-6: 160 70% 50%;
+
+    /* Sidebar surface tokens — dark */
+    --sidebar: 222.2 84% 6%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-border: 217.2 32.6% 17.5%;
+    --sidebar-accent: 173 60% 14%;
+    --sidebar-accent-foreground: 173 70% 78%;
   }
 }
 
@@ -78,48 +162,31 @@
   html,
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11", "rlig" 1, "calt" 1;
   }
-}
-
-/* Global Font Enforcement for all elements, inputs, buttons, headings, and SVG chart text */
-*,
-*::before,
-*::after,
-button,
-input,
-optgroup,
-select,
-textarea,
-h1, h2, h3, h4, h5, h6,
-p, span, a, label, table, th, td {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-}
-
-code,
-kbd,
-samp,
-pre,
-.font-mono,
-[class*='font-mono'] {
-  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
-}
-
-/* Ensure SVG text elements in Recharts charts render in Plus Jakarta Sans */
-svg text {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  code,
+  kbd,
+  samp,
+  pre,
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+  /* Recharts SVG text inherits the sans stack */
+  svg text {
+    font-family: var(--font-sans);
+  }
 }
 
 /* Medical Registry Aesthetic Enhancements */
 .medical-glass {
-  background: rgba(255, 255, 255, 0.85);
+  background: hsl(var(--card) / 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  border: 1px solid hsl(var(--border) / 0.8);
 }
 
 .clinical-badge-pill {

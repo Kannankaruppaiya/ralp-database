@@ -8,10 +8,11 @@ import { Button } from '@/components/ui/button';
 import { FormField, FormLabel } from '@/components/ui/form';
 import { ArrowLeft, Mail, HeartPulse, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { APP_CONFIG } from '@/config/environment';
 
 export default function ForgotPasswordPage() {
   const { toast } = useToast();
-  const [email, setEmail] = useState('v.kannan@nhs.net');
+  const [email, setEmail] = useState(APP_CONFIG.showDemoHelpers ? 'v.kannan@nhs.net' : '');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -25,26 +26,26 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-gradient-to-br from-slate-50 via-teal-50/20 to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 p-4 sm:p-6">
+    <div className="min-h-screen flex flex-col justify-between bg-muted p-4 sm:p-6">
       <div className="max-w-md w-full mx-auto my-auto space-y-5">
         <div className="text-center space-y-1.5">
-          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-600 text-white shadow-lg shadow-teal-600/20 mb-1">
+          <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-white shadow-lg shadow-teal-600/20 mb-1">
             <HeartPulse className="h-6 w-6" />
           </div>
-          <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+          <h1 className="text-2xl font-black text-foreground dark:text-white tracking-tight">
             RALP Database v2
           </h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-muted-foreground dark:text-slate-400">
             Oxford Urology Clinician & Staff Password Recovery
           </p>
         </div>
 
-        <Card className="shadow-xl border-slate-200/90 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur">
+        <Card className="shadow-xl border-border/90 dark:border-slate-800 bg-card/95 dark:bg-slate-900/95 backdrop-blur">
           <CardHeader className="p-6 pb-2">
-            <CardTitle className="text-base font-bold text-slate-900 dark:text-white">
+            <CardTitle className="text-base font-bold text-foreground dark:text-white">
               Reset Clinician Password
             </CardTitle>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            <p className="text-xs text-muted-foreground dark:text-slate-400 mt-1">
               Enter your registered NHS.net or hospital trust email address to receive a secure self-service reset link.
             </p>
           </CardHeader>
@@ -54,7 +55,7 @@ export default function ForgotPasswordPage() {
                 <FormField>
                   <FormLabel className="text-xs font-semibold">NHS.net / Hospital Email</FormLabel>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+                    <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
                       type="email"
                       value={email}
@@ -73,15 +74,15 @@ export default function ForgotPasswordPage() {
               </form>
             ) : (
               <div className="space-y-4 text-center py-2">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-success-muted text-success-muted-foreground dark:bg-emerald-950/40 border border-success/20 dark:border-emerald-800">
                   <CheckCircle2 className="h-6 w-6" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                  <h3 className="text-sm font-bold text-foreground dark:text-slate-100">
                     Check your NHS inbox
                   </h3>
-                  <p className="text-xs text-slate-500 mt-1">
-                    We have sent a time-limited reset token to <strong className="font-mono text-slate-700 dark:text-slate-300">{email}</strong>.
+                  <p className="text-xs text-muted-foreground mt-1">
+                    We have sent a time-limited reset token to <strong className="font-mono text-foreground dark:text-slate-300">{email}</strong>.
                   </p>
                 </div>
                 <Button
@@ -95,10 +96,10 @@ export default function ForgotPasswordPage() {
               </div>
             )}
 
-            <div className="text-center pt-3 border-t border-slate-100 dark:border-slate-800">
+            <div className="text-center pt-3 border-t border-border dark:border-slate-800">
               <Link
                 href="/login"
-                className="text-xs font-semibold text-teal-700 dark:text-teal-400 hover:underline inline-flex items-center gap-1.5"
+                className="text-xs font-semibold text-primary dark:text-teal-400 hover:underline inline-flex items-center gap-1.5"
               >
                 <ArrowLeft className="h-3.5 w-3.5" />
                 <span>Return to Clinician Sign In</span>
@@ -107,12 +108,12 @@ export default function ForgotPasswordPage() {
           </CardContent>
         </Card>
 
-        <div className="text-center text-[11px] text-slate-400">
+        <div className="text-center text-[11px] text-muted-foreground">
           Oxford University Hospitals NHS FT • NHS Caldicott Protected
         </div>
       </div>
 
-      <div className="max-w-md mx-auto w-full text-center text-[11px] text-slate-400 py-2">
+      <div className="max-w-md mx-auto w-full text-center text-[11px] text-muted-foreground py-2">
         If you are locked out or smartcard PIN is blocked, please contact NHS IT Service Desk.
       </div>
     </div>

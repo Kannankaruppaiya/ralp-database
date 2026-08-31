@@ -95,13 +95,13 @@ export default function NewPatientPage() {
         {/* Section 1: Demographics */}
         <Card className="shadow-sm">
           <CardHeader className="p-5 pb-3 border-b">
-            <CardTitle className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              <UserPlus className="h-4 w-4 text-teal-600" />
+            <CardTitle className="text-sm font-bold text-foreground dark:text-slate-100 flex items-center gap-2">
+              <UserPlus className="h-4 w-4 text-primary" />
               <span>1. Mandatory Patient Demographics</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="p-5 space-y-4">
-            {error && <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs rounded-lg">{error}</div>}
+            {error && <div className="p-3 bg-destructive/10 border border-destructive/20 text-destructive text-xs rounded-lg">{error}</div>}
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               <FormField>
@@ -174,7 +174,7 @@ export default function NewPatientPage() {
         {/* Section 2: Baseline Cancer Profile */}
         <Card className="shadow-sm">
           <CardHeader className="p-5 pb-3 border-b">
-            <CardTitle className="text-sm font-bold text-slate-900 dark:text-slate-100">
+            <CardTitle className="text-sm font-bold text-foreground dark:text-slate-100">
               2. Pre-Operative Cancer Baseline (Optional / Initial Diagnostic)
             </CardTitle>
           </CardHeader>

@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { PageHeader } from '@/components/layout/page-header';
 import { DocumentUpload } from '@/components/ingestion/document-upload';
