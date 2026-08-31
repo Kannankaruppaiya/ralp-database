@@ -41,7 +41,7 @@ export default function AdminLoginPage() {
   };
 
   const handleAutofillAdmin = (type: 'admin' | 'caldicott') => {
-    setAdminEmail(type === 'admin' ? 'admin.ralp@nhs.net' : 'm.roberts@nhs.net');
+    setAdminEmail(type === 'admin' ? 'admin.ralp@nhs.net' : 'm.roberts@nhs.net'); // audit-ok: demo preset, gated by showDemoHelpers
   };
 
   return (

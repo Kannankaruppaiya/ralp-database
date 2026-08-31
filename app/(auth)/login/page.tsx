@@ -29,11 +29,12 @@ interface DemoUser {
   initials: string;
 }
 
+// Demo sign-in presets. Rendered only when APP_CONFIG.showDemoHelpers (non-production).
 const PRESET_ACCOUNTS: DemoUser[] = [
-  { name: 'Mr. V. Kannan', role: 'Consultant Surgeon', surgeonCode: 'VK', email: 'v.kannan@nhs.net', department: 'Robotic Pelvic Oncology Lead', initials: 'VK' },
-  { name: 'Mr. R. D. MacDonagh', role: 'Consultant Surgeon', surgeonCode: 'RDM', email: 'r.macdonagh@nhs.net', department: 'Consultant Urological Surgeon', initials: 'RM' },
-  { name: 'Dr. Sarah Jenkins', role: 'Surgical Registrar', email: 's.jenkins@nhs.net', department: 'Urology Specialist Registrar', initials: 'SJ' },
-  { name: 'Sister Claire Evans', role: 'Clinical Nurse Specialist', email: 'c.evans@nhs.net', department: 'Robotic Prostate Cancer Specialist Nurse', initials: 'CE' },
+  { name: 'Mr. V. Kannan', role: 'Consultant Surgeon', surgeonCode: 'VK', email: 'v.kannan@nhs.net', department: 'Robotic Pelvic Oncology Lead', initials: 'VK' }, // audit-ok: demo preset, gated by showDemoHelpers
+  { name: 'Mr. R. D. MacDonagh', role: 'Consultant Surgeon', surgeonCode: 'RDM', email: 'r.macdonagh@nhs.net', department: 'Consultant Urological Surgeon', initials: 'RM' }, // audit-ok: demo preset, gated by showDemoHelpers
+  { name: 'Dr. Sarah Jenkins', role: 'Surgical Registrar', email: 's.jenkins@nhs.net', department: 'Urology Specialist Registrar', initials: 'SJ' }, // audit-ok: demo preset, gated by showDemoHelpers
+  { name: 'Sister Claire Evans', role: 'Clinical Nurse Specialist', email: 'c.evans@nhs.net', department: 'Robotic Prostate Cancer Specialist Nurse', initials: 'CE' }, // audit-ok: demo preset, gated by showDemoHelpers
 ];
 
 export default function ClinicianLoginPage() {

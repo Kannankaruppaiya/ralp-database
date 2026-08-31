@@ -1,0 +1,40 @@
+name: CI
+
+# Every push and pull request runs the same gates a developer runs locally,
+# so mistakes are caught before they reach a shared branch — not in production.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      # Public, non-secret placeholders so config/environment.ts doesn't fail the
+      # build. Real values live in the deployment platform, never in CI.
+      NEXT_PUBLIC_SUPABASE_URL: https://demo.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: sb_publishable_ci_placeholder
+      NEXT_PUBLIC_APP_ENV: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Production-readiness audit
+        run: npm run audit:prod
+
+      - name: Build
+        run: npm run build

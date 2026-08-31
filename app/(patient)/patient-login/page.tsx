@@ -4,13 +4,11 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Lock,
-  ShieldCheck,
   Smartphone,
   FileHeart,
   Mail,
   Calendar,
   Activity,
-  CheckCircle2,
 } from 'lucide-react';
 import { signIn } from '@/lib/auth';
 import { useToast } from '@/hooks/use-toast';
