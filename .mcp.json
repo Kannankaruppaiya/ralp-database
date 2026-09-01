@@ -2,10 +2,19 @@
   "mcpServers": {
     "supabase-kannan": {
       "command": "npx",
-      "args": ["-y", "@supabase/mcp-server-supabase@latest"],
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@latest"
+      ],
       "env": {
         "SUPABASE_ACCESS_TOKEN": "${SUPABASE_ACCESS_TOKEN}"
       }
+    },
+    "graft": {
+      "command": "graft",
+      "args": [
+        "mcp"
+      ]
     }
   }
 }
