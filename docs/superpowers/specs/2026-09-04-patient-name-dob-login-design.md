@@ -40,8 +40,12 @@ neither has to carry a branch on which credential shape it was given.
 
 The body is `{ firstName, surname, dateOfBirth }`, validated with zod. The
 lookup runs on a privileged connection, matching case-insensitively on the two
-names, exactly on the date, and only against patients whose `status` is
-`Active`.
+names and exactly on the date.
+
+Only `Deceased` patients are refused. `Discharged` and `Under Surveillance` are
+not: the follow-up schedule runs to thirty-six months and those patients may
+still owe PROMs, so locking them out would quietly defeat the purpose of the
+change.
 
 Three outcomes:
 
@@ -97,8 +101,12 @@ One test file covering the behaviour that would hurt if it broke:
 - one matching patient signs in and receives a `Patient` session
 - no match returns 401 and starts no session
 - two patients sharing a name and date of birth return 409 and start no session
-- the eleventh failed attempt from one IP returns 429
+- a deceased patient cannot sign in
 - an account created by patient sign-in cannot be used on `/api/auth/login`
+
+The throttle is tested on its own, at unit level, rather than by driving eleven
+requests through the route: the counting and the window are the parts that can
+break, and they are pure.
 
 ## Out of scope
 
