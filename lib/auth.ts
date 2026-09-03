@@ -45,6 +45,38 @@ export async function signOut(): Promise<void> {
 }
 
 /**
+ * Asks the server to email a reset link. Always resolves the same way whether or
+ * not the address is registered, so it cannot be used to discover which accounts
+ * exist. `devResetUrl` is returned only outside production, where no mail is
+ * sent, so the flow stays testable locally.
+ */
+export async function requestPasswordReset(email: string): Promise<{ devResetUrl?: string }> {
+  const res = await fetch('/api/auth/forgot-password', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+  if (!res.ok) throw new Error('Could not send the reset link. Please try again.');
+  const body = await res.json().catch(() => ({}));
+  return { devResetUrl: body?.devResetUrl };
+}
+
+/**
+ * Sets a new password from the single-use token carried by the reset link. The
+ * server verifies and consumes the token; on success the clinician signs in
+ * again with the new password (no session is minted here).
+ */
+export async function resetPassword(token: string, newPassword: string): Promise<void> {
+  const res = await fetch('/api/auth/reset-password', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token, password: newPassword }),
+  });
+  const body = await res.json().catch(() => null);
+  if (!res.ok) throw new Error(body?.error ?? 'Could not update your password.');
+}
+
+/**
  * A single shared view of "who is signed in", so the sidebar, topbar, page body
  * and any permissions check do not each fetch the session. The promise is
  * fetched once and shared; sign-in and sign-out update it and notify every

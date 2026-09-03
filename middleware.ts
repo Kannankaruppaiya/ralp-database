@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { verifySession } from '@/server/auth/jwt';
 
 /** Routes reachable without a session. Everything else requires a login. */
-const PUBLIC_PATHS = ['/', '/login', '/admin-login', '/patient-login', '/forgot-password', '/verify'];
+const PUBLIC_PATHS = ['/', '/login', '/admin-login', '/patient-login', '/forgot-password', '/verify', '/update-password'];
 
 const SESSION_COOKIE = 'ralp_session';
 
