@@ -9,7 +9,6 @@ import { Input } from '@/components/ui/input';
 import { Dialog, DialogHeader, DialogTitle, DialogContent, DialogFooter } from '@/components/ui/dialog';
 import { Users, Plus, Mail, CheckCircle2, Search } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/lib/supabase/client';
 
 interface UserRecord {
   id: string;
@@ -31,31 +30,18 @@ export default function AdminUsersPage() {
   const [isInviteOpen, setIsInviteOpen] = useState(false);
   const [newUser, setNewUser] = useState({ name: '', email: '', role: 'Consultant Surgeon', surgeonCode: '' });
 
-  // Row level security restricts this to Data Managers, so a non-admin sees an
-  // error rather than a silently empty table.
+  // The API restricts this to Data Managers (and row level security underneath),
+  // so a non-admin sees an error rather than a silently empty table.
   useEffect(() => {
     let active = true;
-    supabase()
-      .from('profiles')
-      .select('*')
-      .order('full_name')
-      .then(({ data, error }: { data: Record<string, any>[] | null; error: { message: string } | null }) => {
+    fetch('/api/admin/users')
+      .then(async (res) => {
+        const body = await res.json().catch(() => null);
         if (!active) return;
-        if (error) {
-          setLoadError(error.message);
+        if (!res.ok) {
+          setLoadError(body?.error ?? `Request failed (${res.status})`);
         } else {
-          setStaff(
-            (data ?? []).map((r: Record<string, any>) => ({
-              id: r.id,
-              name: r.full_name,
-              email: r.email,
-              role: r.role,
-              surgeonCode: r.surgeon_code ?? '—',
-              gmcNumber: r.gmc_number ?? undefined,
-              hospital: r.hospital,
-              createdAt: r.created_at,
-            }))
-          );
+          setStaff((body.users ?? []) as UserRecord[]);
         }
         setIsLoading(false);
       });

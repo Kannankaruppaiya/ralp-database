@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from './supabase/client';
 import { Role, ROLE_PERMISSIONS, UserRolePermissions } from '@/config/permissions';
 import { SurgeonCode } from '@/types/common';
 import { PatientFullRecord } from '@/types/patient';
@@ -25,61 +24,50 @@ export function getUserPermissions(role: Role): UserRolePermissions {
 }
 
 export async function signIn(email: string, password: string): Promise<UserSession> {
-  const { data, error } = await supabase().auth.signInWithPassword({ email, password });
-  if (error) throw new Error(error.message);
+  const res = await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
+  });
+  const body = await res.json().catch(() => null);
+  if (!res.ok) throw new Error(body?.error ?? 'Sign in failed.');
 
-  const session = await loadProfile(data.user.id);
-  if (!session) throw new Error('No profile is provisioned for this account.');
+  const session = body.user as UserSession;
+  setSession(session);
   await db.audit('LOGIN', undefined, `${session.name} signed in as ${session.role}`);
   return session;
 }
 
 export async function signOut(): Promise<void> {
   await db.audit('LOGOUT');
-  await supabase().auth.signOut();
-  profileCache.clear();
+  await fetch('/api/auth/logout', { method: 'POST' });
+  setSession(null);
 }
 
 /**
- * In-flight and resolved profile lookups, keyed by user id.
- *
- * useSession is mounted by the sidebar, topbar, page body and any component
- * asking about permissions, and each mount would otherwise issue its own
- * identical profiles request on every page load. Sharing the promise collapses
- * them into one. Cleared on sign-out so a second login cannot read the first
- * user's profile.
+ * A single shared view of "who is signed in", so the sidebar, topbar, page body
+ * and any permissions check do not each fetch the session. The promise is
+ * fetched once and shared; sign-in and sign-out update it and notify every
+ * mounted useSession.
  */
-const profileCache = new Map<string, Promise<UserSession | null>>();
+let sessionPromise: Promise<UserSession | null> | null = null;
+const listeners = new Set<(s: UserSession | null) => void>();
 
-async function loadProfile(userId: string): Promise<UserSession | null> {
-  const cached = profileCache.get(userId);
-  if (cached) return cached;
-
-  const pending = fetchProfile(userId);
-  profileCache.set(userId, pending);
-  // A failed lookup must not be cached, or the session stays broken until reload
-  pending.then((p) => { if (!p) profileCache.delete(userId); }).catch(() => profileCache.delete(userId));
-  return pending;
+function fetchSession(): Promise<UserSession | null> {
+  return fetch('/api/auth/session')
+    .then((r) => (r.ok ? r.json() : { user: null }))
+    .then((b) => (b.user as UserSession | null) ?? null)
+    .catch(() => null);
 }
 
-async function fetchProfile(userId: string): Promise<UserSession | null> {
-  const { data, error } = await supabase()
-    .from('profiles')
-    .select('*')
-    .eq('id', userId)
-    .maybeSingle();
-  if (error || !data) return null;
+function loadSession(): Promise<UserSession | null> {
+  if (!sessionPromise) sessionPromise = fetchSession();
+  return sessionPromise;
+}
 
-  return {
-    id: data.id,
-    name: data.full_name,
-    email: data.email,
-    role: data.role as Role,
-    surgeonCode: data.surgeon_code ?? undefined,
-    gmcNumber: data.gmc_number ?? undefined,
-    hospital: data.hospital,
-    patientId: data.patient_id ?? undefined,
-  };
+function setSession(session: UserSession | null) {
+  sessionPromise = Promise.resolve(session);
+  listeners.forEach((fn) => fn(session));
 }
 
 /**
@@ -93,26 +81,16 @@ export function useSession() {
 
   useEffect(() => {
     let active = true;
+    const onChange = (s: UserSession | null) => { if (active) setUser(s); };
+    listeners.add(onChange);
 
-    void supabase().auth.getUser().then(async ({ data }: { data: { user: { id: string } | null } }) => {
-      const session = data.user ? await loadProfile(data.user.id) : null;
-      if (active) {
-        setUser(session);
-        setIsLoading(false);
-      }
+    loadSession().then((s) => {
+      if (!active) return;
+      setUser(s);
+      setIsLoading(false);
     });
 
-    const { data: sub } = supabase().auth.onAuthStateChange(
-      async (_event: string, session: { user?: { id: string } } | null) => {
-        const next = session?.user ? await loadProfile(session.user.id) : null;
-        if (active) setUser(next);
-      }
-    );
-
-    return () => {
-      active = false;
-      sub.subscription.unsubscribe();
-    };
+    return () => { active = false; listeners.delete(onChange); };
   }, []);
 
   return { user, isLoading, permissions: user ? getUserPermissions(user.role) : null };

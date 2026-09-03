@@ -32,6 +32,44 @@ export async function exportIdentifiable(client: PoolClient) {
   return res.rows;
 }
 
+// Deterministic identifier match for document ingestion (NHS number or MRN).
+export async function matchCandidates(
+  client: PoolClient, nhsDigits: string | null, hospitalNumber: string | null
+) {
+  const res = await client.query(
+    `select id, first_name, surname, nhs_number, hospital_number
+       from patients
+      where ($1::text is not null and nhs_number = $1)
+         or ($2::text is not null and hospital_number = $2)
+      limit 2`,
+    [nhsDigits, hospitalNumber]
+  );
+  return res.rows;
+}
+
+// The three one-row clinical sections for a patient, for conflict checking.
+export async function clinicalSections(client: PoolClient, patientId: string) {
+  const res = await client.query(
+    `select
+       (select to_jsonb(o) from operations o where o.patient_id = $1) as op,
+       (select to_jsonb(b) from baseline_cancer b where b.patient_id = $1) as base,
+       (select to_jsonb(h) from histology h where h.patient_id = $1) as hist`,
+    [patientId]
+  );
+  return res.rows[0] as { op: Record<string, unknown> | null; base: Record<string, unknown> | null; hist: Record<string, unknown> | null };
+}
+
+export async function insertDocument(
+  client: PoolClient, d: { patientId: string | null; title: string; sourceType: string; rawText: string }
+): Promise<string> {
+  const res = await client.query(
+    `insert into documents (patient_id, title, source_type, raw_text)
+     values ($1,$2,$3,$4) returning id`,
+    [d.patientId, d.title, d.sourceType, d.rawText]
+  );
+  return res.rows[0].id as string;
+}
+
 export async function listDocuments(client: PoolClient, patientId: string) {
   const res = await client.query(
     'select * from documents where patient_id = $1 order by uploaded_at desc',

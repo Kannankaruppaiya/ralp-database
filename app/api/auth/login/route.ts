@@ -38,6 +38,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'No profile is provisioned for this account.' }, { status: 403 });
   }
 
-  await startSession(user.id);
+  await startSession(user.id, profile.role);
   return NextResponse.json({ user: profile });
 }

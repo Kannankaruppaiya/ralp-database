@@ -10,8 +10,8 @@ import { signSession, verifySession } from './jwt';
 const COOKIE = 'ralp_session';
 const MAX_AGE = 60 * 60 * 12; // 12h, matches the JWT TTL
 
-export async function startSession(userId: string): Promise<void> {
-  const token = await signSession(userId);
+export async function startSession(userId: string, role: string): Promise<void> {
+  const token = await signSession(userId, role);
   (await cookies()).set(COOKIE, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -28,5 +28,7 @@ export async function clearSession(): Promise<void> {
 /** The signed-in user's id from the cookie, or null. */
 export async function currentUserId(): Promise<string | null> {
   const token = (await cookies()).get(COOKIE)?.value;
-  return token ? verifySession(token) : null;
+  if (!token) return null;
+  const claims = await verifySession(token);
+  return claims?.userId ?? null;
 }
