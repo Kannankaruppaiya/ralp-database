@@ -1,5 +1,11 @@
 import 'server-only';
-import { Pool, type PoolClient } from 'pg';
+import pg, { Pool, type PoolClient } from 'pg';
+
+// Return `date` columns (OID 1082) as the raw 'YYYY-MM-DD' string rather than a
+// JS Date, so date-only fields (date of birth, operation date, due dates) match
+// what the domain types and the old PostgREST responses carried — no timezone
+// drift from a Date round-trip.
+pg.types.setTypeParser(1082, (v) => v);
 
 /**
  * One shared connection pool per process. Cached on globalThis so Next.js hot
