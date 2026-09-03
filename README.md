@@ -84,3 +84,23 @@ self-hosted architecture.
 - [ADR-002: Caldicott Principle 7 Immutable Audit Trail](file:///c:/Users/Kannan/Documents/Vivek/docs/decisions/ADR-002-Caldicott-Principle-7-Audit-Trail.md)
 - [ADR-003: Synthetic Clinical Cohort Generator & Benchmark Engine](file:///c:/Users/Kannan/Documents/Vivek/docs/decisions/ADR-003-Synthetic-Clinical-Cohort-Benchmarking.md)
 - [Client Specification & End-to-End Flow Guide](file:///c:/Users/Kannan/Documents/Vivek/docs/CLIENT_SPECIFICATION_AND_FLOW_GUIDE.md)
+
+## 🧪 Testing
+
+```bash
+npm run test        # unit tests; integration tests skip without a database
+npm run test:watch
+```
+
+Integration tests run against a real PostgreSQL and are skipped unless
+`TEST_DATABASE_URL` is set — point it at a throwaway database, never a tier
+holding real patient data:
+
+```bash
+cd infra && docker compose --env-file .env up -d && cd ..
+export TEST_DATABASE_URL=postgres://ralp:ralp_dev_password@localhost:5432/ralp
+npm run test
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, the forward-only migration
+rule, and the pull-request flow.
