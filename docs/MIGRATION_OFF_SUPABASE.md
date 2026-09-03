@@ -292,7 +292,18 @@ the client.
 | Authorization | **App-layer (A) first, then Postgres RLS (B)** | All in our own code; no external identity/authz service |
 | Storage | **Local volume by default**, behind a small storage interface so **MinIO/S3 can be swapped in later** | One fewer container to deploy; files stay on the client's own disk |
 
-## 9. Deployment — runs anywhere
+## 8a. Target codebase structure & conventions
+
+The folder layout, layering rules, naming conventions, and maintenance practices
+this migration follows are locked in
+[`ENGINEERING_STANDARDS.md`](./ENGINEERING_STANDARDS.md). In short: keep the
+existing frontend (`app` routes, `components`, `hooks`, `features`, `types`,
+`config`); add a server-only layer (`server/` = db pool + repositories +
+services + auth + storage) and the API (`app/api/**`); move migrations to `db/`
+and deployment to `infra/`. The `db.*` facade keeps its signatures so no
+component changes.
+
+## 9. Deployment — runs anywhere (including AWS)
 
 The entire system ships as a **Docker Compose** stack the client owns end to end:
 
@@ -319,5 +330,29 @@ This runs identically on:
 lives in the Postgres volume on the client's own server. Moving to a new host is
 `pg_dump` → copy → `docker compose up` on the new box. Backups are a scheduled
 `pg_dump` of that volume (see §6 — this becomes the client's responsibility).
+
+### 9.1 Deploying on AWS (a client's own AWS account)
+
+AWS is fully compatible with the "own server, data with us, no vendor lock-in"
+requirement, because it is the **client's own AWS account** and the database runs
+inside it — the data never leaves their control. Two paths, same application code:
+
+| Path | How | When |
+|------|-----|------|
+| **Simple (recommended first)** | One **EC2** instance running the same `docker compose up` (web + postgres); files on an attached EBS volume | Fastest; our Compose file runs unchanged |
+| **AWS-native (later, optional)** | **ECS/Fargate** for the app, **RDS for PostgreSQL** as the database, **S3** for document storage | When they want managed scaling/backups |
+
+Because storage sits behind an interface and the DB behind `DATABASE_URL`, moving
+from the simple path to RDS + S3 is a config change, not a code change — and the
+app stays portable to any other host, so choosing AWS does not create AWS
+lock-in.
+
+### 9.2 Build order vs. deployment
+
+The phased plan in §4 is the **order we write the code on one branch** — it is
+**not** a series of separate releases. Everything is migrated, then the whole
+system is deployed to AWS (or any host) as one cut-over. The phases exist to keep
+each part verifiable during the build (important for a clinical system), not to
+slow delivery or split the deployment.
 
 Once approved, **Phase 0 starts immediately** with the decisions above.
