@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogHeader, DialogTitle, DialogContent } from '@/components/ui/dialog';
 import { formatDate } from '@/lib/formatters';
-import { FileText, Eye, CheckCircle2, AlertTriangle, FileUp } from 'lucide-react';
+import { FileText, Eye, CheckCircle2, AlertTriangle, FileUp, Download } from 'lucide-react';
 import Link from 'next/link';
 
 export function DocumentList({ documents }: { documents: ClinicalDocument[] }) {
@@ -62,15 +62,28 @@ export function DocumentList({ documents }: { documents: ClinicalDocument[] }) {
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right">
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="h-8 gap-1 text-xs"
-                    onClick={() => setSelectedDoc(doc)}
-                  >
-                    <Eye className="h-3.5 w-3.5" />
-                    <span>View Text</span>
-                  </Button>
+                  <div className="flex items-center justify-end gap-1">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="h-8 gap-1 text-xs"
+                      onClick={() => setSelectedDoc(doc)}
+                    >
+                      <Eye className="h-3.5 w-3.5" />
+                      <span>View Text</span>
+                    </Button>
+                    {doc.fileSize > 0 && (
+                      <a
+                        href={`/api/documents/${doc.id}/file`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex h-8 items-center gap-1 rounded-md px-2 text-xs font-medium text-teal-700 hover:bg-teal-50 dark:text-teal-400 dark:hover:bg-teal-950"
+                      >
+                        <Download className="h-3.5 w-3.5" />
+                        <span>File</span>
+                      </a>
+                    )}
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

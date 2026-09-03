@@ -1,9 +1,12 @@
 import 'server-only';
+import { randomUUID } from 'node:crypto';
+import { extname } from 'node:path';
 import { withUser } from '@/server/db/pool';
 import {
   matchCandidates, clinicalSections, insertDocument, saveIngestionJob,
 } from '@/server/db/repositories/registry.repo';
 import { writeAudit } from '@/server/db/repositories/clinical.repo';
+import { getStorage } from '@/server/storage/storage';
 import { stripNhs } from '@/lib/mappers';
 import { extractIdentifiers } from '@/features/ingestion/extraction';
 import type { ExtractedField } from '@/types/ingestion';
@@ -13,6 +16,10 @@ export interface IngestInput {
   sourceType: string;
   rawText: string;
   fields: ExtractedField[];
+  /** The original file's bytes, stored in object storage. Optional. */
+  fileBytes?: Buffer;
+  fileSize?: number;
+  mimeType?: string;
 }
 
 export interface IngestResult {
@@ -39,6 +46,15 @@ function toCamel(row: Record<string, unknown> | null): Record<string, unknown> {
  */
 export async function ingestDocument(userId: string, input: IngestInput): Promise<IngestResult> {
   const { nhsNumber, hospitalNumber, surname } = extractIdentifiers(input.fields);
+
+  // Store the original file bytes before recording the row, so storage_path
+  // points at something real. An unlikely failure after this leaves an orphan
+  // object, not a dangling database reference.
+  let storagePath: string | null = null;
+  if (input.fileBytes && input.fileBytes.length > 0) {
+    storagePath = `${randomUUID()}${extname(input.title).toLowerCase()}`;
+    await getStorage().save(storagePath, input.fileBytes);
+  }
 
   return withUser(userId, async (client) => {
     let matchedPatientId: string | null = null;
@@ -85,6 +101,8 @@ export async function ingestDocument(userId: string, input: IngestInput): Promis
     const documentId = await insertDocument(client, {
       patientId: matchedPatientId, title: input.title,
       sourceType: input.sourceType, rawText: input.rawText.slice(0, 200_000),
+      storagePath, fileSize: input.fileSize ?? input.fileBytes?.length ?? null,
+      mimeType: input.mimeType ?? null,
     });
 
     await saveIngestionJob(client, {

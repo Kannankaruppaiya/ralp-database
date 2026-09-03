@@ -60,14 +60,27 @@ export async function clinicalSections(client: PoolClient, patientId: string) {
 }
 
 export async function insertDocument(
-  client: PoolClient, d: { patientId: string | null; title: string; sourceType: string; rawText: string }
+  client: PoolClient,
+  d: {
+    patientId: string | null; title: string; sourceType: string; rawText: string;
+    storagePath?: string | null; fileSize?: number | null; mimeType?: string | null;
+  }
 ): Promise<string> {
   const res = await client.query(
-    `insert into documents (patient_id, title, source_type, raw_text)
-     values ($1,$2,$3,$4) returning id`,
-    [d.patientId, d.title, d.sourceType, d.rawText]
+    `insert into documents (patient_id, title, source_type, raw_text, storage_path, file_size, mime_type)
+     values ($1,$2,$3,$4,$5,$6,$7) returning id`,
+    [d.patientId, d.title, d.sourceType, d.rawText, d.storagePath ?? null, d.fileSize ?? null, d.mimeType ?? null]
   );
   return res.rows[0].id as string;
+}
+
+/** Storage key + content type + title for serving a stored document file. */
+export async function getDocumentForDownload(client: PoolClient, id: string) {
+  const res = await client.query(
+    'select storage_path, mime_type, title from documents where id = $1',
+    [id]
+  );
+  return (res.rows[0] ?? null) as { storage_path: string | null; mime_type: string | null; title: string } | null;
 }
 
 export async function listDocuments(client: PoolClient, patientId: string) {

@@ -73,11 +73,12 @@ export function DocumentUpload() {
       // ingestion-job creation and audit write server-side, and returns the
       // annotated result. A document that matches nothing is still stored — it
       // lands in the queue unmatched rather than attached to a guess.
-      const res = await fetch('/api/ingestion/upload', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: file.name, sourceType: docType, rawText, fields }),
-      });
+      // The original file goes up alongside the parsed metadata so the server
+      // can store the source document, not just its extracted text.
+      const form = new FormData();
+      form.append('file', file);
+      form.append('meta', JSON.stringify({ title: file.name, sourceType: docType, rawText, fields }));
+      const res = await fetch('/api/ingestion/upload', { method: 'POST', body: form });
       const body = await res.json().catch(() => null);
       if (!res.ok) throw new Error(body?.error ?? 'Could not process that document.');
       const { matched, nameMismatch, fieldConflicts, fields: annotated } = body as {
