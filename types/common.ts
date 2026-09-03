@@ -1,4 +1,6 @@
-export type SurgeonCode = 'VK' | 'RDM' | 'CI' | 'OAK' | 'OTHER';
+/** A surgeon's initials. Open set — the roster lives in the database, not here.
+ *  See supabase/migrations/0012_surgeon_roster.sql. */
+export type SurgeonCode = string;
 
 export type RiskCategory = 'Low' | 'Favourable Intermediate' | 'Unfavourable Intermediate' | 'High' | 'Very High';
 

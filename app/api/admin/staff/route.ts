@@ -1,5 +1,6 @@
 import { requireAdmin } from '@/lib/api/require-admin';
 import { supabaseAdmin } from '@/lib/supabase/admin';
+import { SURGEON_CODE_PATTERN, SURGEON_CODE_HINT } from '@/config/clinical-options';
 
 const ROLES = [
   'Consultant Surgeon',
@@ -8,7 +9,6 @@ const ROLES = [
   'Data Manager',
   'Patient',
 ];
-const SURGEON_CODES = ['VK', 'RDM', 'CI', 'OAK', 'OTHER'];
 const MIN_PASSWORD = 12;
 
 export async function POST(request: Request) {
@@ -29,8 +29,10 @@ export async function POST(request: Request) {
   if (!ROLES.includes(role)) {
     return Response.json({ error: 'Choose a valid role.' }, { status: 422 });
   }
-  if (surgeonCode && !SURGEON_CODES.includes(surgeonCode)) {
-    return Response.json({ error: 'Choose a valid surgeon code.' }, { status: 422 });
+  // Any well-formed code is accepted: provisioning the account is what puts a
+  // surgeon on the roster, so a code cannot be required to exist beforehand.
+  if (surgeonCode && !SURGEON_CODE_PATTERN.test(surgeonCode)) {
+    return Response.json({ error: SURGEON_CODE_HINT }, { status: 422 });
   }
   if (typeof tempPassword !== 'string' || tempPassword.length < MIN_PASSWORD) {
     return Response.json(

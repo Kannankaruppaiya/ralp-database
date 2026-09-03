@@ -53,6 +53,49 @@ describe('POST /api/admin/staff', () => {
     expect(createUser).not.toHaveBeenCalled();
   });
 
+  // The roster used to be a fixed enum ('VK','RDM','CI','OAK','OTHER') in both
+  // this route and the schema, so provisioning any other consultant failed with
+  // "Choose a valid surgeon code" — the bug 0012 fixes. A code is now accepted
+  // on its format alone, because creating the account is what puts it on the
+  // roster.
+  it('accepts a surgeon code that was not one of the five hardcoded ones', async () => {
+    requireAdmin.mockResolvedValue(admitted);
+    createUser.mockResolvedValue({ data: { user: { id: 'new-2' } }, error: null });
+
+    const res = await POST(body({ surgeonCode: 'JD', email: 'jd@nhs.net' }));
+
+    expect(res.status).toBe(201);
+    expect(upsert).toHaveBeenCalledWith(
+      expect.objectContaining({ surgeon_code: 'JD' }),
+      expect.anything()
+    );
+  });
+
+  it.each(['jd', 'J', 'J-D', 'TOOLONGCODE', 'JD '])(
+    'rejects the malformed surgeon code %j',
+    async (surgeonCode) => {
+      requireAdmin.mockResolvedValue(admitted);
+
+      const res = await POST(body({ surgeonCode }));
+
+      expect(res.status).toBe(422);
+      expect(createUser).not.toHaveBeenCalled();
+    }
+  );
+
+  it('still allows a role that holds no surgeon code', async () => {
+    requireAdmin.mockResolvedValue(admitted);
+    createUser.mockResolvedValue({ data: { user: { id: 'new-3' } }, error: null });
+
+    const res = await POST(body({ role: 'Data Manager', surgeonCode: '' }));
+
+    expect(res.status).toBe(201);
+    expect(upsert).toHaveBeenCalledWith(
+      expect.objectContaining({ surgeon_code: null }),
+      expect.anything()
+    );
+  });
+
   it('rejects a temporary password under 12 characters', async () => {
     requireAdmin.mockResolvedValue(admitted);
 

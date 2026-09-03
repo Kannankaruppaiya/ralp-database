@@ -18,8 +18,27 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'Inter', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+        sans: [
+          'Geist',
+          'Manrope',
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'sans-serif',
+        ],
+        mono: [
+          'Geist Mono',
+          'ui-monospace',
+          'SFMono-Regular',
+          'Menlo',
+          'Monaco',
+          'Consolas',
+          'monospace',
+        ],
+      },
+      transitionTimingFunction: {
+        'redesign': 'cubic-bezier(0.32, 0.72, 0, 1)',
       },
       colors: {
         border: "hsl(var(--border))",
@@ -63,10 +82,10 @@ const config: Config = {
           foreground: "hsl(var(--card-foreground))",
         },
         clinical: {
-          navy: "#0f172a",
+          navy: "#181818",
           teal: "#0d9488",
           cyan: "#0284c7",
-          slate: "#334155",
+          slate: "#313131",
           amber: "#d97706",
           emerald: "#059669",
           rose: "#e11d48",

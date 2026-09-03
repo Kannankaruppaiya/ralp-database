@@ -20,6 +20,8 @@
     "db:push:staging": "node scripts/db-push.mjs staging",
     "db:push:prod": "node scripts/db-push.mjs production --yes",
     "db:types": "node scripts/db-types.mjs",
+    "admin:bootstrap:staging": "node scripts/bootstrap-admin.mjs staging",
+    "admin:bootstrap:prod": "node scripts/bootstrap-admin.mjs production",
     "build:prod": "dotenv -e .env.production -- next build"
   },
   "dependencies": {

@@ -34,8 +34,8 @@ export function PatientTabs({ patientId }: PatientTabsProps) {
   ];
 
   return (
-    <div className="border-b border-slate-200 dark:border-slate-800 mb-6 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-      <nav className="flex space-x-1 min-w-max pb-px">
+    <div className="border-b border-slate-200/80 dark:border-slate-800 mb-6 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <nav role="tablist" aria-label="Patient dossier tabs" className="flex space-x-1 min-w-max pb-px">
         {tabs.map((tab) => {
           const isActive = tab.exact ? pathname === tab.href : pathname.startsWith(tab.href);
           const Icon = tab.icon;
@@ -43,14 +43,16 @@ export function PatientTabs({ patientId }: PatientTabsProps) {
             <Link
               key={tab.href}
               href={tab.href}
+              role="tab"
+              aria-selected={isActive}
               className={cn(
-                'flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-all',
+                'flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-medium border-b-2 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded-t-lg',
                 isActive
-                  ? 'border-teal-600 text-teal-600 dark:border-teal-400 dark:text-teal-400 font-semibold'
-                  : 'border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300 dark:text-slate-400 dark:hover:text-slate-100'
+                  ? 'border-teal-600 text-teal-700 dark:border-teal-400 dark:text-teal-300 font-bold bg-teal-50/40 dark:bg-teal-950/20'
+                  : 'border-transparent text-slate-500 hover:text-slate-900 hover:border-slate-300 dark:text-slate-400 dark:hover:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800/40'
               )}
             >
-              <Icon className="h-4 w-4" />
+              <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
               <span>{tab.label}</span>
             </Link>
           );

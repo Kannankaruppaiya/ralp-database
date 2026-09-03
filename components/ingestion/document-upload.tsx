@@ -261,23 +261,49 @@ export function DocumentUpload() {
             if (file) void handleFile(file);
           }}
         />
-        <Button size="sm" disabled={isProcessing} onClick={() => inputRef.current?.click()} className="gap-1.5">
-          <FileText className="h-4 w-4" />
-          <span>Choose file</span>
-        </Button>
+
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <Button size="sm" disabled={isProcessing} onClick={() => inputRef.current?.click()} className="gap-1.5 bg-teal-600 hover:bg-teal-700 text-white font-semibold">
+            <FileText className="h-4 w-4" />
+            <span>Choose file</span>
+          </Button>
+
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            disabled={isProcessing}
+            onClick={() => {
+              const sample = new File([`
+OXFORD UNIVERSITY HOSPITALS NHS FOUNDATION TRUST
+OPERATIVE RECORD: ROBOT-ASSISTED RADICAL PROSTATECTOMY (RALP)
+Patient: John Smith • NHS: 900 123 4567 • MRN: RALP-OX-99
+Surgeon: Mr. Vivek Kannan (VK) • Date: 2024-03-15
+Pre-op PSA: 14.8 ng/mL • Gleason: 4+3 • Clinical Stage: T3a
+RALP bilateral nerve sparing performed. EBL 180ml, Console 140m.
+Histology: pT3b, Gleason 4+3, Margins Positive R1 (Apex).
+              `.trim()], 'ralp-op-note-smith.txt', { type: 'text/plain' });
+              void handleFile(sample);
+            }}
+            className="gap-1.5 border-teal-500/30 text-teal-700 hover:bg-teal-50 dark:text-teal-300 dark:border-teal-800 text-xs font-semibold"
+          >
+            <UploadCloud className="h-4 w-4 text-teal-600" />
+            <span>Simulate Sample Op-Note OCR</span>
+          </Button>
+        </div>
       </div>
 
       {error && (
-        <div className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-800">
+        <div className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-800 dark:bg-amber-950/40 dark:border-amber-900/60 dark:text-amber-300">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
           <span>{error}</span>
         </div>
       )}
 
       {preview && (
-        <Card className="shadow-sm">
+        <Card className="shadow-md border-teal-200/90 dark:border-teal-900 bg-white dark:bg-slate-900">
           <CardHeader className="p-5 pb-2">
-            <CardTitle className="flex items-center gap-2 text-sm font-bold">
+            <CardTitle className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-white">
               <CheckCircle2 className="h-4 w-4 text-emerald-600" />
               <span>{preview.name}</span>
             </CardTitle>
@@ -289,16 +315,16 @@ export function DocumentUpload() {
                   : 'No patient matched — queued for identity matching'}
             </p>
           </CardHeader>
-          <CardContent className="space-y-2 p-5 pt-2">
+          <CardContent className="space-y-3 p-5 pt-2">
             <div className="flex flex-wrap gap-1.5">
               {preview.fields.map((f) => (
-                <Badge key={f.id} variant="outline" className="text-[10px]">
-                  {f.fieldLabel}: {String(f.normalizedValue)}
+                <Badge key={f.id} variant="outline" className="text-[10px] font-mono bg-slate-50 dark:bg-slate-800">
+                  {f.fieldLabel}: <strong>{String(f.normalizedValue)}</strong>
                 </Badge>
               ))}
             </div>
-            <Button size="sm" className="mt-2" onClick={() => router.push('/data-ingestion/extraction-review')}>
-              Review &amp; commit
+            <Button size="sm" className="mt-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold" onClick={() => router.push('/data-ingestion/extraction-review')}>
+              Review &amp; Commit Data &rarr;
             </Button>
           </CardContent>
         </Card>

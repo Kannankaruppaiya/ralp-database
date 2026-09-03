@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "RALP Surgical Database - Clinical User Stories & Workflows",
+    "output": "ralp-database.userflow.html",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "clinician-journey",
+        "label": "Clinician surgical & follow-up journey",
+        "focus": ["register", "op_record", "followup", "analytics"],
+        "note": "Follow how clinicians register patients, record surgery, evaluate recovery, and review clinical analytics."
+      },
+      {
+        "id": "patient-proms-flow",
+        "label": "Patient PROMs assessment flow",
+        "focus": ["baseline_prom", "postop_prom", "followup"],
+        "note": "Trace patient self-reported outcomes from baseline through post-operative recovery milestones."
+      },
+      {
+        "id": "data-ingestion-flow",
+        "label": "AI extraction & validation pipeline",
+        "focus": ["upload_doc", "ai_extract", "review_queue", "postop_prom"],
+        "note": "Follow document OCR extraction and conflict review into verified patient records."
+      }
+    ]
+  },
+  "lanes": [
+    { "id": "clinician", "label": "Clinician / Surgeon" },
+    { "id": "patient", "label": "Patient Portal" },
+    { "id": "ingestion", "label": "Data Ingestion & AI" },
+    { "id": "admin", "label": "Data Manager / Admin" },
+    { "id": "exceptions", "label": "Review & Conflict Queue", "variant": "exception" }
+  ],
+  "phases": [
+    { "id": "phase-preop", "label": "1. Pre-Op & Baseline", "fromCol": 0, "toCol": 1 },
+    { "id": "phase-surgery", "label": "2. Surgery & Document Ingestion", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "phase-recovery", "label": "3. PROMs & Longitudinal Analytics", "fromCol": 4, "toCol": 5, "variant": "dashed" }
+  ],
+  "groups": [
+    { "id": "clinical_care", "label": "Surgical Care Cycle", "lane": "clinician", "fromCol": 0, "toCol": 4, "variant": "emphasis" },
+    { "id": "validation_gate", "label": "Validation Gate", "lane": "exceptions", "fromCol": 3, "toCol": 3, "variant": "security" }
+  ],
+  "mainPath": ["register", "baseline_prom", "op_record", "upload_doc", "ai_extract", "postop_prom", "followup", "analytics"],
+  "nodes": [
+    { "id": "register", "lane": "clinician", "col": 0, "width": 76, "type": "frontend", "label": "Register", "sublabel": "PSA & biopsy" },
+    { "id": "baseline_prom", "lane": "patient", "col": 1, "width": 80, "type": "frontend", "label": "Pre-Op PROMs", "sublabel": "IPSS + SHIM" },
+    { "id": "op_record", "lane": "clinician", "col": 2, "width": 76, "type": "frontend", "label": "Surgery", "sublabel": "RALP details", "tag": "Robotic" },
+    { "id": "upload_doc", "lane": "ingestion", "col": 2, "width": 80, "type": "cloud", "label": "Upload DOCX", "sublabel": "Histology note" },
+    { "id": "ai_extract", "lane": "ingestion", "col": 3, "width": 76, "type": "backend", "label": "AI Extract", "sublabel": "OCR & NLP", "tag": "Automated" },
+    { "id": "review_queue", "lane": "exceptions", "col": 3, "width": 80, "type": "security", "label": "Review Queue", "sublabel": "Discrepancies", "tag": "Gate" },
+    { "id": "postop_prom", "lane": "patient", "col": 4, "width": 76, "type": "frontend", "label": "Post-Op PROM", "sublabel": "3m/6m/12m" },
+    { "id": "followup", "lane": "clinician", "col": 4, "width": 76, "type": "frontend", "label": "Follow-up", "sublabel": "PSA & continence" },
+    { "id": "analytics", "lane": "clinician", "col": 5, "width": 76, "type": "external", "label": "Analytics", "sublabel": "Surgeon trends" },
+    { "id": "audit_export", "lane": "admin", "col": 5, "width": 76, "type": "database", "label": "Data Export", "sublabel": "CSV & quality" }
+  ],
+  "edges": [
+    { "from": "register", "to": "baseline_prom", "variant": "emphasis", "route": "drop", "fromSide": "bottom", "toSide": "top" },
+    { "from": "baseline_prom", "to": "op_record", "route": "drop", "fromSide": "top", "toSide": "bottom" },
+    { "from": "op_record", "to": "upload_doc", "variant": "dashed", "route": "drop", "fromSide": "bottom", "toSide": "top" },
+    { "from": "upload_doc", "to": "ai_extract" },
+    { "from": "ai_extract", "to": "postop_prom", "variant": "emphasis", "route": "drop", "fromSide": "top", "toSide": "bottom" },
+    { "from": "ai_extract", "to": "review_queue", "variant": "security", "role": "error", "route": "drop", "fromSide": "bottom", "toSide": "top" },
+    { "from": "postop_prom", "to": "followup", "variant": "emphasis", "route": "drop", "fromSide": "top", "toSide": "bottom" },
+    { "from": "followup", "to": "analytics", "variant": "emphasis" },
+    { "from": "analytics", "to": "audit_export", "variant": "security", "route": "drop", "fromSide": "bottom", "toSide": "top" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Clinician User Story",
+      "items": [
+        "Clinician registers new patient with pre-operative PSA and biopsy Gleason staging",
+        "Records robotic-assisted radical prostatectomy (RALP) operative parameters and margins",
+        "Schedules and evaluates structured follow-up checkpoints (3, 6, 12, 24, 36 months)",
+        "Monitors longitudinal PSA trends and overall department clinical outcomes"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Patient PROMs Story",
+      "items": [
+        "Patient securely accesses digital assessment portal via authenticated invite link",
+        "Completes baseline and scheduled post-operative PROMs (IPSS, SHIM, Continence)",
+        "Submits real-time symptom scores without requiring in-clinic paper forms",
+        "Automatic notifications flag severe urinary or erectile distress to clinical team"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "AI Ingestion & Review Story",
+      "items": [
+        "Clinician uploads histology report PDFs or operative DOCX files in batch",
+        "OCR and Mammoth.js text parsing extract Gleason grade, lymph nodes, and margins",
+        "Automated fuzzy matching maps extracted records directly to patient records",
+        "Uncertain or contradictory entries enter the Review Queue for manual clinician sign-off"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Data Manager / Admin Story",
+      "items": [
+        "Admin governs role-based permissions across Clinicians, Data Managers, and Patients",
+        "Audits system access logs, record revisions, and patient data modifications",
+        "Monitors data completeness scorecards and resolves missing clinical fields",
+        "Exports de-identified structured datasets in CSV format for research and registries"
+      ]
+    }
+  ]
+}

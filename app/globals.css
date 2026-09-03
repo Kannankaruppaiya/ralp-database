@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,68 +6,80 @@
 
 @layer base {
   :root {
-    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --font-sans: 'Geist', 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-    --background: 210 40% 98%;
-    --foreground: 222.2 84% 4.9%;
+    /* Light Theme Palette: Crisp clinical clean background (#FAFAFA), pure white elevated surfaces */
+    --background: 0 0% 98%;
+    --foreground: 0 0% 9%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 9%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 9%;
 
+    /* Medical Teal: NHS/Clinical Grade Primary */
     --primary: 173 80% 32%;
-    --primary-foreground: 210 40% 98%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 9%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 199 89% 48%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 173 80% 94%;
+    --accent-foreground: 173 80% 24%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --border: 0 0% 90%;
+    --input: 0 0% 88%;
     --ring: 173 80% 32%;
 
-    --radius: 0.625rem;
+    --radius: 0.75rem;
+
+    /* Clinical Status Colors */
+    --clinical-r0: 152 69% 31%;
+    --clinical-r1: 347 77% 50%;
+    --clinical-risk-low: 152 69% 31%;
+    --clinical-risk-int: 38 92% 50%;
+    --clinical-risk-high: 347 77% 50%;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Approved Dark Theme Palette (#121212 base, #181818 cards, #272727 borders) */
+    --background: 0 0% 7%;
+    --foreground: 0 0% 98%;
 
-    --card: 222.2 84% 7%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 9.5%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 222.2 84% 7%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 9.5%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 173 70% 40%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 173 70% 42%;
+    --primary-foreground: 0 0% 9%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 64%;
 
-    --accent: 199 89% 48%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 173 70% 18%;
+    --accent-foreground: 173 60% 80%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 173 70% 40%;
+    --border: 0 0% 16%;
+    --input: 0 0% 18%;
+    --ring: 173 70% 42%;
+
+    color-scheme: dark;
   }
 }
 
@@ -75,18 +87,40 @@
   * {
     @apply border-border;
   }
-  html,
+  
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+    letter-spacing: -0.025em;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* All numbers in medical context strictly use tabular-nums */
+  .tabular-nums,
+  [data-numeric="true"],
+  table td,
+  .metric-value,
+  .nhs-number,
+  .score-value {
+    font-variant-numeric: tabular-nums;
   }
 }
 
-/* Global Font Enforcement for all elements, inputs, buttons, headings, and SVG chart text */
+/* Global Font Enforcement */
 *,
 *::before,
 *::after,
@@ -97,7 +131,7 @@ select,
 textarea,
 h1, h2, h3, h4, h5, h6,
 p, span, a, label, table, th, td {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Geist', 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 code,
@@ -106,34 +140,94 @@ samp,
 pre,
 .font-mono,
 [class*='font-mono'] {
-  font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  font-family: 'Geist Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
 }
 
-/* Ensure SVG text elements in Recharts charts render in Plus Jakarta Sans */
+/* Ensure SVG text elements in Recharts charts render with Geist */
 svg text {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-family: 'Geist', 'Manrope', system-ui, sans-serif !important;
 }
 
-/* Medical Registry Aesthetic Enhancements */
-.medical-glass {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+/* Approved Hero Heading Text Gradient */
+.hero-gradient-text {
+  background: linear-gradient(to right, #000000, #666666);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.clinical-badge-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.2rem 0.65rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
+.dark .hero-gradient-text {
+  background: linear-gradient(to right, #FFFFFF, #9B9B9B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom Bezier Transition Utility */
+.transition-redesign {
+  transition-property: all;
+  transition-duration: 700ms;
+  transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.transition-micro {
+  transition-property: color, background-color, border-color, transform, opacity, box-shadow;
+  transition-duration: 250ms;
+  transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Accessible Skip Link */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.5rem 1rem;
+  background: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
   font-weight: 600;
-  letter-spacing: 0.02em;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: top 0.2s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-/* Universal sleek scrollbars across all pages */
+.skip-link:focus {
+  top: 1rem;
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+/* Accessible Focus Rings */
+.focus-ring {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-[#121212];
+}
+
+/* Medical Registry Surface Enhancements */
+.medical-surface {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+}
+
+.medical-surface-elevated {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+}
+
+.medical-glass {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.dark .medical-glass {
+  background: rgba(24, 24, 24, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Universal sleek scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -144,15 +238,14 @@ svg text {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.3);
+  background: rgba(148, 163, 184, 0.35);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.5);
+  background: rgba(148, 163, 184, 0.6);
 }
 
-/* Hide scrollbar utility */
 .scrollbar-none {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -162,14 +255,32 @@ svg text {
   display: none;
 }
 
-/* Card hover glow transitions */
-.glow-card {
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+/* Micro-interaction Cards */
+.interactive-card {
+  transition: border-color 0.25s cubic-bezier(0.32, 0.72, 0, 1), box-shadow 0.25s cubic-bezier(0.32, 0.72, 0, 1), transform 0.25s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-.glow-card:hover {
-  box-shadow: 0 10px 30px -10px rgba(20, 184, 166, 0.15);
-  border-color: rgba(20, 184, 166, 0.4);
+.interactive-card:hover {
+  border-color: rgba(13, 148, 136, 0.4);
+  box-shadow: 0 8px 24px -8px rgba(13, 148, 136, 0.12), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+}
+
+/* Minimum accessible interactive touch targets */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Printing styles for clinic summary & MDT letters */
@@ -177,8 +288,13 @@ svg text {
   body {
     background: white !important;
     color: black !important;
+    font-size: 12pt;
   }
-  .no-print {
+  .no-print,
+  aside,
+  header,
+  nav,
+  .print-hidden {
     display: none !important;
   }
   .print-only {
@@ -186,5 +302,11 @@ svg text {
   }
   .print-page-break {
     page-break-before: always;
+  }
+  .medical-surface,
+  .medical-surface-elevated,
+  .medical-glass {
+    box-shadow: none !important;
+    border: 1px solid #cbd5e1 !important;
   }
 }

@@ -10,7 +10,12 @@ export function Toaster() {
   if (!toasts.length) return null;
 
   return (
-    <div className="fixed top-5 right-5 z-[100] flex flex-col gap-2.5 max-w-sm w-full pointer-events-none">
+    <div
+      role="region"
+      aria-label="Notifications"
+      aria-live="polite"
+      className="fixed top-5 right-5 z-[100] flex flex-col gap-2.5 max-w-sm w-full pointer-events-none"
+    >
       {toasts.map((t) => {
         const isSuccess = t.variant === 'success';
         const isDestructive = t.variant === 'destructive';
@@ -19,7 +24,8 @@ export function Toaster() {
         return (
           <div
             key={t.id}
-            className={`pointer-events-auto p-4 rounded-2xl border shadow-xl flex items-start gap-3 transition-all animate-in slide-in-from-top-3 fade-in duration-200 ${
+            role="status"
+            className={`pointer-events-auto p-4 rounded-2xl border shadow-xl flex items-start gap-3 transition-all motion-reduce:transition-none animate-in slide-in-from-top-3 fade-in duration-200 ${
               isDestructive
                 ? 'bg-rose-950/95 border-rose-800/80 text-rose-100 backdrop-blur-md'
                 : isSuccess
@@ -29,23 +35,23 @@ export function Toaster() {
                 : 'bg-slate-900/95 border-slate-800 text-slate-100 backdrop-blur-md'
             }`}
           >
-            <div className="mt-0.5 shrink-0">
+            <div className="mt-0.5 shrink-0" aria-hidden="true">
               {isDestructive ? (
                 <AlertCircle className="h-5 w-5 text-rose-400" />
               ) : isSuccess ? (
                 <CheckCircle2 className="h-5 w-5 text-emerald-400" />
               ) : isComingSoon ? (
-                <Sparkles className="h-5 w-5 text-purple-400 animate-pulse" />
+                <Sparkles className="h-5 w-5 text-purple-400 animate-pulse motion-reduce:animate-none" />
               ) : (
                 <Info className="h-5 w-5 text-teal-400" />
               )}
             </div>
 
-            <div className="flex-1 space-y-1">
+            <div className="flex-1 space-y-1 min-w-0">
               <div className="text-xs font-bold leading-tight flex items-center gap-2">
-                <span>{t.title}</span>
+                <span className="truncate">{t.title}</span>
                 {isComingSoon && (
-                  <span className="px-1.5 py-0.5 rounded text-[10px] bg-purple-500/20 text-purple-300 font-mono uppercase">
+                  <span className="px-1.5 py-0.5 rounded text-[10px] bg-purple-500/20 text-purple-300 font-mono uppercase shrink-0">
                     Preview
                   </span>
                 )}
@@ -60,9 +66,10 @@ export function Toaster() {
             <button
               type="button"
               onClick={() => dismiss(t.id)}
-              className="text-slate-400 hover:text-slate-200 p-0.5 rounded-lg hover:bg-white/10"
+              aria-label="Dismiss notification"
+              className="text-slate-400 hover:text-slate-200 p-1 rounded-lg hover:bg-white/10 focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:outline-none shrink-0"
             >
-              <X className="h-4 w-4" />
+              <X className="h-4 w-4" aria-hidden="true" />
             </button>
           </div>
         );

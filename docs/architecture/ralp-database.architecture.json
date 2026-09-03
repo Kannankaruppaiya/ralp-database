@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "UK RALP Surgical Outcomes Database v2 - System Architecture",
+    "output": "ralp-database.architecture.html",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "request-path",
+        "label": "Primary request & cache path",
+        "focus": ["browser", "nextjs", "supabase-auth", "postgres"],
+        "note": "Follow an authenticated clinician request through Next.js middleware and in-memory cache to Supabase PostgreSQL."
+      },
+      {
+        "id": "user-roles",
+        "label": "Role boundaries & Caldicott governance",
+        "focus": ["browser", "nextjs", "app-layer", "admin-panel"],
+        "note": "Three distinct user portals isolated by Next.js edge route guards and PostgreSQL Row Level Security (RLS)."
+      },
+      {
+        "id": "data-ingestion",
+        "label": "Intelligent document ingestion pipeline",
+        "focus": ["app-layer", "ingestion-api", "ai-extraction", "supabase-storage", "postgres"],
+        "note": "Uploaded pathology PDFs and theatre DOCX notes pass through Mammoth.js & NLP extraction before validated commit."
+      }
+    ]
+  },
+  "components": [
+    { "id": "supabase-auth",    "type": "security",  "label": "Supabase Auth",       "sublabel": "GoTrue JWT + SSR Cookies",    "pos": [40,  110], "size": [140, 62], "tag": "Session Guard" },
+    { "id": "browser",          "type": "external",  "label": "Client Portals",      "sublabel": "Clinician / Patient / Admin", "pos": [40,  330], "size": [130, 62] },
+    { "id": "admin-panel",      "type": "frontend",  "label": "Governance Admin",    "sublabel": "Audit, NPCA, Pseudonymize",   "pos": [40,  530], "size": [140, 62], "tag": "Caldicott P7" },
+    { "id": "nextjs",           "type": "frontend",  "label": "Next.js 15 App",      "sublabel": "Edge Middleware + RSC Cache", "pos": [270, 330], "size": [150, 62], "tag": "React 19" },
+    { "id": "app-layer",        "type": "frontend",  "label": "Application Layer",   "sublabel": "Clinician + PROMs Portals",   "pos": [520, 330], "size": [150, 62] },
+    { "id": "ingestion-api",    "type": "backend",   "label": "Document Ingestion",  "sublabel": "Mammoth.js + NLP Parser",     "pos": [520, 130], "size": [150, 62], "tag": "OCR Pipeline" },
+    { "id": "ai-extraction",    "type": "cloud",     "label": "Field Extraction",    "sublabel": "Histology & Gleason Mapping", "pos": [780, 130], "size": [140, 62], "tag": "Automated" },
+    { "id": "supabase-storage", "type": "cloud",     "label": "Encrypted Storage",   "sublabel": "DOCX + Pathology PDFs",       "pos": [780, 280], "size": [140, 62], "tag": "S3-Bucket" },
+    { "id": "postgres",         "type": "database",  "label": "Supabase Postgres",   "sublabel": "Row Level Security + Triggers","pos": [780, 430], "size": [140, 62], "tag": "PostgreSQL 15" }
+  ],
+  "boundaries": [
+    { "kind": "region",         "label": "Supabase Managed Cloud Tier", "wraps": ["ai-extraction", "supabase-storage", "postgres"], "pad": 20 },
+    { "kind": "security-group", "label": "Data Manager Role Required",  "wraps": ["admin-panel"], "pad": 14 }
+  ],
+  "connections": [
+    { "id": "browser-to-nextjs",    "from": "browser",       "to": "nextjs",          "label": "HTTPS",              "variant": "emphasis", "labelAt": [320, 320] },
+    { "id": "auth-to-nextjs",       "from": "supabase-auth", "to": "nextjs",          "label": "verify session",     "variant": "security", "labelDy": -68 },
+    { "id": "nextjs-to-app",        "from": "nextjs",        "to": "app-layer",       "label": "routes",             "labelAt": [420, 410] },
+    { "id": "nextjs-to-admin",      "from": "nextjs",        "to": "admin-panel",     "label": "/admin",             "fromSide": "left", "toSide": "right", "via": [[230, 361], [230, 561]], "labelAt": [165, 440] },
+    { "id": "app-to-ingestion",     "from": "app-layer",     "to": "ingestion-api",   "label": "upload doc",         "fromSide": "top", "toSide": "bottom", "labelDy": -68 },
+    { "id": "ingestion-to-ai",      "from": "ingestion-api", "to": "ai-extraction",   "label": "extract fields",    "variant": "dashed" },
+    { "id": "ingestion-to-storage", "from": "ingestion-api", "to": "supabase-storage","label": "store file",         "variant": "dashed", "fromSide": "right", "toSide": "top", "labelDy": 58 },
+    { "id": "app-to-db",            "from": "app-layer",     "to": "postgres",        "label": "patients + PROMs",  "fromSide": "right", "toSide": "left", "labelAt": [720, 420] },
+    { "id": "admin-to-db",          "from": "admin-panel",   "to": "postgres",        "label": "users + audit log", "fromSide": "bottom", "toSide": "bottom", "via": [[110, 650], [850, 650]], "labelAt": [480, 665] }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Client & App Tier (ARCHITECTURE.md ?3.1)",
+      "items": [
+        "Next.js 15 App Router with React 19 and Server Actions",
+        "Clinician Command Center: 4-Tab Dossier, Overdue Queues, Pentafecta Analytics",
+        "Patient PROMs Portal: IPSS, SHIM/IIEF-5, and 24h Continence tracking",
+        "Admin Console: User provisioning, NPCA completeness checks, CSV export"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Security & Caldicott P7 (ARCHITECTURE.md ?7)",
+      "items": [
+        "Supabase Auth with JWT in secure HttpOnly cookies refreshed on every request",
+        "PostgreSQL Row Level Security (RLS) restricts access by clinical role",
+        "Append-only immutable audit trail with SECURITY DEFINER actor identity locking",
+        "Automated pseudonymization of NHS and Hospital numbers for research exports"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Data & Performance Tier (ARCHITECTURE.md ?4 & ADR-001)",
+      "items": [
+        "Supabase PostgreSQL 15+ with pg_trgm for sub-millisecond search",
+        "In-Memory LRU Cache delivers <5ms response for clinical registry queries",
+        "Computed DB triggers: ISUP Grade Group, Biochemical Recurrence (PSA >= 0.2)",
+        "Supabase S3-compatible encrypted object storage for original PDFs/DOCX"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Intelligent Ingestion (ARCHITECTURE.md ?3.2.1)",
+      "items": [
+        "Mammoth.js converts Microsoft Word theatre notes into structured text",
+        "Automated NLP extraction of pT stage, margins (R0/R1), EPE, and SVI",
+        "Deterministic fuzzy matching links uploaded documents to patient MRNs",
+        "Review Queue with mandatory clinical justification for discrepancy overrides"
+      ]
+    }
+  ]
+}

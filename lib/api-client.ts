@@ -271,6 +271,18 @@ export const db = {
     }));
   },
 
+  /**
+   * The surgeons a patient may be assigned to. An RPC rather than a table read
+   * because RLS shows a clinician only their own profile row and their own
+   * caseload, which cannot answer "who could I hand this over to".
+   */
+  async getSurgeonRoster(): Promise<{ code: SurgeonCode; fullName: string }[]> {
+    const rows = unwrap<{ code: string; full_name: string }[]>(
+      await supabase().rpc('surgeon_roster')
+    );
+    return (rows ?? []).map((r) => ({ code: r.code, fullName: r.full_name }));
+  },
+
   async getSurgeonBenchmark(): Promise<SurgeonBenchmark[]> {
     const rows = unwrap<Record<string, any>[]>(
       await supabase().from('surgeon_benchmark').select('*')

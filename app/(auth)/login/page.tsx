@@ -1,353 +1,338 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import Image from 'next/image';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { FormField, FormLabel } from '@/components/ui/form';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 import {
   HeartPulse,
   Lock,
-  Stethoscope,
-  ShieldCheck,
-  CreditCard,
   Mail,
-  KeyRound,
-  CheckCircle2,
-  Building2,
-  ArrowRight,
   Eye,
   EyeOff,
-  Cpu,
+  ShieldCheck,
+  Building2,
+  AlertTriangle,
+  AlertCircle,
+  ArrowRight,
   ArrowUpRight,
 } from 'lucide-react';
 import { signIn, signOut } from '@/lib/auth';
 import { useToast } from '@/hooks/use-toast';
 
-export default function ClinicianLoginPage() {
+function ClinicianLoginForm() {
   const router = useRouter();
   const { toast } = useToast();
   const searchParams = useSearchParams();
 
-  const [authTab, setAuthTab] = useState<'credentials' | 'smartcard'>('credentials');
+  const isDeactivated = searchParams.get('deactivated') === '1';
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
-  const [smartcardStatus, setSmartcardStatus] = useState<'idle' | 'reading' | 'verified'>('idle');
+  const [authError, setAuthError] = useState<{ message: string; targetPortal?: 'admin' | 'patient' } | null>(null);
 
-  const executeLogin = async (methodTitle: string) => {
+  const handlePasswordLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError(null);
     setIsAuthenticating(true);
+
+    const sanitizedEmail = email.trim();
+
     try {
-      const user = await signIn(email, password);
+      const user = await signIn(sanitizedEmail, password);
 
       if (user.role === 'Data Manager') {
         await signOut();
-        throw new Error('Administrator accounts must sign in via the dedicated Admin Gateway (/admin-login).');
+        setAuthError({
+          message: 'This account has Data Manager rights. Please sign in via the Administrator Gateway.',
+          targetPortal: 'admin',
+        });
+        setIsAuthenticating(false);
+        return;
       }
 
       if (user.role === 'Patient') {
         await signOut();
-        throw new Error('Patient accounts must sign in via the Patient Portal (/patient-login).');
+        setAuthError({
+          message: 'This portal is for clinicians. Patient accounts must sign in via the Patient Portal.',
+          targetPortal: 'patient',
+        });
+        setIsAuthenticating(false);
+        return;
       }
 
       toast({
         title: `Welcome, ${user.name}`,
-        description: `Authenticated via ${methodTitle} as ${user.role}.`,
+        description: `Signed in as ${user.role}.`,
         variant: 'success',
       });
-      router.push(searchParams.get('next') || '/dashboard');
+
+      const nextUrl = searchParams.get('next');
+      router.push(nextUrl || '/dashboard');
     } catch (err) {
       setIsAuthenticating(false);
+      const errorMessage = err instanceof Error ? err.message : 'Invalid credentials. Please check and try again.';
+      setAuthError({ message: errorMessage });
       toast({
         title: 'Sign-in failed',
-        description: err instanceof Error ? err.message : 'Check your credentials and try again.',
+        description: errorMessage,
         variant: 'destructive',
       });
     }
   };
 
-  const handlePasswordLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    void executeLogin('NHS.net credentials');
-  };
-
-  const handleSmartcardTap = () => {
-    // NHS CIS2 smartcard federation is not configured in this deployment.
-    toast({
-      title: 'Smartcard sign-in unavailable',
-      description: 'NHS CIS2 federation is not enabled. Use your NHS.net email and password.',
-      variant: 'destructive',
-    });
-  };
-
   return (
-    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-12 bg-slate-950 text-slate-100 font-sans selection:bg-teal-500 selection:text-white">
-      {/* LEFT COLUMN: Cinematic Clinical Showcase */}
-      <div className="relative hidden lg:flex lg:col-span-7 flex-col justify-between p-12 overflow-hidden border-r border-slate-800/80">
-        {/* Background Image with Deep Gradient Wash */}
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/images/robotic-theatre-hero.jpg"
-            alt="Robotic Surgery Console"
-            fill
-            className="object-cover object-center opacity-30 mix-blend-luminosity scale-105 transition-transform duration-1000"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/85 to-slate-950/60" />
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-        </div>
+    <div className="w-full max-w-[460px] mx-auto space-y-6">
+      {/* Contextual Alerts Area */}
+      {isDeactivated && (
+        <Alert variant="warning" className="border-amber-500/50 bg-amber-500/10 text-amber-900 dark:text-amber-200">
+          <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+          <AlertTitle className="font-semibold text-sm">Session Terminated — Account Deactivated</AlertTitle>
+          <AlertDescription className="text-xs text-amber-800 dark:text-amber-300 mt-1 leading-relaxed">
+            Your session was closed because this account is marked as deactivated. If you require access to the registry, please contact your Trust Department Administrator or Lead Data Manager.
+          </AlertDescription>
+        </Alert>
+      )}
 
-        {/* Top Header */}
-        <div className="relative z-10 space-y-6">
+      {authError && (
+        <Alert variant="destructive" className="border-rose-500/50 bg-rose-500/10 text-rose-900 dark:text-rose-200">
+          <AlertCircle className="h-5 w-5 text-rose-600 dark:text-rose-400" />
+          <AlertTitle className="font-semibold text-sm">Authentication Failed</AlertTitle>
+          <AlertDescription className="text-xs text-rose-800 dark:text-rose-300 mt-1 leading-relaxed">
+            {authError.message}
+            {authError.targetPortal === 'admin' && (
+              <div className="mt-2.5">
+                <Link
+                  href="/admin-login"
+                  className="inline-flex items-center gap-1.5 font-semibold text-xs text-teal-700 dark:text-teal-300 hover:underline"
+                >
+                  <span>Open Administrator Gateway</span>
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            )}
+            {authError.targetPortal === 'patient' && (
+              <div className="mt-2.5">
+                <Link
+                  href="/patient-login"
+                  className="inline-flex items-center gap-1.5 font-semibold text-xs text-teal-700 dark:text-teal-300 hover:underline"
+                >
+                  <span>Open Patient Portal</span>
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            )}
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* Main Authentication Card */}
+      <div className="rounded-2xl bg-white dark:bg-[#181818] border border-slate-200/80 dark:border-[#272727] p-6 sm:p-8 shadow-sm space-y-6">
+        {/* Card Header & Context */}
+        <div className="space-y-1.5 border-b border-slate-100 dark:border-[#272727] pb-5">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-3.5 group">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500 to-emerald-600 text-white shadow-xl shadow-teal-500/20 group-hover:scale-105 transition-transform">
-                <HeartPulse className="h-6 w-6" />
-              </div>
-              <div>
-                <span className="font-extrabold text-white text-lg tracking-tight leading-none block">
-                  RALP Database <span className="text-teal-400 font-mono text-sm font-semibold">v2.0</span>
-                </span>
-                <span className="text-[11px] font-semibold text-teal-400/90 uppercase tracking-widest mt-1 block">
-                  Clinical Registry
-                </span>
-              </div>
-            </Link>
-
-            <Badge variant="outline" className="border-teal-500/30 bg-teal-950/40 text-teal-300 text-xs px-3 py-1 gap-1.5 backdrop-blur-md">
-              <Building2 className="h-3.5 w-3.5 text-teal-400" />
-              <span>Oxford Urology Centre</span>
-            </Badge>
-          </div>
-        </div>
-
-        {/* Center Hero Statement */}
-        <div className="relative z-10 my-auto py-8 space-y-6 max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-300 text-[11px] font-semibold uppercase tracking-wider backdrop-blur-sm">
-            <Cpu className="h-3.5 w-3.5 text-teal-400" />
-            <span>Doctor & Surgical Staff Registry Access</span>
-          </div>
-
-          <h1 className="text-4xl xl:text-5xl font-black text-white tracking-tight leading-[1.15]">
-            Precision Robotics. <br />
-            <span className="bg-gradient-to-r from-teal-300 via-emerald-300 to-cyan-200 bg-clip-text text-transparent">
-              Standardized Clinical Excellence.
+            <span className="text-[11px] font-bold uppercase tracking-wider text-teal-600 dark:text-teal-400">
+              Clinician Authentication
             </span>
+            <span className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+              NHS.net
+            </span>
+          </div>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+            Sign In to Surgical Registry
           </h1>
-
-          <p className="text-sm text-slate-300 leading-relaxed max-w-xl">
-            Single secure sign-in portal for Urology Consultants, Surgeons, Registrars, and Specialist Nurses to manage patient oncology profiles and theatre outcomes.
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed [text-wrap:pretty]">
+            Authorized gateway for Urology Consultants, Surgeons, Registrars, and Specialist Nurses.
           </p>
-
-          {/* Live System KPI Bento Grid */}
-          <div className="grid grid-cols-3 gap-3.5 pt-4">
-            <div className="p-1 rounded-2xl bg-white/5 border border-white/10 shadow-lg backdrop-blur-md">
-              <div className="p-3.5 rounded-xl bg-slate-900/80 border border-white/5 space-y-1">
-                <div className="text-2xl font-black text-white font-mono">NHS</div>
-                <div className="text-[11px] text-slate-400 font-medium">Secure Cloud Registry</div>
-              </div>
-            </div>
-
-            <div className="p-1 rounded-2xl bg-white/5 border border-white/10 shadow-lg backdrop-blur-md">
-              <div className="p-3.5 rounded-xl bg-slate-900/80 border border-white/5 space-y-1">
-                <div className="text-2xl font-black text-teal-300 font-mono">94.2%</div>
-                <div className="text-[11px] text-slate-400 font-medium">12M Trifecta Rate</div>
-              </div>
-            </div>
-
-            <div className="p-1 rounded-2xl bg-white/5 border border-white/10 shadow-lg backdrop-blur-md">
-              <div className="p-3.5 rounded-xl bg-slate-900/80 border border-white/5 space-y-1">
-                <div className="text-2xl font-black text-emerald-300 font-mono">98.0%</div>
-                <div className="text-[11px] text-slate-400 font-medium">NPCA Audit Compliance</div>
-              </div>
-            </div>
-          </div>
         </div>
 
-        {/* Bottom Trust Statement */}
-        <div className="relative z-10 pt-6 border-t border-slate-800/80 flex items-center justify-between text-xs text-slate-400">
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5 text-slate-300">
-              <ShieldCheck className="h-4 w-4 text-teal-400" />
-              <span>Caldicott Principle 7</span>
-            </span>
-            <span>•</span>
-            <span>NHS Smartcard Enabled</span>
-            <span>•</span>
-            <span>256-bit AES Encryption</span>
+        {/* Credentials Form */}
+        <form onSubmit={handlePasswordLogin} className="space-y-5" noValidate>
+          <FormField>
+            <FormLabel
+              htmlFor="clinician-email"
+              className="text-xs font-semibold text-slate-700 dark:text-slate-300"
+            >
+              NHS.net Email Address <span className="text-rose-500" aria-hidden="true">*</span>
+            </FormLabel>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                <Mail className="h-4 w-4" aria-hidden="true" />
+              </div>
+              <Input
+                id="clinician-email"
+                name="email"
+                type="email"
+                autoComplete="username"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="name@nhs.net"
+                className="pl-10 h-11 text-sm rounded-xl border-slate-200 dark:border-[#272727] focus-visible:ring-teal-500"
+                disabled={isAuthenticating}
+                required
+              />
+            </div>
+          </FormField>
+
+          <FormField>
+            <div className="flex items-center justify-between">
+              <FormLabel
+                htmlFor="clinician-password"
+                className="text-xs font-semibold text-slate-700 dark:text-slate-300"
+              >
+                Password <span className="text-rose-500" aria-hidden="true">*</span>
+              </FormLabel>
+              <Link
+                href="/forgot-password"
+                className="text-xs font-medium text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 hover:underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded"
+              >
+                Forgot password?
+              </Link>
+            </div>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                <Lock className="h-4 w-4" aria-hidden="true" />
+              </div>
+              <Input
+                id="clinician-password"
+                name="password"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="pl-10 pr-11 h-11 text-sm rounded-xl border-slate-200 dark:border-[#272727] focus-visible:ring-teal-500"
+                disabled={isAuthenticating}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                aria-pressed={showPassword}
+                className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded transition-colors"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" aria-hidden="true" />
+                ) : (
+                  <Eye className="h-4 w-4" aria-hidden="true" />
+                )}
+              </button>
+            </div>
+          </FormField>
+
+          <Button
+            type="submit"
+            isLoading={isAuthenticating}
+            disabled={isAuthenticating}
+            className="w-full h-11 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-semibold text-sm shadow-sm transition-all duration-200 gap-2 mt-2"
+          >
+            <span>{isAuthenticating ? 'Authenticating Session...' : 'Sign In to Clinical Registry'}</span>
+            {!isAuthenticating && <ArrowRight className="h-4 w-4" aria-hidden="true" />}
+          </Button>
+        </form>
+
+        {/* Secondary Portal Routing */}
+        <div className="pt-4 border-t border-slate-100 dark:border-[#272727] space-y-2">
+          <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+            <span>Are you a patient?</span>
+            <Link
+              href="/patient-login"
+              className="font-medium text-teal-600 dark:text-teal-400 hover:underline inline-flex items-center gap-1"
+            >
+              <span>Patient Portal</span>
+              <ArrowUpRight className="h-3 w-3" />
+            </Link>
           </div>
-          <span className="font-mono text-[11px] text-slate-500">OUH-SURGEON-AUTH</span>
+          <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
+            <span>Data Governance Admin?</span>
+            <Link
+              href="/admin-login"
+              className="font-medium text-teal-600 dark:text-teal-400 hover:underline inline-flex items-center gap-1"
+            >
+              <span>Admin Gateway</span>
+              <ArrowUpRight className="h-3 w-3" />
+            </Link>
+          </div>
         </div>
       </div>
 
-      {/* RIGHT COLUMN: Dedicated Doctor Sign-In Form */}
-      <div className="lg:col-span-5 flex flex-col justify-between p-6 sm:p-10 lg:p-12 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 min-h-screen lg:min-h-full">
-        {/* Mobile Top Header */}
-        <div className="lg:hidden flex items-center justify-between pb-6 border-b border-slate-800">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-600 text-white shadow-md">
-              <HeartPulse className="h-5 w-5" />
+      {/* Institutional & Information Governance Trust Footnote */}
+      <div className="text-center space-y-2 px-4">
+        <div className="inline-flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+          <ShieldCheck className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
+          <span>Caldicott Principle 7 &amp; NHS DSP Toolkit Compliant</span>
+        </div>
+        <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-normal">
+          Oxford University Hospitals NHS FT • Department of Urology
+          <br />
+          Authorized hospital personnel only. Unauthorized access is audited.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export default function ClinicianLoginPage() {
+  return (
+    <div className="min-h-[100dvh] flex flex-col justify-between bg-[#FAFAFA] dark:bg-[#121212] text-slate-900 dark:text-slate-100 font-sans selection:bg-teal-600 selection:text-white">
+      {/* Top Navigation Header */}
+      <header className="w-full border-b border-slate-200/80 dark:border-[#272727] bg-white/80 dark:bg-[#181818]/80 backdrop-blur-md sticky top-0 z-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded-lg p-1">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-600 text-white shadow-sm shadow-teal-600/20 group-hover:bg-teal-700 transition-colors">
+              <HeartPulse className="h-5 w-5" aria-hidden="true" />
             </div>
-            <span className="font-bold text-white text-base">RALP Database</span>
+            <div>
+              <span className="font-bold text-slate-900 dark:text-white text-base tracking-tight leading-none block">
+                RALP Database <span className="text-teal-600 dark:text-teal-400 font-mono text-xs font-semibold">v2.0</span>
+              </span>
+              <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mt-1">
+                Surgical Outcomes &amp; PROMs Platform
+              </span>
+            </div>
           </Link>
-        </div>
 
-        {/* Center Dedicated Form Container */}
-        <div className="max-w-md w-full mx-auto my-auto space-y-6">
-          <div className="space-y-2">
-            <div className="hidden lg:flex items-center justify-between">
-              <span className="text-xs font-bold uppercase tracking-widest text-teal-400">Clinician Sign In</span>
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-[#272727] text-slate-600 dark:text-slate-300 text-xs font-medium">
+              <Building2 className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" aria-hidden="true" />
+              <span>Churchill Hospital, Oxford</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">Doctor & Staff Login</h2>
-            <p className="text-xs text-slate-400">
-              Enter your NHS.net credentials or tap your NHS Smartcard to access the surgical database.
-            </p>
+            <ThemeToggle />
           </div>
+        </div>
+      </header>
 
-          {/* Double-Bezel Form Container */}
-          <div className="rounded-[2rem] p-1.5 bg-white/5 border border-white/10 shadow-2xl backdrop-blur-xl">
-            <div className="rounded-[calc(2rem-0.375rem)] bg-slate-900/90 border border-white/5 p-6 space-y-5">
-              {/* Segmented Auth Selector (Email vs Smartcard) */}
-              <div className="grid grid-cols-2 p-1 rounded-xl bg-slate-950/80 border border-slate-800 text-xs font-semibold text-slate-400">
-                <button
-                  type="button"
-                  onClick={() => setAuthTab('credentials')}
-                  className={`py-2.5 px-3 rounded-lg text-center transition-all flex items-center justify-center gap-1.5 ${
-                    authTab === 'credentials'
-                      ? 'bg-teal-600 text-white font-bold shadow-md'
-                      : 'hover:text-slate-200'
-                  }`}
-                >
-                  <KeyRound className="h-3.5 w-3.5" />
-                  <span>NHS.net Email</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setAuthTab('smartcard')}
-                  className={`py-2.5 px-3 rounded-lg text-center transition-all flex items-center justify-center gap-1.5 ${
-                    authTab === 'smartcard'
-                      ? 'bg-teal-600 text-white font-bold shadow-md'
-                      : 'hover:text-slate-200'
-                  }`}
-                >
-                  <CreditCard className="h-3.5 w-3.5" />
-                  <span>NHS Smartcard</span>
-                </button>
-              </div>
-
-              {/* Mode 1: Clean Email & Password Form */}
-              {authTab === 'credentials' && (
-                <form onSubmit={handlePasswordLogin} className="space-y-4">
-                  <FormField>
-                    <FormLabel className="text-xs font-semibold text-slate-300">NHS.net Email Address</FormLabel>
-                    <div className="relative">
-                      <Mail className="absolute left-3.5 top-3 h-4 w-4 text-slate-500" />
-                      <Input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="e.g. v.kannan@nhs.net"
-                        className="pl-10 bg-slate-950 border-slate-800 text-xs text-white h-11 rounded-xl focus:border-teal-500"
-                        required
-                      />
-                    </div>
-                  </FormField>
-
-                  <FormField>
-                    <div className="flex items-center justify-between">
-                      <FormLabel className="text-xs font-semibold text-slate-300">Password</FormLabel>
-                      <Link href="/forgot-password" className="text-[11px] text-teal-400 hover:underline">
-                        Forgot Password?
-                      </Link>
-                    </div>
-                    <div className="relative">
-                      <Lock className="absolute left-3.5 top-3 h-4 w-4 text-slate-500" />
-                      <Input
-                        type={showPassword ? 'text' : 'password'}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="pl-10 pr-10 bg-slate-950 border-slate-800 text-xs text-white h-11 rounded-xl focus:border-teal-500"
-                        required
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3.5 top-3 text-slate-500 hover:text-slate-300"
-                      >
-                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                      </button>
-                    </div>
-                  </FormField>
-
-                  <Button
-                    type="submit"
-                    disabled={isAuthenticating}
-                    className="w-full h-11 rounded-xl gap-2 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-bold text-xs shadow-lg shadow-teal-600/25 mt-2"
-                  >
-                    <Lock className="h-4 w-4" />
-                    <span>{isAuthenticating ? 'Authenticating Session...' : 'Sign In to Clinical Registry'}</span>
-                  </Button>
-                </form>
-              )}
-
-              {/* Mode 2: NHS Smartcard CIS2 Tap */}
-              {authTab === 'smartcard' && (
-                <div className="py-2 text-center space-y-4">
-                  <div className="relative mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-teal-500/10 border border-teal-500/30 text-teal-400 shadow-inner">
-                    <CreditCard className="h-8 w-8 animate-pulse" />
-                  </div>
-
-                  <div>
-                    <h3 className="text-sm font-bold text-white">NHS Care Identity Service (CIS2)</h3>
-                    <p className="text-xs text-slate-400 mt-0.5">
-                      Tap your physical Smartcard on the connected USB reader.
-                    </p>
-                  </div>
-
-                  <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800 text-xs text-slate-300 font-mono text-left space-y-1">
-                    <div className="flex items-center justify-between text-[10px] text-slate-400">
-                      <span>READER STATUS</span>
-                      <span className="text-emerald-400 font-bold">READY ●</span>
-                    </div>
-                    <div className="text-slate-200">Device: Omnikey 3121 USB Smartcard Reader</div>
-                    <div className="text-teal-400">Active Surgeon: Mr. V. Kannan (Consultant Surgeon)</div>
-                  </div>
-
-                  <Button
-                    onClick={handleSmartcardTap}
-                    disabled={smartcardStatus !== 'idle'}
-                    className="w-full h-11 rounded-xl gap-2 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-bold text-xs shadow-lg shadow-teal-600/25"
-                  >
-                    <ShieldCheck className="h-4 w-4" />
-                    <span>
-                      {smartcardStatus === 'reading'
-                        ? 'Reading Smartcard Passcode...'
-                        : smartcardStatus === 'verified'
-                        ? 'Access Granted!'
-                        : 'Simulate Smartcard Sign In'}
-                    </span>
-                  </Button>
-                </div>
-              )}
+      {/* Main Form Body */}
+      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 my-auto">
+        <Suspense
+          fallback={
+            <div className="w-full max-w-[460px] mx-auto p-8 rounded-2xl bg-white dark:bg-[#181818] border border-slate-200/80 dark:border-[#272727] animate-pulse space-y-4">
+              <div className="h-6 w-1/3 bg-slate-200 dark:bg-[#272727] rounded" />
+              <div className="h-4 w-2/3 bg-slate-100 dark:bg-[#272727] rounded" />
+              <div className="h-11 bg-slate-100 dark:bg-[#272727] rounded-xl mt-6" />
+              <div className="h-11 bg-slate-100 dark:bg-[#272727] rounded-xl" />
+              <div className="h-11 bg-teal-600/30 rounded-xl" />
             </div>
-          </div>
+          }
+        >
+          <ClinicianLoginForm />
+        </Suspense>
+      </main>
 
-          <div className="text-center text-[11px] text-slate-500 space-y-1">
-            <p>Oxford University Hospitals NHS FT • Department of Urology</p>
-            <p className="text-[10px] text-slate-600">Access governed under Caldicott Information Governance Protocols</p>
-          </div>
+      {/* Subtle Bottom Trust Bar */}
+      <footer className="w-full border-t border-slate-200/60 dark:border-[#272727] py-3 text-center text-xs text-slate-600 dark:text-slate-400">
+        <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+          <span>Department of Urology • Churchill Hospital</span>
+          <span>Oxford University Hospitals NHS Foundation Trust</span>
         </div>
-
-        <div className="hidden lg:block text-center text-[11px] text-slate-500 pt-6">
-          Authorized hospital staff access only • Oxford University Hospitals NHS Trust
-        </div>
-      </div>
+      </footer>
     </div>
   );
 }
