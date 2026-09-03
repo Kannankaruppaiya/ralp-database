@@ -6,11 +6,8 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { FileText, AlertTriangle, RefreshCw, UploadCloud, CheckCircle2 } from 'lucide-react';
-import { supabase } from '@/lib/supabase/client';
-import { db } from '@/lib/api-client';
-import { parseClinicalDocument, extractIdentifiers } from '@/features/ingestion/extraction';
+import { parseClinicalDocument } from '@/features/ingestion/extraction';
 import { ExtractedField } from '@/types/ingestion';
-import { stripNhs } from '@/lib/supabase/mappers';
 import { useToast } from '@/hooks/use-toast';
 
 type SourceType = 'theatre_note' | 'clinic_letter' | 'google_form_csv';
@@ -37,14 +34,6 @@ async function readDocumentText(file: File): Promise<string> {
   if (/\.(txt|csv|md)$/i.test(file.name)) return file.text();
   throw new Error(
     `${file.name}: unsupported format. Upload .docx, .txt, .csv or .md — a .doc or scanned PDF must be converted first.`
-  );
-}
-
-/** Database columns are snake_case; extracted fields are keyed camelCase. */
-function toCamel(row: Record<string, unknown> | null): Record<string, unknown> {
-  if (!row) return {};
-  return Object.fromEntries(
-    Object.entries(row).map(([k, v]) => [k.replace(/_([a-z])/g, (_, c) => c.toUpperCase()), v])
   );
 }
 
@@ -79,118 +68,30 @@ export function DocumentUpload() {
         return;
       }
 
-      // Deterministic matching on identifiers only. A document whose identifiers
-      // match nothing is still stored — it lands in the queue unmatched rather
-      // than being attached to a guess.
-      const { nhsNumber, hospitalNumber, surname } = extractIdentifiers(fields);
-      let matchedPatientId: string | null = null;
-      let matchedName: string | null = null;
-      let nameMismatch = false;
-      const reasons: string[] = [];
+      // The parsed fields and document text go to the API, which does the
+      // identifier matching, field-level conflict detection, document storage,
+      // ingestion-job creation and audit write server-side, and returns the
+      // annotated result. A document that matches nothing is still stored — it
+      // lands in the queue unmatched rather than attached to a guess.
+      // The original file goes up alongside the parsed metadata so the server
+      // can store the source document, not just its extracted text.
+      const form = new FormData();
+      form.append('file', file);
+      form.append('meta', JSON.stringify({ title: file.name, sourceType: docType, rawText, fields }));
+      const res = await fetch('/api/ingestion/upload', { method: 'POST', body: form });
+      const body = await res.json().catch(() => null);
+      if (!res.ok) throw new Error(body?.error ?? 'Could not process that document.');
+      const { matched, nameMismatch, fieldConflicts, fields: annotated } = body as {
+        matched: string | null; nameMismatch: boolean; fieldConflicts: number; fields: ExtractedField[];
+      };
 
-      if (nhsNumber || hospitalNumber) {
-        const filters = [
-          nhsNumber ? `nhs_number.eq.${stripNhs(nhsNumber)}` : null,
-          hospitalNumber ? `hospital_number.eq.${hospitalNumber}` : null,
-        ].filter(Boolean) as string[];
-
-        const { data: candidates } = await supabase()
-          .from('patients')
-          .select('id, first_name, surname, nhs_number, hospital_number')
-          .or(filters.join(','))
-          .limit(2);
-
-        if (candidates?.length === 1) {
-          const c = candidates[0] as Record<string, string>;
-          matchedPatientId = c.id;
-          matchedName = `${c.first_name} ${c.surname}`;
-          if (nhsNumber && stripNhs(nhsNumber) === c.nhs_number) reasons.push(`NHS number ${c.nhs_number}`);
-          if (hospitalNumber && hospitalNumber === c.hospital_number) reasons.push(`MRN ${c.hospital_number}`);
-
-          // A mistyped identifier matches a real but wrong record, and nothing
-          // else in the pipeline would catch it. The surname in the document is
-          // never used to match, only to contradict a match.
-          if (surname && surname.toLowerCase() !== String(c.surname).toLowerCase()) {
-            nameMismatch = true;
-            reasons.push(
-              `NAME MISMATCH: document says "${surname}", record says "${c.surname}" — verify before committing`
-            );
-          }
-        } else if ((candidates?.length ?? 0) > 1) {
-          reasons.push('Identifiers matched more than one record — needs manual review');
-        }
-      }
-
-      // Field-level conflicts: an extracted value that disagrees with what the
-      // record already holds. Without this every field was reported as "no
-      // conflict" no matter what it contradicted, and the reconciliation screen
-      // had nothing real to show.
-      let fieldConflicts = 0;
-      if (matchedPatientId) {
-        const [{ data: op }, { data: base }, { data: hist }] = await Promise.all([
-          supabase().from('operations').select('*').eq('patient_id', matchedPatientId).maybeSingle(),
-          supabase().from('baseline_cancer').select('*').eq('patient_id', matchedPatientId).maybeSingle(),
-          supabase().from('histology').select('*').eq('patient_id', matchedPatientId).maybeSingle(),
-        ]);
-
-        const stored: Record<string, unknown> = {
-          ...toCamel(base as Record<string, unknown> | null),
-          ...toCamel(op as Record<string, unknown> | null),
-          ...toCamel(hist as Record<string, unknown> | null),
-        };
-
-        fields.forEach((f) => {
-          const current = stored[f.fieldKey];
-          if (current === undefined || current === null) return;
-          // Compare as text: the database returns numerics as strings.
-          if (String(current) !== String(f.normalizedValue)) {
-            f.hasConflict = true;
-            f.status = 'conflicted';
-            f.currentDbValue = current;
-            fieldConflicts += 1;
-          }
-        });
-      }
-
-      // The document text is stored so a reviewer can check any field against
-      // its source rather than trusting the extraction.
-      const { data: doc, error: docError } = await supabase()
-        .from('documents')
-        .insert({
-          patient_id: matchedPatientId,
-          title: file.name,
-          source_type: docType,
-          raw_text: rawText.slice(0, 200_000),
-        })
-        .select('id')
-        .single();
-      if (docError) throw new Error(docError.message);
-
-      const { error: jobError } = await supabase().from('ingestion_jobs').insert({
-        document_id: (doc as { id: string }).id,
-        matched_patient: matchedPatientId,
-        match_score: matchedPatientId ? (nameMismatch ? 50 : 100) : null,
-        match_reasons: reasons.length ? reasons : null,
-        // A contradicted match must not sit in the ordinary review queue.
-        status: nameMismatch || fieldConflicts > 0 ? 'conflicted' : 'review_required',
-        conflict_count: (nameMismatch ? 1 : 0) + fieldConflicts,
-        extracted_fields: fields,
-      });
-      if (jobError) throw new Error(jobError.message);
-
-      await db.audit(
-        'DOCUMENT_INGESTED',
-        matchedPatientId ?? undefined,
-        `Parsed "${file.name}" — ${fields.length} fields extracted, ${matchedPatientId ? 'matched' : 'unmatched'}`
-      );
-
-      setPreview({ name: file.name, fields, matched: matchedName, nameMismatch, fieldConflicts });
+      setPreview({ name: file.name, fields: annotated, matched, nameMismatch, fieldConflicts });
       toast({
-        title: nameMismatch ? 'Identity conflict' : `${fields.length} fields extracted`,
+        title: nameMismatch ? 'Identity conflict' : `${annotated.length} fields extracted`,
         description: nameMismatch
-          ? `Identifiers matched ${matchedName}, but the document names "${surname}". Verify before committing.`
-          : matchedName
-            ? `Matched to ${matchedName}. Review before committing.`
+          ? `Identifiers matched ${matched}, but the document names a different patient. Verify before committing.`
+          : matched
+            ? `Matched to ${matched}. Review before committing.`
             : 'No patient matched — queued for manual identity matching.',
         variant: nameMismatch ? 'destructive' : 'success',
       });

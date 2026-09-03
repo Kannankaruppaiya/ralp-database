@@ -1,15 +1,72 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { PageHeader } from '@/components/layout/page-header';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { FileText, Printer, Download, Users, BarChart3, ArrowRight } from 'lucide-react';
-import { usePatients } from '@/hooks/use-patients';
+import { Printer, Download, BarChart3, ArrowRight, Loader2 } from 'lucide-react';
+import { db } from '@/lib/api-client';
+import { useToast } from '@/hooks/use-toast';
+
+/** Converts an array of flat objects to a UTF-8 CSV string. */
+function toCsv(rows: Record<string, unknown>[]): string {
+  if (rows.length === 0) return '';
+  const headers = Object.keys(rows[0]);
+  const escape = (v: unknown) => {
+    const s = v == null ? '' : String(v);
+    return s.includes(',') || s.includes('"') || s.includes('\n')
+      ? `"${s.replace(/"/g, '""')}"`
+      : s;
+  };
+  return [
+    headers.join(','),
+    ...rows.map((r) => headers.map((h) => escape(r[h])).join(',')),
+  ].join('\n');
+}
 
 export default function ReportsHubPage() {
-  const { patients } = usePatients();
+  const { toast } = useToast();
+  const [isExporting, setIsExporting] = useState(false);
+
+  const handleExport = async () => {
+    setIsExporting(true);
+    try {
+      // exportPseudonymised() reads from the registry_export_pseudonymised DB
+      // view (no NHS number, no name, no date of birth) and writes an
+      // EXPORT_PSEUDONYMISED audit event — both happen inside the function.
+      const rows = await db.exportPseudonymised();
+      if (rows.length === 0) {
+        toast({
+          title: 'No records to export',
+          description: 'The registry contains no data yet.',
+          variant: 'default',
+        });
+        return;
+      }
+      const csv = toCsv(rows);
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `RALP_Registry_Pseudonymised_${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      toast({
+        title: 'Export complete',
+        description: `${rows.length} records exported. Audit event recorded.`,
+        variant: 'success',
+      });
+    } catch (err) {
+      toast({
+        title: 'Export failed',
+        description: err instanceof Error ? err.message : 'Unexpected error.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -68,25 +125,23 @@ export default function ReportsHubPage() {
             <div>
               <h3 className="font-bold text-base text-slate-900 dark:text-slate-100">Data Registry Export</h3>
               <p className="text-xs text-slate-500 mt-1">
-                Export anonymized patient registry CSV for national BAUS audit reporting.
+                Export pseudonymised patient registry CSV for national BAUS audit reporting.
+                No NHS number, name, or date of birth is included. Export is Caldicott-audited.
               </p>
             </div>
             <Button
               size="sm"
               variant="outline"
               className="w-full gap-1.5 text-xs"
-              onClick={() => {
-                const json = JSON.stringify(patients, null, 2);
-                const blob = new Blob([json], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `RALP_Registry_Export_${new Date().toISOString().split('T')[0]}.json`;
-                a.click();
-              }}
+              disabled={isExporting}
+              onClick={() => void handleExport()}
             >
-              <Download className="h-3.5 w-3.5" />
-              <span>Export Full Registry (JSON)</span>
+              {isExporting ? (
+                <Loader2 className="h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Download className="h-3.5 w-3.5" />
+              )}
+              <span>{isExporting ? 'Exporting…' : 'Export Pseudonymised Registry (CSV)'}</span>
             </Button>
           </CardContent>
         </Card>
@@ -94,3 +149,5 @@ export default function ReportsHubPage() {
     </div>
   );
 }
+
+

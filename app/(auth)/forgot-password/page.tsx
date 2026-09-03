@@ -8,20 +8,35 @@ import { Button } from '@/components/ui/button';
 import { FormField, FormLabel } from '@/components/ui/form';
 import { ArrowLeft, Mail, HeartPulse, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { requestPasswordReset } from '@/lib/auth';
 
 export default function ForgotPasswordPage() {
   const { toast } = useToast();
-  const [email, setEmail] = useState('v.kannan@nhs.net');
+  const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  // Populated only outside production, where no email is sent — lets the reset
+  // be completed locally without a mail server.
+  const [devResetUrl, setDevResetUrl] = useState<string | undefined>();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    toast({
-      title: 'Reset Instructions Sent',
-      description: `Dispatched secure password reset link to ${email}.`,
-      variant: 'success',
-    });
+    setIsSending(true);
+    try {
+      const { devResetUrl: url } = await requestPasswordReset(email);
+      setDevResetUrl(url);
+      // Shown whether or not the address is registered — the server never
+      // reveals which, so the form cannot be used to enumerate accounts.
+      setIsSubmitted(true);
+    } catch (err) {
+      toast({
+        title: 'Could not send reset link',
+        description: err instanceof Error ? err.message : 'Please try again in a moment.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -66,9 +81,9 @@ export default function ForgotPasswordPage() {
                   </div>
                 </FormField>
 
-                <Button type="submit" className="w-full gap-2 shadow-md text-xs h-10 mt-1">
+                <Button type="submit" disabled={isSending} className="w-full gap-2 shadow-md text-xs h-10 mt-1">
                   <Mail className="h-4 w-4" />
-                  <span>Send Reset Instructions</span>
+                  <span>{isSending ? 'Sending reset link…' : 'Send Reset Instructions'}</span>
                 </Button>
               </form>
             ) : (
@@ -81,9 +96,18 @@ export default function ForgotPasswordPage() {
                     Check your NHS inbox
                   </h3>
                   <p className="text-xs text-slate-500 mt-1">
-                    We have sent a time-limited reset token to <strong className="font-mono text-slate-700 dark:text-slate-300">{email}</strong>.
+                    If an account exists for <strong className="font-mono text-slate-700 dark:text-slate-300">{email}</strong>, a time-limited reset link is on its way.
                   </p>
                 </div>
+
+                {devResetUrl && (
+                  <Link
+                    href={devResetUrl.replace(/^https?:\/\/[^/]+/, '')}
+                    className="block rounded-lg border border-amber-300 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/30 p-2.5 text-[11px] font-semibold text-amber-800 dark:text-amber-300 hover:underline"
+                  >
+                    Dev only — email is not configured. Open reset link →
+                  </Link>
+                )}
                 <Button
                   variant="outline"
                   size="sm"

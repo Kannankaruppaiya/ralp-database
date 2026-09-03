@@ -7,14 +7,13 @@ import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@
 import { Badge } from '@/components/ui/badge';
 import { OutcomeChart } from '@/components/analytics/outcome-chart';
 import { useOutcomes } from '@/hooks/use-outcomes';
-import { SURGEON_OPTIONS } from '@/config/clinical-options';
+import { useSurgeons } from '@/hooks/use-surgeons';
 
 const pct = (v: number | null) => (v === null ? '—' : `${v}%`);
-const fullName = (code: string) =>
-  SURGEON_OPTIONS.find((s) => s.value === code)?.fullName ?? code;
 
 export default function SurgeonsAnalyticsPage() {
   const { benchmark, isLoading, error } = useOutcomes();
+  const { fullName } = useSurgeons();
 
   return (
     <div className="space-y-6">

@@ -39,25 +39,60 @@ export default function ConflictsPage() {
       const patientId = job.matchedPatient?.patientId;
       if (!patientId) throw new Error('This document is not matched to a patient.');
 
-      // Only fields the reviewer left on the document's side are written; a
-      // field resolved in favour of the record is deliberately not touched.
-      const patch: Record<string, unknown> = {};
+      // Fields are partitioned by category so each resolution lands in the
+      // correct clinical table. Previously only Operation-category fields were
+      // written; Baseline, Histology, and Demographics resolutions were silently
+      // dropped even after a clinician explicitly chose a side.
+      const baselinePatch: Record<string, unknown> = {};
+      const operationPatch: Record<string, unknown> = {};
+      const histologyPatch: Record<string, unknown> = {};
+      const demographicsPatch: Record<string, unknown> = {};
+
       job.extractedFields
-        .filter((f) => f.hasConflict && f.category === 'Operation')
+        .filter((f) => f.hasConflict)
         .forEach((f) => {
-          if (choiceFor(job.id, f) === 'extracted') patch[f.fieldKey] = f.normalizedValue;
+          if (choiceFor(job.id, f) !== 'extracted') return;
+          switch (f.category) {
+            case 'Baseline Cancer':
+              baselinePatch[f.fieldKey] = f.normalizedValue;
+              break;
+            case 'Operation':
+              operationPatch[f.fieldKey] = f.normalizedValue;
+              break;
+            case 'Histology':
+              histologyPatch[f.fieldKey] = f.normalizedValue;
+              break;
+            case 'Demographics':
+              demographicsPatch[f.fieldKey] = f.normalizedValue;
+              break;
+          }
         });
 
-      if (Object.keys(patch).length > 0) {
-        await db.updateOperation(patientId, patch);
+      if (Object.keys(baselinePatch).length > 0) {
+        await db.updateBaseline(patientId, baselinePatch);
       }
+      if (Object.keys(operationPatch).length > 0) {
+        await db.updateOperation(patientId, operationPatch);
+      }
+      if (Object.keys(histologyPatch).length > 0) {
+        await db.updateHistology(patientId, histologyPatch);
+      }
+      if (Object.keys(demographicsPatch).length > 0) {
+        await db.updatePatient(patientId, demographicsPatch);
+      }
+
+      const totalWritten =
+        Object.keys(baselinePatch).length +
+        Object.keys(operationPatch).length +
+        Object.keys(histologyPatch).length +
+        Object.keys(demographicsPatch).length;
 
       await db.saveIngestionJob({ ...job, status: 'approved', conflictCount: 0 });
       await db.audit(
         'CONFLICT_RESOLVED',
         patientId,
         `Reconciled ${job.conflictCount} discrepancy(ies) in "${job.documentTitle}"; ` +
-          `${Object.keys(patch).length} field(s) taken from the document.`
+          `${totalWritten} field(s) taken from the document.`
       );
       await refresh();
     } catch (e) {

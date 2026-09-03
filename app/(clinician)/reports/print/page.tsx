@@ -5,7 +5,7 @@ import ClinicSummaryPage from '../clinic-summary/page';
 
 export default function PrintPage() {
   return (
-    <Suspense fallback={<div className="p-12 text-center text-sm text-slate-500">Preparing print document...</div>}>
+    <Suspense fallback={<div className="p-12 text-center text-sm text-slate-500">Preparing print document…</div>}>
       <ClinicSummaryPage />
     </Suspense>
   );

@@ -46,20 +46,21 @@ npm run dev:staging
 # Production build (uses .env.production)
 npm run build && npm start
 
-# Apply migrations to a tier
-npm run db:push:dev
-npm run db:push:staging
-npm run db:push:prod
+# Start PostgreSQL and apply migrations (self-hosted stack)
+cd infra && cp .env.example .env && docker compose --env-file .env up -d && cd ..
+npm run db:migrate
 
 # Seed synthetic patients into a non-production tier
-node scripts/seed-cohort.mjs development 200
+npm run db:seed 200
 
 # Typecheck
 npm run typecheck
 ```
 
-See [docs/ENVIRONMENTS.md](docs/ENVIRONMENTS.md) for environment setup, the
-three Supabase projects, and how the first administrator is provisioned.
+See [docs/ENVIRONMENTS.md](docs/ENVIRONMENTS.md) for environment setup and how
+the first administrator is provisioned, and
+[docs/MIGRATION_OFF_SUPABASE.md](docs/MIGRATION_OFF_SUPABASE.md) for the
+self-hosted architecture.
 
 ---
 
@@ -67,11 +68,12 @@ three Supabase projects, and how the first administrator is provisioned.
 
 | Layer | Implementation |
 | :--- | :--- |
-| **Database** | Supabase Postgres, one project per tier (dev / staging / production) |
+| **Database** | Self-hosted PostgreSQL 16 (Docker / on-prem / any cloud VM). No managed service — data lives on the client's own server |
 | **Access control** | Row level security. Clinicians see the registry; a patient sees only the record their profile links to; the audit trail is readable by governance only |
 | **Derived clinical values** | Computed in Postgres — ISUP grade group, biochemical recurrence (`PSA >= 0.2`), the 7-milestone follow-up schedule, and record completeness |
 | **Audit trail** | Append-only `audit_log`. Actor identity is read from the session inside a security-definer function, so it cannot be supplied by the client. `UPDATE`/`DELETE` are revoked |
-| **Auth** | Supabase Auth. Roles come from the `profiles` table, never from the login form |
+| **Auth** | Own authentication: scrypt password hashing, `jose` JWT session cookie, verified in middleware. Roles come from the `profiles` table, never from the login form |
+| **API** | Next.js Route Handlers (`app/api/**`) over a `pg` pool; the browser never touches the database directly |
 | **Frontend** | Next.js 15 App Router, React 19, Tailwind, Recharts |
 
 ---
@@ -82,3 +84,23 @@ three Supabase projects, and how the first administrator is provisioned.
 - [ADR-002: Caldicott Principle 7 Immutable Audit Trail](file:///c:/Users/Kannan/Documents/Vivek/docs/decisions/ADR-002-Caldicott-Principle-7-Audit-Trail.md)
 - [ADR-003: Synthetic Clinical Cohort Generator & Benchmark Engine](file:///c:/Users/Kannan/Documents/Vivek/docs/decisions/ADR-003-Synthetic-Clinical-Cohort-Benchmarking.md)
 - [Client Specification & End-to-End Flow Guide](file:///c:/Users/Kannan/Documents/Vivek/docs/CLIENT_SPECIFICATION_AND_FLOW_GUIDE.md)
+
+## 🧪 Testing
+
+```bash
+npm run test        # unit tests; integration tests skip without a database
+npm run test:watch
+```
+
+Integration tests run against a real PostgreSQL and are skipped unless
+`TEST_DATABASE_URL` is set — point it at a throwaway database, never a tier
+holding real patient data:
+
+```bash
+cd infra && docker compose --env-file .env up -d && cd ..
+export TEST_DATABASE_URL=postgres://ralp:ralp_dev_password@localhost:5432/ralp
+npm run test
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, the forward-only migration
+rule, and the pull-request flow.

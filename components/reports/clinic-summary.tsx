@@ -5,15 +5,17 @@ import { PatientFullRecord } from '@/types/patient';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { formatDate, formatNhsNumber, formatPsa, formatBloodLoss, formatDuration } from '@/lib/formatters';
-import { SURGEON_OPTIONS } from '@/config/clinical-options';
+import { useSurgeons } from '@/hooks/use-surgeons';
 import { Printer, Download, Hospital, HeartPulse } from 'lucide-react';
 
 export function ClinicSummary({ patient }: { patient: PatientFullRecord }) {
+  const { surgeons } = useSurgeons();
+
   const handlePrint = () => {
     window.print();
   };
 
-  const surgeonObj = SURGEON_OPTIONS.find((s) => s.value === patient.primarySurgeon);
+  const surgeonObj = surgeons.find((s) => s.value === patient.primarySurgeon);
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
