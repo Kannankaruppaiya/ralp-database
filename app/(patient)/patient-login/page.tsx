@@ -19,7 +19,7 @@ import {
   Activity,
   ArrowUpRight,
 } from 'lucide-react';
-import { signIn, signOut } from '@/lib/auth';
+import { signInPatient, signOut } from '@/lib/auth';
 import { useToast } from '@/hooks/use-toast';
 
 export default function PatientLoginPage() {
@@ -32,8 +32,9 @@ export default function PatientLoginPage() {
   const [isVerifying, setIsVerifying] = useState(false);
   const [error, setError] = useState('');
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +42,7 @@ export default function PatientLoginPage() {
     setError('');
 
     try {
-      const user = await signIn(email, password);
+      const user = await signInPatient(firstName, surname, dateOfBirth);
 
       if (user.role !== 'Patient') {
         await signOut();
@@ -65,7 +66,7 @@ export default function PatientLoginPage() {
   const handleSendOtp = () => {
     toast({
       title: 'SMS sign-in unavailable',
-      description: 'NHS Notify is not enabled for this deployment. Please sign in with your email and password.',
+      description: 'NHS Notify is not enabled for this deployment. Please sign in with your name and date of birth.',
       variant: 'destructive',
     });
   };
@@ -188,7 +189,7 @@ export default function PatientLoginPage() {
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Patient Login</h2>
             <p className="text-xs text-slate-500 dark:text-slate-400 [text-wrap:pretty]">
-              Sign in with your registered email and password to view your confidential recovery record.
+              Sign in with your name and date of birth to view your confidential recovery record.
             </p>
           </div>
 
@@ -227,18 +228,18 @@ export default function PatientLoginPage() {
               </div>
             )}
 
-            {/* Mode 1: Email & Password */}
+            {/* Mode 1: Name & Date of Birth */}
             {authMode === 'nhs_number' && (
               <form onSubmit={(e) => void handleSignIn(e)} className="space-y-4">
                 <FormField>
-                  <FormLabel className="text-xs font-semibold text-slate-700 dark:text-slate-300">Registered Email Address</FormLabel>
+                  <FormLabel className="text-xs font-semibold text-slate-700 dark:text-slate-300">First Name</FormLabel>
                   <div className="relative">
                     <CreditCard className="absolute left-3.5 top-2.5 h-4 w-4 text-slate-400" />
                     <Input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="e.g. your email registered at clinic"
+                      autoComplete="given-name"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      placeholder="e.g. Arthur"
                       className="pl-10 text-xs h-10 rounded-xl"
                       required
                     />
@@ -246,14 +247,29 @@ export default function PatientLoginPage() {
                 </FormField>
 
                 <FormField>
-                  <FormLabel className="text-xs font-semibold text-slate-700 dark:text-slate-300">Password</FormLabel>
+                  <FormLabel className="text-xs font-semibold text-slate-700 dark:text-slate-300">Surname</FormLabel>
+                  <div className="relative">
+                    <CreditCard className="absolute left-3.5 top-2.5 h-4 w-4 text-slate-400" />
+                    <Input
+                      autoComplete="family-name"
+                      value={surname}
+                      onChange={(e) => setSurname(e.target.value)}
+                      placeholder="e.g. Pendleton"
+                      className="pl-10 text-xs h-10 rounded-xl"
+                      required
+                    />
+                  </div>
+                </FormField>
+
+                <FormField>
+                  <FormLabel className="text-xs font-semibold text-slate-700 dark:text-slate-300">Date of Birth</FormLabel>
                   <div className="relative">
                     <Calendar className="absolute left-3.5 top-2.5 h-4 w-4 text-slate-400" />
                     <Input
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••"
+                      type="date"
+                      autoComplete="bday"
+                      value={dateOfBirth}
+                      onChange={(e) => setDateOfBirth(e.target.value)}
                       className="pl-10 text-xs h-10 rounded-xl"
                       required
                     />

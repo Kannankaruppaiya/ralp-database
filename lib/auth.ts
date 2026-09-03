@@ -47,6 +47,31 @@ export async function signOut(): Promise<void> {
 }
 
 /**
+ * The patient portal's own sign-in: the three mandatory fields their record
+ * already carries, so a patient can sign in as soon as a clinician has
+ * registered them. No password, by product decision — see
+ * docs/superpowers/specs/2026-09-04-patient-name-dob-login-design.md.
+ */
+export async function signInPatient(
+  firstName: string,
+  surname: string,
+  dateOfBirth: string
+): Promise<UserSession> {
+  const res = await fetch('/api/auth/patient-login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ firstName, surname, dateOfBirth }),
+  });
+  const body = await res.json().catch(() => null);
+  if (!res.ok) throw new Error(body?.error ?? 'Sign in failed.');
+
+  const session = body.user as UserSession;
+  setSession(session);
+  await db.audit('LOGIN', undefined, `${session.name} signed in as ${session.role}`);
+  return session;
+}
+
+/**
  * Asks the server to email a reset link. Always resolves the same way whether or
  * not the address is registered, so it cannot be used to discover which accounts
  * exist. `devResetUrl` is returned only outside production, where no mail is
