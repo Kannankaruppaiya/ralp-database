@@ -279,14 +279,45 @@ across components. The earlier design pays off directly here.
 
 ---
 
-## 8. Decision needed before we write code
+## 8. Decisions — locked
 
-1. **API shape** — Next.js Route Handlers in this repo (recommended), or a
-   separate standalone backend service?
-2. **DB access** — raw `pg` + our SQL (recommended, keeps existing functions), or
-   introduce Drizzle/Prisma?
-3. **Authorization** — App-layer only (Option A) to start, then add Postgres RLS
-   back (Option B)? Recommended: yes to both, in that order.
-4. **Storage** — MinIO (S3-compatible, portable) or plain local volume?
+The overriding requirement is **"deploy on our own server, anywhere."** Every
+choice below is made to serve that: fewest moving parts, no vendor, data held by
+the client.
 
-Once these four are confirmed, Phase 0 can start immediately.
+| Decision | Chosen | Why it fits "deploy anywhere" |
+|----------|--------|-------------------------------|
+| API shape | **Next.js Route Handlers in this repo** | One app, one container — no separate service to run or wire up |
+| DB access | **raw `pg` + our existing SQL** | Plain PostgreSQL runs on any host/cloud; keeps our functions/views as-is; no ORM lock-in |
+| Authorization | **App-layer (A) first, then Postgres RLS (B)** | All in our own code; no external identity/authz service |
+| Storage | **Local volume by default**, behind a small storage interface so **MinIO/S3 can be swapped in later** | One fewer container to deploy; files stay on the client's own disk |
+
+## 9. Deployment — runs anywhere
+
+The entire system ships as a **Docker Compose** stack the client owns end to end:
+
+```
+docker-compose.yml
+  ├─ web       → Next.js app + our API (the whole frontend + backend)
+  └─ postgres  → the database, data on a named volume the client owns
+     (files: a mounted volume today; swap to MinIO/S3 later with no app change)
+```
+
+Bring the whole platform up on any machine with:
+
+```
+docker compose up -d
+```
+
+This runs identically on:
+- an on-prem / hospital server the client controls,
+- any cloud VM (AWS, Azure, GCP, Hetzner, DigitalOcean, …),
+- a fully air-gapped on-prem NHS data centre (no outbound internet needed),
+- even a single laptop for a demo.
+
+**No `*.supabase.co`, no managed service, no vendor account.** All patient data
+lives in the Postgres volume on the client's own server. Moving to a new host is
+`pg_dump` → copy → `docker compose up` on the new box. Backups are a scheduled
+`pg_dump` of that volume (see §6 — this becomes the client's responsibility).
+
+Once approved, **Phase 0 starts immediately** with the decisions above.
