@@ -129,3 +129,79 @@ retention policy agreed with the client. Test-box backups are optional.
 Everything in the left column that is not `DATABASE_URL`/secrets/data is byte-
 for-byte the same as the right column. That is the point of the self-hosted
 design: testing on AWS proves exactly what will run on the client's server.
+
+---
+
+## 5. Retiring the Supabase stack on the AWS box
+
+The AWS test instance was originally brought up as a self-hosted **Supabase**
+stack (13 containers) with the app in front of it. The Supabase-free build now
+runs alongside it on the same host:
+
+| | Old | New |
+| :--- | :--- | :--- |
+| App container | `ralp-web` | `ralp-web-v2` |
+| Database | `supabase-db` (Postgres 17, GoTrue auth) | `ralp-postgres` (Postgres 16, own `users` table) |
+| Auth | GoTrue / bcrypt | scrypt + `jose` JWT (`server/auth/*`) |
+| Hostname | `app.51-202-0-221.nip.io` | `v2.51-202-0-221.nip.io` |
+| Schema tracking | `supabase_migrations.schema_migrations` | `public.schema_migrations` (`scripts/migrate.mjs`) |
+
+Neither database holds patient records, so there is nothing to migrate between
+them — only the handful of staff logins, which must be re-created rather than
+copied (GoTrue's bcrypt hashes are not readable by our scrypt verifier).
+
+### 5.1 The one blocker — Caddy belongs to the Supabase stack
+
+`supabase-caddy` terminates TLS on :443 and holds the Let's Encrypt
+certificates. It is part of the Supabase compose project in
+`/opt/ralp/supabase/docker`, so `docker compose down` on that project takes
+**TLS down with it**. Replace the proxy *before* retiring anything else.
+
+### 5.2 Order of operations
+
+1. **Stand up a standalone proxy** — a `caddy:2` container owned by the app,
+   not by the Supabase project, on its own compose file. Give it the app routes
+   only, and mount a fresh data volume so it issues its own certificates:
+
+   ```
+   app.<domain> {
+       reverse_proxy ralp-web-v2:3000
+       header -server
+   }
+   ```
+
+   Run it on a spare port first (`:8443`) and confirm it serves the app before
+   it ever owns :443.
+
+2. **Copy the certificates across** (optional, avoids a re-issue and the
+   associated rate limit): the ACME data lives in the `supabase_caddy_data`
+   volume under `/data/caddy`.
+
+3. **Cut :443 over** — stop `supabase-caddy`, start the new proxy bound to
+   `:80` and `:443`. Both ports must be free at that moment; :80 is needed for
+   ACME renewals.
+
+4. **Verify** `app.<domain>` serves the new app over HTTPS, then stop
+   `ralp-web` (do not delete it — it is the rollback).
+
+5. **Retire the Supabase containers** —
+   `docker compose -f /opt/ralp/supabase/docker/docker-compose.yml down`.
+   **Keep the volumes.** Only remove `supabase_db_data` once the new stack has
+   run cleanly for an agreed period.
+
+6. **Rollback at any point** is: restore
+   `Caddyfile.bak-before-v2`, start `supabase-caddy` and `ralp-web`.
+
+### 5.3 Rotating the bootstrap admin password
+
+The first admin is created with a placeholder. Change it over an interactive
+session so the value is never recorded in a command log:
+
+```bash
+aws ssm start-session --target <instance-id> --region <region>
+```
+
+then, on the host, hash it with the same scheme the app uses
+(`scrypt$<saltHex>$<keyHex>`, 16-byte salt, 64-byte key) and update
+`users.password_hash` for that email. Do this before any real patient data is
+entered.
