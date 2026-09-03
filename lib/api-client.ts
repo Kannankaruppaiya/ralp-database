@@ -174,6 +174,15 @@ export const db = {
     await api('/api/ingestion', jsonInit('POST', job));
   },
 
+  // ------------------------------------------------------------- surgeon roster
+
+  async getSurgeonRoster(): Promise<{ code: SurgeonCode; fullName: string }[]> {
+    const { surgeons } = await api<{ surgeons: { code: SurgeonCode; fullName: string }[] }>(
+      '/api/surgeon-roster'
+    );
+    return surgeons;
+  },
+
   // ------------------------------------------------------------- audit trail
 
   async getAuditLogs(limit = 200): Promise<AuditLogEntry[]> {

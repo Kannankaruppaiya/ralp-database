@@ -1,4 +1,5 @@
 import { APP_CONFIG } from '@/config/environment';
+import { AlertCircle, FlaskConical } from 'lucide-react';
 
 /**
  * Marks non-production deployments.
@@ -16,14 +17,16 @@ export function EnvBanner() {
   return (
     <div
       role="status"
-      className={`sticky top-0 z-[60] flex items-center justify-center gap-2 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white ${
-        isStaging ? 'bg-amber-600' : 'bg-indigo-600'
-      }`}
+      className="sticky top-0 z-[60] flex items-center justify-center gap-2 px-3 py-1 bg-slate-950/95 border-b border-slate-800 text-[11px] text-slate-300 backdrop-blur-md"
     >
-      <span>{APP_CONFIG.tier} environment</span>
-      <span className="font-medium normal-case tracking-normal opacity-90">
-        — synthetic data only, not a clinical record
+      <div className="flex items-center gap-1.5 font-mono font-bold uppercase tracking-wider text-[10px] px-2 py-0.5 rounded bg-teal-500/20 text-teal-300 border border-teal-500/30">
+        <FlaskConical className="h-3 w-3 text-teal-400" />
+        <span>{APP_CONFIG.tier}</span>
+      </div>
+      <span className="font-medium text-slate-400 text-xs">
+        Synthetic Oxford cohort data — not a live clinical EPR record
       </span>
     </div>
   );
 }
+

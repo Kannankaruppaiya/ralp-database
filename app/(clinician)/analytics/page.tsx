@@ -8,7 +8,6 @@ import { RecoveryCurve } from '@/components/analytics/recovery-curve';
 import { useOutcomes } from '@/hooks/use-outcomes';
 import { Users, Scissors, CheckCircle2, AlertCircle, Activity, Percent } from 'lucide-react';
 
-/** Renders "—" rather than 0 when a measure has no denominator yet. */
 function Stat({
   label, value, suffix, icon: Icon, tone,
 }: {
@@ -19,17 +18,18 @@ function Stat({
   tone: string;
 }) {
   return (
-    <Card className={`border-l-4 ${tone} shadow-sm`}>
-      <CardContent className="p-4">
+    <Card className="glow-card border-slate-200/90 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 shadow-sm relative overflow-hidden">
+      <div className={`absolute top-0 inset-x-0 h-1 ${tone.replace('border-l-', 'bg-')}`} />
+      <CardContent className="p-4 pt-3.5">
         <div className="flex items-start justify-between">
-          <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
             {label}
           </span>
-          <Icon className="h-4 w-4 text-slate-400" />
+          <Icon className="h-4 w-4 text-slate-400" aria-hidden="true" />
         </div>
-        <div className="mt-1 text-2xl font-bold text-slate-900 dark:text-white">
+        <div className="mt-1 text-2xl font-extrabold text-slate-900 dark:text-white font-mono tabular-nums">
           {value === null ? '—' : value.toLocaleString()}
-          {value !== null && suffix ? <span className="text-base font-semibold">{suffix}</span> : null}
+          {value !== null && suffix ? <span className="text-base font-semibold ml-0.5">{suffix}</span> : null}
         </div>
       </CardContent>
     </Card>

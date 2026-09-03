@@ -1,4 +1,12 @@
-export type Role = 'Consultant Surgeon' | 'Surgical Registrar' | 'Clinical Nurse Specialist' | 'Data Manager' | 'Patient';
+export type Role =
+  | 'Consultant Surgeon'
+  | 'Surgical Registrar'
+  | 'Clinical Nurse Specialist'
+  | 'MDT Coordinator'
+  | 'Caldicott Guardian'
+  | 'Data Manager'
+  | 'Research Auditor'
+  | 'Patient';
 
 export interface UserRolePermissions {
   canViewClinicalRegistry: boolean;
@@ -38,6 +46,24 @@ export const ROLE_PERMISSIONS: Record<Role, UserRolePermissions> = {
     canViewAuditLogs: false,
     canSubmitProms: true,
   },
+  'MDT Coordinator': {
+    canViewClinicalRegistry: true,
+    canEditClinicalData: true,
+    canApproveExtractions: true,
+    canViewSurgeonOutcomes: false,
+    canManageUsers: false,
+    canViewAuditLogs: false,
+    canSubmitProms: false,
+  },
+  'Caldicott Guardian': {
+    canViewClinicalRegistry: true,
+    canEditClinicalData: false,
+    canApproveExtractions: false,
+    canViewSurgeonOutcomes: true,
+    canManageUsers: false,
+    canViewAuditLogs: true,
+    canSubmitProms: false,
+  },
   'Data Manager': {
     canViewClinicalRegistry: true,
     canEditClinicalData: true,
@@ -45,6 +71,15 @@ export const ROLE_PERMISSIONS: Record<Role, UserRolePermissions> = {
     canViewSurgeonOutcomes: true,
     canManageUsers: true,
     canViewAuditLogs: true,
+    canSubmitProms: false,
+  },
+  'Research Auditor': {
+    canViewClinicalRegistry: true,
+    canEditClinicalData: false,
+    canApproveExtractions: false,
+    canViewSurgeonOutcomes: true,
+    canManageUsers: false,
+    canViewAuditLogs: false,
     canSubmitProms: false,
   },
   'Patient': {

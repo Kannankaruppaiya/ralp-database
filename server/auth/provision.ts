@@ -18,6 +18,8 @@ export interface ProvisionInput {
   gmcNumber?: string | null;
   hospital?: string;
   patientId?: string | null;
+  /** Hold the account at /change-password until the clinician sets their own. */
+  mustChangePassword?: boolean;
 }
 
 export async function provisionUser(input: ProvisionInput): Promise<string> {
@@ -30,14 +32,16 @@ export async function provisionUser(input: ProvisionInput): Promise<string> {
     const id = rows[0].id as string;
     await client.query(
       `insert into profiles
-         (id, full_name, email, role, surgeon_code, gmc_number, hospital, patient_id)
+         (id, full_name, email, role, surgeon_code, gmc_number, hospital, patient_id,
+          must_change_password)
        values
          ($1, $2, lower($3), $4, $5, $6,
-          coalesce($7, 'Oxford University Hospitals NHS FT'), $8)`,
+          coalesce($7, 'Oxford University Hospitals NHS FT'), $8, $9)`,
       [
         id, input.fullName, input.email, input.role,
         input.surgeonCode ?? null, input.gmcNumber ?? null,
         input.hospital ?? null, input.patientId ?? null,
+        input.mustChangePassword ?? false,
       ]
     );
     return id;

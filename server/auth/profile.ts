@@ -14,11 +14,13 @@ export interface ServerUserSession {
   gmcNumber?: string;
   hospital: string;
   patientId?: string;
+  mustChangePassword?: boolean;
 }
 
 export async function loadProfile(userId: string): Promise<ServerUserSession | null> {
   const { rows } = await pool.query(
-    `select id, full_name, email, role, surgeon_code, gmc_number, hospital, patient_id
+    `select id, full_name, email, role, surgeon_code, gmc_number, hospital, patient_id,
+            must_change_password
        from profiles where id = $1`,
     [userId]
   );
@@ -33,5 +35,6 @@ export async function loadProfile(userId: string): Promise<ServerUserSession | n
     gmcNumber: p.gmc_number ?? undefined,
     hospital: p.hospital,
     patientId: p.patient_id ?? undefined,
+    mustChangePassword: p.must_change_password ?? false,
   };
 }

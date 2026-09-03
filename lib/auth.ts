@@ -16,6 +16,8 @@ export interface UserSession {
   hospital: string;
   /** Set only for role 'Patient' — the record this login may read. */
   patientId?: string;
+  /** True until an admin-provisioned clinician replaces their temporary password. */
+  mustChangePassword?: boolean;
 }
 
 /** Role permissions are static config, so this stays synchronous. */

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { OperationData, BladderNeckStatus, NerveSparingSide, NerveSparingGrade, SurgicalQualityGrade } from '@/types/operation';
 import { SurgeonCode } from '@/types/common';
+import { useSurgeons } from '@/hooks/use-surgeons';
 import { PatientDataSection, PatientDataField } from '@/components/patient/patient-completeness';
 import { formatDate, formatBloodLoss, formatDuration } from '@/lib/formatters';
 import { Badge } from '@/components/ui/badge';
@@ -11,7 +12,6 @@ import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { FormField, FormLabel } from '@/components/ui/form';
 import {
-  SURGEON_OPTIONS,
   BLADDER_NECK_OPTIONS,
   NERVE_SPARING_OPTIONS,
   NERVE_SPARING_GRADES,
@@ -29,10 +29,11 @@ export function OperationSummary({
   data?: OperationData;
   onUpdate?: () => void;
 }) {
+  const { surgeons, fullName } = useSurgeons();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState<Partial<OperationData>>(
     data || {
-      surgeon: 'VK',
+      surgeon: '',
       operationDate: new Date().toISOString().split('T')[0],
       bladderNeck: 'sparing',
       nerveSparing: 'Bilateral',
@@ -73,10 +74,10 @@ export function OperationSummary({
           <FormField>
             <FormLabel>Primary Surgeon *</FormLabel>
             <Select
-              value={formData.surgeon || 'VK'}
+              value={formData.surgeon || ''}
               onChange={(e) => setFormData({ ...formData, surgeon: e.target.value as SurgeonCode })}
             >
-              {SURGEON_OPTIONS.map((s) => (
+              {surgeons.map((s) => (
                 <option key={s.value} value={s.value}>
                   {s.fullName} ({s.value})
                 </option>
@@ -257,9 +258,9 @@ export function OperationSummary({
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         <PatientDataField
           label="Lead Surgeon"
-          value={data?.surgeon ? SURGEON_OPTIONS.find((s) => s.value === data.surgeon)?.fullName : undefined}
-          badge={<Badge variant="default">{data?.surgeon || 'VK'}</Badge>}
-          source={{ type: 'Operation Note', documentTitle: 'Robotic Theatre Note', importedDate: data?.operationDate, verified: true, verifiedBy: 'VK' }}
+          value={data?.surgeon ? fullName(data.surgeon) : undefined}
+          badge={<Badge variant="default">{data?.surgeon || '—'}</Badge>}
+          source={{ type: 'Operation Note', documentTitle: 'Robotic Theatre Note', importedDate: data?.operationDate, verified: true, verifiedBy: data?.surgeon }}
         />
 
         <PatientDataField

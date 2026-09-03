@@ -1,16 +1,18 @@
-import { SurgeonCode } from '@/types/common';
 import { GleasonGrade, GradeGroup, ClinicalStage } from '@/types/cancer';
 import { BladderNeckStatus, NerveSparingSide, NerveSparingGrade, SurgicalQualityGrade } from '@/types/operation';
 import { PathologicalStage, MarginStatus } from '@/types/histology';
 import { IncontinenceDayStatus, IncontinenceNightPads } from '@/types/prom';
 
-export const SURGEON_OPTIONS: { value: SurgeonCode; label: string; fullName: string }[] = [
-  { value: 'VK', label: 'VK', fullName: 'Mr. V. Kannan, FRCS (Urol)' },
-  { value: 'RDM', label: 'RDM', fullName: 'Mr. R. D. Miller, FRCS (Urol)' },
-  { value: 'CI', label: 'CI', fullName: 'Mr. C. Ibrahim, FRCS (Urol)' },
-  { value: 'OAK', label: 'OAK', fullName: 'Mr. O. A. Khan, FRCS (Urol)' },
-  { value: 'OTHER', label: 'Other', fullName: 'Visiting / Locum Consultant' },
-];
+/**
+ * The roster of surgeons is data, not config — read it with `useSurgeons()`,
+ * which calls the surgeon_roster() function added in migration 0012. This is
+ * only the format a code must take, mirroring the check constraints on
+ * profiles.surgeon_code / patients.primary_surgeon / operations.surgeon so the
+ * form rejects a bad code before Postgres has to.
+ */
+export const SURGEON_CODE_PATTERN = /^[A-Z][A-Z0-9]{1,7}$/;
+export const SURGEON_CODE_HINT =
+  'Use 2-8 characters: initials in capitals, e.g. VK.';
 
 export const GLEASON_OPTIONS: GleasonGrade[] = [
   '3+3',

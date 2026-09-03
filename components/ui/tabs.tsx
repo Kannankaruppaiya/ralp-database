@@ -42,7 +42,7 @@ export function TabsList({ className, children, ...props }: React.HTMLAttributes
   return (
     <div
       className={cn(
-        'inline-flex h-10 items-center justify-center rounded-lg bg-slate-100 p-1 text-muted-foreground dark:bg-slate-800',
+        'inline-flex h-10 items-center justify-center rounded-lg bg-slate-100 p-1 text-muted-foreground dark:bg-[#181818] dark:border dark:border-[#272727]',
         className
       )}
       {...props}
@@ -64,9 +64,9 @@ export function TabsTrigger({ value, className, children, ...props }: TabsTrigge
     <button
       type="button"
       className={cn(
-        'inline-flex items-center justify-center whitespace-nowrap rounded-md px-3.5 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+        'inline-flex items-center justify-center whitespace-nowrap rounded-md px-3.5 py-1.5 text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]',
         isSelected
-          ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-900 dark:text-slate-100 font-semibold'
+          ? 'bg-white text-slate-900 shadow-sm dark:bg-[#272727] dark:text-slate-100 font-semibold'
           : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100',
         className
       )}
@@ -88,7 +88,7 @@ export function TabsContent({ value, className, children, ...props }: TabsConten
 
   return (
     <div
-      className={cn('mt-4 ring-offset-background focus-visible:outline-none animate-in fade-in duration-200', className)}
+      className={cn('mt-4 ring-offset-background focus-visible:outline-none animate-in fade-in duration-300', className)}
       {...props}
     >
       {children}
