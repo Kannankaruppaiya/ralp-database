@@ -40,6 +40,6 @@ next-env.d.ts
 .env.production
 !.env*.example
 
-# Local Supabase stack
-supabase/.temp
-supabase/.branches
+# Self-hosted infra
+infra/.env
+infra/storage/

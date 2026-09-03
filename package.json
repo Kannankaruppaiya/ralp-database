@@ -14,17 +14,12 @@
     "build:staging": "dotenv -e .env.staging -- next build",
     "build:dev": "dotenv -e .env.development -- next build",
     "typecheck": "tsc --noEmit",
-    "db:push:dev": "node scripts/db-push.mjs development",
-    "db:push:staging": "node scripts/db-push.mjs staging",
-    "db:push:prod": "node scripts/db-push.mjs production --yes",
-    "db:types": "node scripts/db-types.mjs",
     "db:migrate": "dotenv -e infra/.env -- node scripts/migrate.mjs",
     "db:migrate:dry": "dotenv -e infra/.env -- node scripts/migrate.mjs --dry",
+    "db:seed": "dotenv -e infra/.env -- node scripts/seed-cohort.mjs development",
     "build:prod": "dotenv -e .env.production -- next build"
   },
   "dependencies": {
-    "@supabase/ssr": "^0.12.5",
-    "@supabase/supabase-js": "^2.112.4",
     "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

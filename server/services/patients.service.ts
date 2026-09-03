@@ -4,7 +4,7 @@ import * as repo from '@/server/db/repositories/patients.repo';
 import { writeAudit } from '@/server/db/repositories/clinical.repo';
 import {
   toPatient, stripNhs, fromBaseline, fromOperation, fromHistology,
-} from '@/lib/supabase/mappers';
+} from '@/lib/mappers';
 import type { PatientFullRecord, PatientDemographics } from '@/types/patient';
 import type { BaselineCancerData } from '@/types/cancer';
 import type { OperationData } from '@/types/operation';

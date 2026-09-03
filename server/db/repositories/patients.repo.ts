@@ -5,7 +5,7 @@ import type { PoolClient } from 'pg';
  * Patient data access. Each query returns rows in the same nested shape the old
  * PostgREST embed produced (`baseline_cancer`, `operations`, `histology` as
  * objects; `follow_ups`, `prom_submissions` as arrays), so the existing mappers
- * in lib/supabase/mappers.ts consume the output unchanged.
+ * in lib/mappers.ts consume the output unchanged.
  */
 
 // Full record — includes PROM submissions (single-patient view).

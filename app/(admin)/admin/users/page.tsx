@@ -55,13 +55,13 @@ export default function AdminUsersPage() {
 
   const handleInviteUser = (e: React.FormEvent) => {
     e.preventDefault();
-    // Creating a login requires the service role key, which must never reach the
-    // browser. Until a server-side invite route exists, accounts are provisioned
-    // from the Supabase dashboard.
+    // A server-side invite route is not built yet. Until then, accounts are
+    // provisioned on the server with scripts/create-user.mjs (creates the user
+    // and profile together).
     setIsInviteOpen(false);
     toast({
       title: 'Invites are not wired up yet',
-      description: 'Create the account in the Supabase dashboard; the profile row is created automatically.',
+      description: 'Provision the account on the server with scripts/create-user.mjs.',
       variant: 'destructive',
     });
   };

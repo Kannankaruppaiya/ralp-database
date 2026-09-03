@@ -1,7 +1,7 @@
 import 'server-only';
 import { withUser } from '@/server/db/pool';
 import * as repo from '@/server/db/repositories/clinical.repo';
-import { toAudit } from '@/lib/supabase/mappers';
+import { toAudit } from '@/lib/mappers';
 
 export async function getAuditLogs(userId: string, limit = 200) {
   const rows = await withUser(userId, (client) => repo.listAudit(client, limit));

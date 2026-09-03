@@ -1,7 +1,7 @@
 import 'server-only';
 import { withUser } from '@/server/db/pool';
 import * as repo from '@/server/db/repositories/registry.repo';
-import { toIngestionJob } from '@/lib/supabase/mappers';
+import { toIngestionJob } from '@/lib/mappers';
 import type { ClinicalDocument } from '@/types/document';
 import type { IngestionJob } from '@/types/ingestion';
 

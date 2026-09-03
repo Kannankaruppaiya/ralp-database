@@ -4,7 +4,7 @@ import {
   matchCandidates, clinicalSections, insertDocument, saveIngestionJob,
 } from '@/server/db/repositories/registry.repo';
 import { writeAudit } from '@/server/db/repositories/clinical.repo';
-import { stripNhs } from '@/lib/supabase/mappers';
+import { stripNhs } from '@/lib/mappers';
 import { extractIdentifiers } from '@/features/ingestion/extraction';
 import type { ExtractedField } from '@/types/ingestion';
 

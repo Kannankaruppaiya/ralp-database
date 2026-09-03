@@ -1,7 +1,7 @@
 import 'server-only';
 import { withUser } from '@/server/db/pool';
 import * as repo from '@/server/db/repositories/clinical.repo';
-import { toFollowUp, toPatient, fromFollowUp, fromProm } from '@/lib/supabase/mappers';
+import { toFollowUp, toPatient, fromFollowUp, fromProm } from '@/lib/mappers';
 import type { FollowUpRecord } from '@/types/follow-up';
 import type { PromSubmission } from '@/types/prom';
 
