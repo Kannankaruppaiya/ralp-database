@@ -51,7 +51,7 @@ export function IPSSQuestionnaire({ initialAnswers, onComplete, isReadOnly = fal
         </div>
         <div className="flex items-center gap-3">
           <div className="text-right">
-            <span className="text-xs text-slate-500 block">Total Score:</span>
+            <span className="text-xs text-muted-foreground block">Total Score:</span>
             <span className="text-xl font-extrabold text-teal-900 dark:text-teal-100 font-mono">
               {score.totalScore} / 35
             </span>
@@ -70,12 +70,12 @@ export function IPSSQuestionnaire({ initialAnswers, onComplete, isReadOnly = fal
         {IPSS_QUESTIONS.map((q, idx) => {
           const currentVal = answers[q.key as keyof IPSSAnswers];
           return (
-            <Card key={q.key} className="border-slate-200 dark:border-slate-800 shadow-sm">
+            <Card key={q.key} className="border-border shadow-sm">
               <CardHeader className="p-4 pb-2">
-                <CardTitle className="text-sm font-semibold text-slate-900 dark:text-white">
+                <CardTitle className="text-sm font-semibold text-foreground">
                   {q.title}
                 </CardTitle>
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{q.question}</p>
+                <p className="text-xs text-muted-foreground mt-1">{q.question}</p>
               </CardHeader>
               <CardContent className="p-4 pt-2">
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
@@ -91,7 +91,7 @@ export function IPSSQuestionnaire({ initialAnswers, onComplete, isReadOnly = fal
                           'flex flex-col items-center justify-center p-2.5 rounded-lg border text-center transition-all',
                           isSelected
                             ? 'border-teal-600 bg-teal-600 text-white font-bold shadow-sm ring-2 ring-teal-600/30'
-                            : 'border-slate-200 bg-slate-50/60 text-slate-700 hover:bg-slate-100 hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300'
+                            : 'border-border bg-muted/40 text-foreground hover:bg-muted hover:border-primary/40'
                         )}
                       >
                         <span className="text-xs leading-tight">{opt.label}</span>
@@ -105,12 +105,12 @@ export function IPSSQuestionnaire({ initialAnswers, onComplete, isReadOnly = fal
         })}
 
         {/* Question 8: Quality of life */}
-        <Card className="border-cyan-200 bg-cyan-50/30 dark:border-cyan-900 dark:bg-cyan-950/10 shadow-sm">
+        <Card className="border-border shadow-sm">
           <CardHeader className="p-4 pb-2">
-            <CardTitle className="text-sm font-semibold text-cyan-950 dark:text-cyan-200">
+            <CardTitle className="text-sm font-semibold text-foreground">
               8. Quality of Life Due to Urinary Symptoms (Bother Score)
             </CardTitle>
-            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               If you were to spend the rest of your life with your prostate symptoms just the way they are now, how would you feel?
             </p>
           </CardHeader>
@@ -127,8 +127,8 @@ export function IPSSQuestionnaire({ initialAnswers, onComplete, isReadOnly = fal
                     className={cn(
                       'flex flex-col items-center justify-center p-2.5 rounded-lg border text-center transition-all',
                       isSelected
-                        ? 'border-cyan-600 bg-cyan-600 text-white font-bold shadow-sm ring-2 ring-cyan-600/30'
-                        : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300'
+                        ? 'border-teal-600 bg-teal-600 text-white font-bold shadow-sm ring-2 ring-teal-600/30'
+                        : 'border-border bg-muted/40 text-foreground hover:bg-muted hover:border-primary/40'
                     )}
                   >
                     <span className="text-xs leading-tight">{opt.label}</span>
@@ -148,7 +148,7 @@ export function IPSSScoreCard({ score }: { score?: IPSSScore }) {
 
   return (
     <div className="flex items-center gap-2">
-      <span className="font-mono font-bold text-slate-900 dark:text-slate-100">{score.totalScore}/35</span>
+      <span className="font-mono font-bold text-foreground">{score.totalScore}/35</span>
       <Badge
         variant={score.severity === 'Mild' ? 'success' : score.severity === 'Moderate' ? 'warning' : 'destructive'}
         className="text-[10px]"

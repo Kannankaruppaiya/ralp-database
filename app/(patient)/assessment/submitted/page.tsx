@@ -27,22 +27,22 @@ export default function AssessmentSubmittedPage() {
       </div>
 
       <div className="space-y-2">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground">
           Assessment Submitted Successfully!
         </h1>
-        <p className="text-xs text-slate-600 max-w-md mx-auto">
+        <p className="text-xs text-muted-foreground max-w-md mx-auto">
           Thank you. Your responses have been automatically scored and recorded directly into your hospital surgical database record.
         </p>
       </div>
 
-      <Card className="shadow-sm border-teal-200 bg-teal-50/40 text-left">
+      <Card className="shadow-sm border-teal-200 bg-primary/10/40 text-left">
         <CardHeader className="p-4 pb-2">
           <CardTitle className="text-xs font-bold text-teal-900 uppercase tracking-wider flex items-center gap-2">
             <HeartPulse className="h-4 w-4 text-teal-600" />
             Personalized Post-Operative Guidance
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-4 pt-1 text-xs text-slate-700 space-y-2 leading-relaxed">
+        <CardContent className="p-4 pt-1 text-xs text-foreground space-y-2 leading-relaxed">
           <p>
             • <strong>Continence Recovery</strong>: Your progress is consistent with expected post-RALP pelvic floor retraining. Continue your daily Kegel exercises as instructed by your clinical nurse specialist.
           </p>

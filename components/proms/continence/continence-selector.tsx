@@ -56,12 +56,12 @@ export function ContinenceSelector({ initialData, onChange, isReadOnly = false }
       </div>
 
       {/* Daytime Incontinence Options */}
-      <Card className="border-slate-200 dark:border-slate-800 shadow-sm">
+      <Card className="border-border shadow-sm">
         <CardHeader className="p-4 pb-2">
-          <CardTitle className="text-sm font-semibold text-slate-900 dark:text-white">
+          <CardTitle className="text-sm font-semibold text-foreground">
             Daytime Pad Usage & Leakage Frequency
           </CardTitle>
-          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             Select the option that best reflects your typical daytime bladder control:
           </p>
         </CardHeader>
@@ -79,7 +79,7 @@ export function ContinenceSelector({ initialData, onChange, isReadOnly = false }
                     'flex flex-col items-start p-3 rounded-lg border text-left transition-all',
                     isSelected
                       ? 'border-blue-600 bg-blue-600 text-white font-semibold shadow-sm ring-2 ring-blue-600/30'
-                      : 'border-slate-200 bg-slate-50/60 text-slate-700 hover:bg-slate-100 hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300'
+                      : 'border-border bg-muted/40 text-foreground hover:bg-muted hover:border-primary/40'
                   )}
                 >
                   <span className="text-xs font-semibold">{opt.label}</span>
@@ -91,12 +91,12 @@ export function ContinenceSelector({ initialData, onChange, isReadOnly = false }
       </Card>
 
       {/* Nighttime Pads */}
-      <Card className="border-slate-200 dark:border-slate-800 shadow-sm">
+      <Card className="border-border shadow-sm">
         <CardHeader className="p-4 pb-2">
-          <CardTitle className="text-sm font-semibold text-slate-900 dark:text-white">
+          <CardTitle className="text-sm font-semibold text-foreground">
             Nighttime Pads Required
           </CardTitle>
-          <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+          <p className="text-xs text-muted-foreground mt-1">
             Number of pads needed overnight while sleeping:
           </p>
         </CardHeader>
@@ -114,7 +114,7 @@ export function ContinenceSelector({ initialData, onChange, isReadOnly = false }
                     'flex flex-col items-center justify-center p-3 rounded-lg border text-center transition-all',
                     isSelected
                       ? 'border-blue-600 bg-blue-600 text-white font-semibold shadow-sm ring-2 ring-blue-600/30'
-                      : 'border-slate-200 bg-slate-50/60 text-slate-700 hover:bg-slate-100 hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300'
+                      : 'border-border bg-muted/40 text-foreground hover:bg-muted hover:border-primary/40'
                   )}
                 >
                   <span className="text-xs font-semibold">{opt.label}</span>

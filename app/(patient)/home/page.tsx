@@ -35,12 +35,12 @@ export default function PatientHomePage() {
   const { patient, isLoading } = useCurrentPatient();
 
   if (isLoading) {
-    return <div className="p-12 text-center text-sm text-slate-500">Loading your record…</div>;
+    return <div className="p-12 text-center text-sm text-muted-foreground">Loading your record…</div>;
   }
 
   if (!patient) {
     return (
-      <div className="p-12 text-center text-sm text-slate-500">
+      <div className="p-12 text-center text-sm text-muted-foreground">
         No patient record is linked to this login. Please contact your clinical team.
       </div>
     );
@@ -67,15 +67,15 @@ export default function PatientHomePage() {
               <Badge variant="outline" className="bg-emerald-50 text-emerald-800 border-emerald-300 font-semibold dark:bg-emerald-950 dark:text-emerald-300">
                 Active Recovery Track
               </Badge>
-              <Badge variant="outline" className="font-mono text-xs text-slate-600 dark:text-slate-400">
+              <Badge variant="outline" className="font-mono text-xs text-muted-foreground">
                 NHS: {formatNhsNumber(patient.nhsNumber)}
               </Badge>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground">
               Welcome back, {patient.firstName} {patient.surname}!
             </h1>
-            <p className="text-sm text-slate-600 dark:text-slate-300 mt-1 max-w-xl leading-relaxed">
-              Personalized recovery portal for your robotic prostate surgery with <strong className="text-teal-800 dark:text-teal-400">{surgeonName}</strong> at Oxford Urology Centre.
+            <p className="text-sm text-muted-foreground mt-1 max-w-xl leading-relaxed">
+              Personalized recovery portal for your robotic prostate surgery with <strong className="text-primary dark:text-teal-400">{surgeonName}</strong> at Oxford Urology Centre.
             </p>
           </div>
 
@@ -88,20 +88,20 @@ export default function PatientHomePage() {
         </div>
 
         {/* Patient Clinical Summary Badges */}
-        <div className="mt-5 pt-4 border-t border-teal-100/80 dark:border-slate-800 flex flex-wrap items-center gap-4 text-xs text-slate-600 dark:text-slate-400">
+        <div className="mt-5 pt-4 border-t border-teal-100/80 dark:border-slate-800 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-1.5 font-medium">
             <Calendar className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
-            <span>Surgery Date: <strong className="text-slate-900 dark:text-slate-200">{opDate}</strong></span>
+            <span>Surgery Date: <strong className="text-foreground">{opDate}</strong></span>
           </div>
           <span>•</span>
           <div className="flex items-center gap-1.5 font-medium">
             <Award className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
-            <span>Pathology: <strong className="text-slate-900 dark:text-slate-200">{stage} (Gleason {gleason})</strong></span>
+            <span>Pathology: <strong className="text-foreground">{stage} (Gleason {gleason})</strong></span>
           </div>
           <span>•</span>
           <div className="flex items-center gap-1.5 font-medium">
             <User className="h-3.5 w-3.5 text-teal-600 dark:text-teal-400" />
-            <span>Consultant: <strong className="text-slate-900 dark:text-slate-200">{surgeonName}</strong></span>
+            <span>Consultant: <strong className="text-foreground">{surgeonName}</strong></span>
           </div>
         </div>
       </div>
@@ -109,10 +109,10 @@ export default function PatientHomePage() {
       {/* Actionable Questionnaires Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* IPSS */}
-        <Card className="glow-card hover:border-teal-500 transition-colors shadow-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
+        <Card className="glow-card hover:border-teal-500 transition-colors shadow-sm bg-card border-border">
           <CardContent className="p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-100 text-teal-700 dark:bg-teal-950 dark:text-teal-300">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-100 text-primary dark:bg-teal-950 dark:text-teal-300">
                 <Activity className="h-6 w-6" />
               </div>
               {hasIpss && (
@@ -123,8 +123,8 @@ export default function PatientHomePage() {
             </div>
 
             <div>
-              <h3 className="font-bold text-base text-slate-900 dark:text-white">1. Urinary Stream (IPSS)</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <h3 className="font-bold text-base text-foreground">1. Urinary Stream (IPSS)</h3>
+              <p className="text-xs text-muted-foreground mt-1">
                 7 quick questions about stream quality, frequency, urgency, and nighttime waking.
               </p>
             </div>
@@ -139,7 +139,7 @@ export default function PatientHomePage() {
         </Card>
 
         {/* SHIM */}
-        <Card className="glow-card-purple hover:border-purple-500 transition-colors shadow-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
+        <Card className="glow-card-purple hover:border-purple-500 transition-colors shadow-sm bg-card border-border">
           <CardContent className="p-6 space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300">
@@ -153,8 +153,8 @@ export default function PatientHomePage() {
             </div>
 
             <div>
-              <h3 className="font-bold text-base text-slate-900 dark:text-white">2. Erectile Wellness (SHIM)</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <h3 className="font-bold text-base text-foreground">2. Erectile Wellness (SHIM)</h3>
+              <p className="text-xs text-muted-foreground mt-1">
                 Confidential 5-question assessment to measure your nerve-sparing recovery progress.
               </p>
             </div>
@@ -169,7 +169,7 @@ export default function PatientHomePage() {
         </Card>
 
         {/* Continence */}
-        <Card className="glow-card hover:border-blue-500 transition-colors shadow-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800">
+        <Card className="glow-card hover:border-blue-500 transition-colors shadow-sm bg-card border-border">
           <CardContent className="p-6 space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300">
@@ -183,8 +183,8 @@ export default function PatientHomePage() {
             </div>
 
             <div>
-              <h3 className="font-bold text-base text-slate-900 dark:text-white">3. 24h Pad Requirements</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              <h3 className="font-bold text-base text-foreground">3. 24h Pad Requirements</h3>
+              <p className="text-xs text-muted-foreground mt-1">
                 Log your daytime and nighttime pad counts to guide pelvic floor rehabilitation.
               </p>
             </div>
@@ -200,13 +200,13 @@ export default function PatientHomePage() {
       </div>
 
       {/* Milestone Schedule Track for this specific patient */}
-      <Card className="shadow-sm bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 rounded-2xl">
+      <Card className="shadow-sm bg-card border-border rounded-2xl">
         <CardHeader className="p-5 pb-3 border-b border-slate-100 dark:border-slate-800 flex flex-row items-center justify-between space-y-0">
-          <CardTitle className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+          <CardTitle className="text-sm font-bold text-foreground flex items-center gap-2">
             <Calendar className="h-4 w-4 text-teal-600 dark:text-teal-400" />
             <span>Your Surgical Milestones ({patient.firstName}'s Timeline)</span>
           </CardTitle>
-          <Link href="/follow-up" className="text-xs text-teal-700 dark:text-teal-400 hover:underline flex items-center gap-1 font-semibold">
+          <Link href="/follow-up" className="text-xs text-primary dark:text-teal-400 hover:underline flex items-center gap-1 font-semibold">
             <span>View Full Schedule</span>
             <ArrowRight className="h-3 w-3" />
           </Link>
@@ -223,11 +223,11 @@ export default function PatientHomePage() {
                   className={`p-3 rounded-xl border transition-all ${
                     isDone
                       ? 'bg-emerald-50 border-emerald-200 text-emerald-900 font-bold dark:bg-emerald-950/50 dark:border-emerald-800 dark:text-emerald-300'
-                      : 'bg-slate-50 border-slate-200 text-slate-600 dark:bg-slate-800/40 dark:border-slate-800 dark:text-slate-400'
+                      : 'bg-background border-border text-muted-foreground dark:bg-slate-800/40 dark:border-slate-800 dark:text-muted-foreground'
                   }`}
                 >
                   <div className="text-xs uppercase font-bold">{m} Review</div>
-                  <div className="text-[10px] mt-1 text-slate-500 dark:text-slate-400">
+                  <div className="text-[10px] mt-1 text-muted-foreground">
                     {isDone ? '✓ Completed' : 'Pending Clinic'}
                   </div>
                 </div>

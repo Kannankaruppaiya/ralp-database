@@ -14,11 +14,11 @@ export default function PatientLoading() {
       </div>
 
       {/* Patient Questionnaire Card Skeleton */}
-      <div className="p-6 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm space-y-5">
+      <div className="p-6 rounded-xl border border-border bg-card shadow-sm space-y-5">
         <div className="h-5 w-64 bg-slate-200 dark:bg-slate-800 rounded" />
         <div className="space-y-3 pt-2">
           {[1, 2, 3, 4].map((item) => (
-            <div key={item} className="p-4 rounded-lg border border-slate-100 dark:border-slate-800/80 bg-slate-50 dark:bg-slate-800/30 space-y-2">
+            <div key={item} className="p-4 rounded-lg border border-border bg-muted/40 space-y-2">
               <div className="h-4 w-3/4 bg-slate-200 dark:bg-slate-800 rounded" />
               <div className="h-3 w-1/2 bg-slate-100 dark:bg-slate-800/50 rounded" />
             </div>

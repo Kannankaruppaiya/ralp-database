@@ -77,12 +77,12 @@ export default function AssessmentReviewPage() {
   };
 
   if (isLoading) {
-    return <div className="p-12 text-center text-sm text-slate-500">Loading your record…</div>;
+    return <div className="p-12 text-center text-sm text-muted-foreground">Loading your record…</div>;
   }
 
   if (!patient) {
     return (
-      <div className="p-12 text-center text-sm text-slate-500">
+      <div className="p-12 text-center text-sm text-muted-foreground">
         No patient record is linked to this login. Please contact your clinical team.
       </div>
     );
@@ -91,22 +91,22 @@ export default function AssessmentReviewPage() {
   return (
     <div className="space-y-6 max-w-2xl mx-auto">
       <div>
-        <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white">Review Your Assessment Answers</h1>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+        <h1 className="text-2xl font-extrabold text-foreground">Review Your Assessment Answers</h1>
+        <p className="text-xs text-muted-foreground mt-1">
           Reviewing responses for <strong>{patient.firstName} {patient.surname}</strong> (NHS: {patient.nhsNumber}) before transmitting to your surgical care team.
         </p>
       </div>
 
       {/* Summary Cards */}
       <div className="space-y-4">
-        <Card className="shadow-sm border-teal-200 bg-white dark:bg-[#181818] dark:border-[#272727]">
+        <Card className="shadow-sm border-teal-200 bg-card dark:border-[#272727]">
           <CardHeader className="p-4 pb-2">
             <CardTitle className="text-sm font-bold text-teal-900 dark:text-teal-300 flex items-center gap-2">
               <Activity className="h-4 w-4 text-teal-600 dark:text-teal-400" />
               <span>1. Urinary Symptoms (IPSS)</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-4 pt-1 text-xs text-slate-600 dark:text-slate-300 space-y-1">
+          <CardContent className="p-4 pt-1 text-xs text-muted-foreground space-y-1">
             <div className="flex justify-between">
               <span>Overall Score:</span>
               <Badge variant="success">
@@ -124,14 +124,14 @@ export default function AssessmentReviewPage() {
           </CardContent>
         </Card>
 
-        <Card className="shadow-sm border-purple-200 bg-white dark:bg-[#181818] dark:border-[#272727]">
+        <Card className="shadow-sm border-purple-200 bg-card dark:border-[#272727]">
           <CardHeader className="p-4 pb-2">
             <CardTitle className="text-sm font-bold text-purple-900 dark:text-purple-300 flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-purple-600 dark:text-purple-400" />
               <span>2. Erectile Health (SHIM)</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-4 pt-1 text-xs text-slate-600 dark:text-slate-300 space-y-1">
+          <CardContent className="p-4 pt-1 text-xs text-muted-foreground space-y-1">
             <div className="flex justify-between">
               <span>Overall Score:</span>
               <Badge variant="purple">
@@ -143,14 +143,14 @@ export default function AssessmentReviewPage() {
           </CardContent>
         </Card>
 
-        <Card className="shadow-sm border-blue-200 bg-white dark:bg-[#181818] dark:border-[#272727]">
+        <Card className="shadow-sm border-blue-200 bg-card dark:border-[#272727]">
           <CardHeader className="p-4 pb-2">
             <CardTitle className="text-sm font-bold text-blue-900 dark:text-blue-300 flex items-center gap-2">
               <Droplet className="h-4 w-4 text-blue-600 dark:text-blue-400" />
               <span>3. Pad Usage & Continence</span>
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-4 pt-1 text-xs text-slate-600 dark:text-slate-300 space-y-1">
+          <CardContent className="p-4 pt-1 text-xs text-muted-foreground space-y-1">
             <div className="flex justify-between">
               <span>Daytime:</span>
               <strong>{draft.continence?.dayStatus ?? 'Not answered'}</strong>
@@ -174,16 +174,16 @@ export default function AssessmentReviewPage() {
       </div>
 
       {/* Clean 1-Line Consent Checkbox with Modal Trigger */}
-      <div className="rounded-xl border border-slate-200 dark:border-[#272727] bg-slate-50/70 dark:bg-[#181818] p-4 shadow-sm">
+      <div className="rounded-xl border border-border bg-background/70 dark:bg-[#181818] p-4 shadow-sm">
         <label className="flex items-start gap-3 cursor-pointer group select-none">
           <input
             type="checkbox"
             id="patient-prom-consent-checkbox"
             checked={consentGiven}
             onChange={(e) => setConsentGiven(e.target.checked)}
-            className="mt-0.5 h-4 w-4 rounded border-slate-300 text-teal-600 focus:ring-teal-500 dark:border-slate-700 dark:bg-slate-900 cursor-pointer"
+            className="mt-0.5 h-4 w-4 rounded border-border text-teal-600 focus:ring-teal-500 dark:border-slate-700 dark:bg-slate-900 cursor-pointer"
           />
-          <div className="text-xs text-slate-700 dark:text-slate-300 leading-normal">
+          <div className="text-xs text-foreground leading-normal">
             <span>
               I confirm these answers are accurate and agree to the{' '}
             </span>
@@ -193,7 +193,7 @@ export default function AssessmentReviewPage() {
                 e.preventDefault();
                 setShowTermsModal(true);
               }}
-              className="font-semibold text-teal-600 dark:text-teal-400 underline hover:text-teal-700 dark:hover:text-teal-300 inline-flex items-center gap-0.5"
+              className="font-semibold text-teal-600 dark:text-teal-400 underline hover:text-primary dark:hover:text-teal-300 inline-flex items-center gap-0.5"
             >
               <span>NHS Clinical Consent &amp; Data Sharing Terms</span>
               <ExternalLink className="h-3 w-3" />
@@ -204,13 +204,13 @@ export default function AssessmentReviewPage() {
       </div>
 
       {error && (
-        <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs text-rose-700 dark:bg-rose-950/40 dark:border-rose-900 dark:text-rose-300">
+        <div className="rounded-xl border border-rose-500/30 bg-rose-50 p-3 text-xs text-rose-700 dark:bg-rose-950/40 dark:border-rose-900 dark:text-rose-300">
           {error}
         </div>
       )}
 
       {/* Action Buttons */}
-      <div className="flex items-center justify-between pt-4 border-t border-slate-200 dark:border-[#272727]">
+      <div className="flex items-center justify-between pt-4 border-t border-border">
         <Link href="/assessment/incontinence">
           <Button variant="outline" size="sm" className="text-xs">
             <ArrowLeft className="h-4 w-4 mr-1" />
@@ -223,7 +223,7 @@ export default function AssessmentReviewPage() {
           className={`gap-2 text-xs font-semibold shadow-md transition-all ${
             consentGiven
               ? 'bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white cursor-pointer'
-              : 'opacity-50 cursor-not-allowed bg-slate-300 dark:bg-slate-800 text-slate-500'
+              : 'opacity-50 cursor-not-allowed bg-slate-300 dark:bg-slate-800 text-muted-foreground'
           }`}
         >
           <CheckCircle2 className="h-4 w-4" />
@@ -236,7 +236,7 @@ export default function AssessmentReviewPage() {
         <DialogContent className="max-w-lg">
           <DialogHeader>
             <div className="flex items-center gap-2 mb-1">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-100 text-teal-700 dark:bg-teal-950 dark:text-teal-300">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-teal-100 text-primary dark:bg-teal-950 dark:text-teal-300">
                 <ShieldCheck className="h-5 w-5" />
               </div>
               <DialogTitle>NHS Clinical Consent &amp; Data Sharing</DialogTitle>
@@ -246,9 +246,9 @@ export default function AssessmentReviewPage() {
             </DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-3.5 text-xs text-slate-600 dark:text-slate-300 max-h-[60vh] overflow-y-auto pr-1">
-            <div className="p-3 bg-slate-50 dark:bg-[#121212] rounded-xl border border-slate-200 dark:border-[#272727] space-y-1.5">
-              <strong className="text-slate-900 dark:text-white flex items-center gap-1.5">
+          <div className="space-y-3.5 text-xs text-muted-foreground max-h-[60vh] overflow-y-auto pr-1">
+            <div className="p-3 bg-background rounded-xl border border-border space-y-1.5">
+              <strong className="text-foreground flex items-center gap-1.5">
                 <CheckCircle2 className="h-4 w-4 text-teal-600" />
                 <span>1. Statement of Truth &amp; Accuracy</span>
               </strong>
@@ -257,8 +257,8 @@ export default function AssessmentReviewPage() {
               </p>
             </div>
 
-            <div className="p-3 bg-slate-50 dark:bg-[#121212] rounded-xl border border-slate-200 dark:border-[#272727] space-y-1.5">
-              <strong className="text-slate-900 dark:text-white flex items-center gap-1.5">
+            <div className="p-3 bg-background rounded-xl border border-border space-y-1.5">
+              <strong className="text-foreground flex items-center gap-1.5">
                 <Lock className="h-4 w-4 text-teal-600" />
                 <span>2. Direct Clinical Care &amp; Registry Use</span>
               </strong>
@@ -267,8 +267,8 @@ export default function AssessmentReviewPage() {
               </p>
             </div>
 
-            <div className="p-3 bg-slate-50 dark:bg-[#121212] rounded-xl border border-slate-200 dark:border-[#272727] space-y-1.5">
-              <strong className="text-slate-900 dark:text-white flex items-center gap-1.5">
+            <div className="p-3 bg-background rounded-xl border border-border space-y-1.5">
+              <strong className="text-foreground flex items-center gap-1.5">
                 <ShieldCheck className="h-4 w-4 text-teal-600" />
                 <span>3. Caldicott Information Governance &amp; Security</span>
               </strong>
