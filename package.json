@@ -18,6 +18,8 @@
     "db:push:staging": "node scripts/db-push.mjs staging",
     "db:push:prod": "node scripts/db-push.mjs production --yes",
     "db:types": "node scripts/db-types.mjs",
+    "db:migrate": "dotenv -e infra/.env -- node scripts/migrate.mjs",
+    "db:migrate:dry": "dotenv -e infra/.env -- node scripts/migrate.mjs --dry",
     "build:prod": "dotenv -e .env.production -- next build"
   },
   "dependencies": {
@@ -30,6 +32,7 @@
     "lucide-react": "^0.469.0",
     "mammoth": "^1.12.1",
     "next": "^15.1.4",
+    "pg": "^8.23.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "recharts": "^2.15.0",
