@@ -44,6 +44,25 @@ operations=0  documents=0  prom_submissions=0  histology=0  follow_ups=0
 records never leave the client's own server. One synthetic patient and three
 staff logins are recreated in minutes by §5.
 
+The nightly dumps also survive the teardown, in
+`s3://ralp-backups-887793660359-euw2/postgres/`, running to the morning of the
+deletion. That bucket was deliberately kept — it holds roughly 29 MB and costs
+under a penny a month, which is not a sensible thing to delete for the sake of
+tidiness. To restore one instead of reseeding:
+
+```bash
+aws s3 cp s3://ralp-backups-887793660359-euw2/postgres/2026/09/09/pg_dumpall-20260909T023654Z.sql.gz .
+gunzip -c pg_dumpall-20260909T023654Z.sql.gz | docker exec -i ralp-postgres psql -U ralp
+```
+
+Those dumps are `pg_dumpall` output from the **Supabase-era** database, so treat
+them as a record rather than a restore path for the new stack. For a clean box,
+§5.4's migrate-and-seed is the better route.
+
+The same bucket's `deploy/` prefix holds the source tarballs that were shipped
+to the box, including `ralp-main-9d80d2a.tar.gz` — the exact tree that was
+running.
+
 ### 1.2 What the rebuild deliberately does *not* restore
 
 The old box was originally a self-hosted **Supabase** stack that the application
@@ -73,6 +92,19 @@ instance state, which is why deletion — not stopping — was needed:
 
 A stopped-but-not-deleted box therefore costs roughly **$8/month** doing
 nothing. Deleting takes that to zero at the price of the rebuild below.
+
+### 2.1 What was actually removed on 2026-09-09
+
+Both instances terminated; both root volumes gone; both Elastic IPs released;
+both snapshots deleted; the `ralp-app-20260828-224530` AMI deregistered (it
+imaged the Supabase stack, so it had no value to the Supabase-free rebuild); the
+`ralp/supabase` secret scheduled for deletion with a 30-day recovery window.
+
+**Kept on purpose:** the three S3 buckets — `ralp-backups`,
+`greatsales-backups`, `greatsales-deploy` — totalling about 280 MB, or under a
+penny a month. They hold the nightly database dumps and the deployment
+artefacts, which is the highest-value thing left in the account and the cheapest
+to keep. Do not delete them to reach a round number.
 
 ---
 
