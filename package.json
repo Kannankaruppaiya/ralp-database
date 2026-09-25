@@ -20,7 +20,9 @@
     "db:seed": "dotenv -e infra/.env -- node scripts/seed-cohort.mjs development",
     "build:prod": "dotenv -e .env.production -- next build",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "landing:media": "node scripts/landing-media.mjs",
+    "landing:budget": "node scripts/landing-media.mjs budget"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
@@ -30,6 +32,7 @@
     "jose": "^5.10.0",
     "lucide-react": "^0.469.0",
     "mammoth": "^1.12.1",
+    "motion": "^13.4.4",
     "next": "^15.1.4",
     "pg": "^8.23.0",
     "react": "^19.0.0",

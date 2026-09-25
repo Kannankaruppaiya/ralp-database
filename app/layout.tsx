@@ -17,14 +17,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
       <body className="min-h-[100dvh] bg-[#FAFAFA] text-slate-900 dark:bg-[#121212] dark:text-slate-100 antialiased selection:bg-teal-600 selection:text-white font-sans">
         <ThemeProvider defaultTheme="dark">
           <EnvBanner />
